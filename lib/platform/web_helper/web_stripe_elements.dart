@@ -34,7 +34,8 @@ class _WebStripeElementsState extends State<WebStripeElements> {
     _iframeElement.height = '150';
     _iframeElement.width = '400';
 
-    _iframeElement.src = 'https://juuwle.com?stripe_amount=' + widget.cents.toString() + '&stripe_ccy=' + widget.ccy + '&stripe_name=' + widget.name;
+//    _iframeElement.src = 'https://juuwle.com?stripe_amount=' + widget.cents.toString() + '&stripe_ccy=' + widget.ccy + '&stripe_name=' + widget.name;
+    _iframeElement.src = 'https://minkey.io?stripe_amount=' + widget.cents.toString() + '&stripe_ccy=' + widget.ccy + '&stripe_name=' + widget.name;
     _iframeElement.style.border = 'none';
 
     js.context['flutter_feedback'] = (msg) {
