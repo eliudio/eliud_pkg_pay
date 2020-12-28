@@ -46,21 +46,23 @@ abstract class PayModel extends TaskModel {
 
       if (found >= 0) {
         if (found < tasks.length) {
-          var nextTask = tasks[found+1];
+          var nextTask = tasks[found + 1];
 
-          var newAssignee = member; // determine this based on nextTask.responsible
+          var newAssignee =
+              member; // determine this based on nextTask.responsible
           var nextAssignment = AssignmentModel(
-            documentID:newRandomKey(),
-            appId: assignmentModel.appId,
-            reporter: member,
-            assignee: newAssignee,
-            task: nextTask.task,
-            workflow: assignmentModel.workflow,
-            timestamp: null,
-            triggeredBy: assignmentModel,
-            results: null
-          );
-          AbstractRepositorySingleton.singleton.assignmentRepository(assignmentModel.appId).add(nextAssignment);
+              documentID: newRandomKey(),
+              appId: assignmentModel.appId,
+              reporter: member,
+              assignee: newAssignee,
+              task: nextTask.task,
+              workflow: assignmentModel.workflow,
+              timestamp: null,
+              triggeredBy: null,//assignmentModel,
+              results: null);
+          AbstractRepositorySingleton.singleton
+              .assignmentRepository(assignmentModel.appId)
+              .add(nextAssignment);
         } else {
           // no next task to do
         }
@@ -70,11 +72,13 @@ abstract class PayModel extends TaskModel {
 
       // the below must become part of the TaskModel class "storeCurrentAssignment"
       if (isNewAssignment) {
-        AbstractRepositorySingleton.singleton.assignmentRepository(
-            assignmentModel.appId).add(assignmentModel);
+        AbstractRepositorySingleton.singleton
+            .assignmentRepository(assignmentModel.appId)
+            .add(assignmentModel);
       } else {
-        AbstractRepositorySingleton.singleton.assignmentRepository(
-            assignmentModel.appId).update(assignmentModel);
+        AbstractRepositorySingleton.singleton
+            .assignmentRepository(assignmentModel.appId)
+            .update(assignmentModel);
       }
     }
   }
@@ -117,13 +121,18 @@ class FixedAmountPayModel extends PayModel {
   }
 
   @override
-  TaskEntity toEntity({String appId}) =>
-    FixedAmountPayEntity(paymentType: paymentType.index, ccy: ccy, amount: amount);
+  TaskEntity toEntity({String appId}) => FixedAmountPayEntity(
+      paymentType: paymentType.index, ccy: ccy, amount: amount);
 
   static FixedAmountPayModel fromEntity(FixedAmountPayEntity entity) =>
-      FixedAmountPayModel(paymentType: toPaymentType(entity.paymentType), ccy: entity.ccy, amount: entity.amount);
-  static FixedAmountPayEntity fromMap(Map snap) =>
-      FixedAmountPayEntity(paymentType: snap['paymentType'], ccy: snap['ccy'], amount: snap['amount']);
+      FixedAmountPayModel(
+          paymentType: toPaymentType(entity.paymentType),
+          ccy: entity.ccy,
+          amount: entity.amount);
+  static FixedAmountPayEntity fromMap(Map snap) => FixedAmountPayEntity(
+      paymentType: snap['paymentType'],
+      ccy: snap['ccy'],
+      amount: double.tryParse(snap['amount'].toString()));
 }
 
 class FixedAmountPayModelMapper implements TaskModelMapper {
@@ -161,7 +170,8 @@ class ContextAmountPayModel extends PayModel {
 
   static ContextAmountPayModel fromEntity(ContextAmountPayEntity entity) =>
       ContextAmountPayModel(toPaymentType(entity.paymentType));
-  static ContextAmountPayEntity fromMap(Map snap) => ContextAmountPayEntity(paymentType: snap['paymentType']);
+  static ContextAmountPayEntity fromMap(Map snap) =>
+      ContextAmountPayEntity(paymentType: snap['paymentType']);
 }
 
 class ContextAmountPayModelMapper implements TaskModelMapper {
