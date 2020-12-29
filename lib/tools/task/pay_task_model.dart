@@ -88,14 +88,7 @@ abstract class PayModel extends TaskModel {
             getCcy(),
             getAmount());
       } else {
-        showDialog(context: context,
-            builder: (BuildContext context){
-              return Container(
-                  width: MediaQuery.of(context).size.width * 0.9,
-                  height: MediaQuery.of(context).size.height * 0.9,
-                  child:  MyHomePage());
-         }
-        );
+        CustomDialog.openIt(context);
       }
     }
   }
