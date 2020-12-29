@@ -47,19 +47,29 @@ class _CustomDialogState extends State<CustomDialog> {
 
   titleAndFields(context) {
     return ListView(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
         shrinkWrap: true,
         physics: ScrollPhysics(),
         children: <Widget>[
-          Text("AAA"),
-          fields(context)
+          Center(child: Text("AAA", style: TextStyle(
+              color: Colors.grey[800],
+              fontWeight: FontWeight.bold,
+              fontSize: 20))),
+          Divider(height: 10),
+          fields(context),
+          Container(
+              padding: const EdgeInsets.only(left: 40.0, top: 20.0),
+              child: new RaisedButton(
+                child: const Text('Submit'),
+                onPressed: null,
+              )),
         ]);
   }
 
   fields(context) {
     return Container(
-        height: MediaQuery.of(context).size.height * 0.9 - 100,
-        width: MediaQuery.of(context).size.width * 0.9,
+        height: CustomDialog.height(context) - 150 /* minus the size of the button, title and divider */,
+        width: CustomDialog.width(context),
         child: ListView(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
       children: <Widget>[
@@ -153,12 +163,6 @@ class _CustomDialogState extends State<CustomDialog> {
             );
           },
         ),
-        new Container(
-            padding: const EdgeInsets.only(left: 40.0, top: 20.0),
-            child: new RaisedButton(
-              child: const Text('Submit'),
-              onPressed: null,
-            )),
       ],
     ));
   }
