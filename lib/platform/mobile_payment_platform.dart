@@ -7,7 +7,9 @@ import 'package:flutter/material.dart';
 import 'package:stripe_payment/stripe_payment.dart';
 
 class MobilePaymentPlatform extends AbstractPaymentPlatform {
-  MobilePaymentPlatform();
+  final bool requiresConfirmation;
+
+  MobilePaymentPlatform({this.requiresConfirmation});
 
   final HttpsCallable INTENT = CloudFunctions.instance
       .getHttpsCallable(functionName: 'createPaymentIntent');
@@ -34,45 +36,51 @@ class MobilePaymentPlatform extends AbstractPaymentPlatform {
   }
 
   void confirmDialog(BuildContext context, String clientSecret, PaymentMethod paymentMethod, HandlePayment handlePayment, String ccy, double amount) {
-    var confirm = AlertDialog(
-      title: Text('Confirm Payement'),
-      content: Container(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            Text(
-              'Make Payment',
-              // style: TextStyle(fontSize: 25),
-            ),
-            Text('Charge amount:' + amount.toString() + " " + ccy)
-          ],
+    if ((requiresConfirmation != null) && (requiresConfirmation)) {
+      var confirm = AlertDialog(
+        title: Text('Confirm Payement'),
+        content: Container(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              Text(
+                'Make Payment',
+                // style: TextStyle(fontSize: 25),
+              ),
+              Text('Charge amount:' + amount.toString() + " " + ccy)
+            ],
+          ),
         ),
-      ),
-      actions: <Widget>[
-        RaisedButton(
-          child: Text('CANCEL'),
-          onPressed: () {
-            Navigator.of(context).pop();
-            final snackBar = SnackBar(content: Text('Payment Cancelled'),);
-            Scaffold.of(context).showSnackBar(snackBar);
-          },
-        ),
-        RaisedButton(
-          child: Text('Confirm'),
-          onPressed: () {
-            Navigator.of(context).pop();
-            confirmPayment(clientSecret, paymentMethod, handlePayment, ); // function to confirm Payment
-          },
-        ),
-      ],
-    );
-    showDialog(
-        context: context,
-        barrierDismissible: false,
-        builder: (BuildContext context) {
-          return confirm;
-        });
+        actions: <Widget>[
+          RaisedButton(
+            child: Text('CANCEL'),
+            onPressed: () {
+              Navigator.of(context).pop();
+              final snackBar = SnackBar(content: Text('Payment Cancelled'),);
+              Scaffold.of(context).showSnackBar(snackBar);
+            },
+          ),
+          RaisedButton(
+            child: Text('Confirm'),
+            onPressed: () {
+              Navigator.of(context).pop();
+              confirmPayment(clientSecret, paymentMethod,
+                handlePayment,); // function to confirm Payment
+            },
+          ),
+        ],
+      );
+      showDialog(
+          context: context,
+          barrierDismissible: false,
+          builder: (BuildContext context) {
+            return confirm;
+          });
+    } else {
+      confirmPayment(clientSecret, paymentMethod,
+        handlePayment,); // function to confirm Payment
+    }
   }
 
   void confirmPayment(String sec, PaymentMethod paymentMethod, HandlePayment handlePayment) {
