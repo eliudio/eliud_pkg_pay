@@ -1,15 +1,17 @@
 import 'package:eliud_core/core/access/bloc/access_bloc.dart';
 import 'package:eliud_core/core/access/bloc/access_state.dart';
 import 'package:eliud_core/model/member_model.dart';
+import 'package:eliud_core/tools/random.dart';
 import 'package:eliud_pkg_pay/platform/payment_platform.dart';
 import 'package:eliud_pkg_pay/tools/task/pay_task_entity.dart';
-import 'package:eliud_pkg_workflow/model/abstract_repository_singleton.dart';
 import 'package:eliud_pkg_workflow/model/assignment_model.dart';
+import 'package:eliud_pkg_workflow/model/assignment_result_model.dart';
 import 'package:eliud_pkg_workflow/tools/task/task_entity.dart';
 import 'package:eliud_pkg_workflow/tools/task/task_model.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:eliud_pkg_workflow/model/repository_singleton.dart';
-import 'package:eliud_core/tools/random.dart';
+import 'package:flutter/material.dart';
+
+import 'manual/custom_dialog.dart';
 
 enum PaymentType { Manual, Stripe }
 
@@ -34,68 +36,67 @@ abstract class PayModel extends TaskModel {
 
   void handlePayment(PaymentStatus status) {
     if (status is PaymentSucceeded) {
-      // the below must become part of the TaskModel class "createNextAssignment"
-      var tasks = assignmentModel.workflow.workflowTask;
-      var found = -1;
-      for (int i = 0; i < tasks.length; i++) {
-        if (tasks[i].task.taskString == assignmentModel.task.taskString) {
-          found = i;
-          break;
-        }
-      }
-
-      if (found >= 0) {
-        if (found < tasks.length) {
-          var nextTask = tasks[found + 1];
-
-          var newAssignee =
-              member; // determine this based on nextTask.responsible
-          var nextAssignment = AssignmentModel(
-              documentID: newRandomKey(),
-              appId: assignmentModel.appId,
-              reporter: member,
-              assignee: newAssignee,
-              task: nextTask.task,
-              workflow: assignmentModel.workflow,
-              timestamp: null,
-              triggeredBy: null,//assignmentModel,
-              results: null);
-          AbstractRepositorySingleton.singleton
-              .assignmentRepository(assignmentModel.appId)
-              .add(nextAssignment);
-        } else {
-          // no next task to do
-        }
-      } else {
-        // task not found: error in workflow
-      }
-
-      // the below must become part of the TaskModel class "storeCurrentAssignment"
-      if (isNewAssignment) {
-        AbstractRepositorySingleton.singleton
-            .assignmentRepository(assignmentModel.appId)
-            .add(assignmentModel);
-      } else {
-        AbstractRepositorySingleton.singleton
-            .assignmentRepository(assignmentModel.appId)
-            .update(assignmentModel);
-      }
+      // now store in results status.reference;
+      finishTask(
+          _context,
+          _assignmentModel,
+          ExecutionResults(ExecutionStatus.success, results: [
+            AssignmentResultModel(
+                documentID: newRandomKey(),
+                key: 'payment-type',
+                value: 'Credit card'),
+            AssignmentResultModel(
+                documentID: newRandomKey(),
+                key: 'payment-reference',
+                value: status.reference)
+          ]));
+    } else if (status is PaymentFailure) {
+      finishTask(
+          _context,
+          _assignmentModel,
+          ExecutionResults(ExecutionStatus.failure, results: [
+            AssignmentResultModel(
+                documentID: newRandomKey(),
+                key: 'payment-type',
+                value: 'Credit card'),
+            AssignmentResultModel(
+                documentID: newRandomKey(),
+                key: 'payment-reference',
+                value: status.reference),
+            AssignmentResultModel(
+                documentID: newRandomKey(),
+                key: 'payment-error',
+                value: status.error)
+          ]));
     }
   }
 
+  BuildContext _context;
+  AssignmentModel _assignmentModel;
+
   @override
-  ExecutionResult execute(BuildContext context, AssignmentModel assignmentModel,
-      bool isNewAssignment) {
+  void startTask(BuildContext context, AssignmentModel assignmentModel) {
+    _context = context;
+    _assignmentModel = assignmentModel;
     var accessState = AccessBloc.getState(context);
     if (accessState is LoggedIn) {
-      this.assignmentModel = assignmentModel;
-      this.isNewAssignment = isNewAssignment;
-      this.member = accessState.member;
-      var name = member.name;
-      AbstractPaymentPlatform.platform.startPaymentProcess(
-          context, handlePayment, name, getCcy(), getAmount());
-    } else {
-      // open dialog: not possible to pay without logged in
+      if (paymentType == PaymentType.Stripe) {
+        AbstractPaymentPlatform.platform.startPaymentProcess(
+            context,
+            handlePayment,
+            accessState.member == null ? "unknown" : accessState.member.name,
+            getCcy(),
+            getAmount());
+      } else {
+        showDialog(context: context,
+            builder: (BuildContext context){
+              return Container(
+                  width: MediaQuery.of(context).size.width * 0.9,
+                  height: MediaQuery.of(context).size.height * 0.9,
+                  child:  MyHomePage());
+         }
+        );
+      }
     }
   }
 
