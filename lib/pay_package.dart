@@ -5,6 +5,8 @@ import 'package:eliud_core/model/app_model.dart';
 import 'package:eliud_core/model/member_model.dart';
 import 'package:eliud_pkg_pay/tools/task/pay_task_entity.dart';
 import 'package:eliud_pkg_pay/tools/task/pay_task_model.dart';
+import 'package:eliud_pkg_pay/tools/task/review_and_ship_task_entity.dart';
+import 'package:eliud_pkg_pay/tools/task/review_and_ship_task_model.dart';
 import 'package:eliud_pkg_workflow/tools/task/task_model.dart';
 import 'package:flutter_bloc/src/bloc_provider.dart';
 
@@ -23,5 +25,6 @@ abstract class PayPackage extends Package {
   void init() {
     TaskModelRegistry.registry().addMapper(FixedAmountPayEntity.label, FixedAmountPayModelMapper());
     TaskModelRegistry.registry().addMapper(ContextAmountPayEntity.label, ContextAmountPayModelMapper());
+    TaskModelRegistry.registry().addMapper(ReviewAndShipTaskEntity.label, ReviewAndShipTaskModelMapper());
   }
 }

@@ -1,10 +1,12 @@
 import 'package:eliud_core/core/access/bloc/access_bloc.dart';
 import 'package:eliud_core/core/access/bloc/access_state.dart';
-import 'package:eliud_core/model/member_model.dart';
 import 'package:eliud_core/tools/random.dart';
 import 'package:eliud_pkg_pay/platform/payment_platform.dart';
+import 'package:eliud_pkg_pay/tools/bloc/payment_bloc.dart';
+import 'package:eliud_pkg_pay/tools/bloc/payment_state.dart';
 import 'package:eliud_pkg_pay/tools/task/pay_task_entity.dart';
 import 'package:eliud_core/tools/widgets/dialog_helper.dart';
+import 'package:eliud_pkg_pay/tools/task/pay_type_model.dart';
 import 'package:eliud_pkg_pay/tools/task/widgets/manual_payment_dialog.dart';
 import 'package:eliud_pkg_workflow/model/assignment_model.dart';
 import 'package:eliud_pkg_workflow/model/assignment_result_model.dart';
@@ -12,17 +14,17 @@ import 'package:eliud_pkg_workflow/tools/task/task_entity.dart';
 import 'package:eliud_pkg_workflow/tools/task/task_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 // ***** PayModel *****
 
-abstract class PayModel extends TaskModel {
+abstract class PayTaskModel extends TaskModel {
   final PayTypeModel paymentType;
 
-  PayModel({
+  PayTaskModel({
     this.paymentType,
-    String taskString,
     String description,
-  }) : super(taskString: taskString, description: description);
+  }) : super(description: description);
 
   void handleCreditCardPayment(BuildContext _context, AssignmentModel _assignmentModel, PaymentStatus status) {
     if (status is PaymentSucceeded) {
@@ -97,9 +99,9 @@ abstract class PayModel extends TaskModel {
             YesNoDialog(
               title: 'Payment',
               message: 'Proceed with payment of ' +
-                  getAmount().toString() +
+                  getAmount(context).toString() +
                   ' ' +
-                  getCcy() +
+                  getCcy(context) +
                   ' for ' +
                   assignmentModel.workflow.name +
                   '?',
@@ -112,8 +114,8 @@ abstract class PayModel extends TaskModel {
             context,
             ManualPaymentDialog(
                 purpose: assignmentModel.task.description,
-                amount: getAmount(),
-                ccy: getCcy(),
+                amount: getAmount(context),
+                ccy: getCcy(context),
                 payTo: p.payTo,
                 country: p.country,
                 bankIdentifierCode: p.bankIdentifierCode,
@@ -122,6 +124,7 @@ abstract class PayModel extends TaskModel {
                 payedWithTheseDetails: (paymentReference, String paymentName, bool success) => handleManualPayment(context, assignmentModel, paymentReference, paymentName, success)));
       }
     }
+    return null;
   }
 
   void _confirmedCreditCardPayment(BuildContext context, AssignmentModel assignmentModel, AppLoaded accessState) {
@@ -132,34 +135,34 @@ abstract class PayModel extends TaskModel {
         accessState.getMember() == null
             ? 'unknown'
             : accessState.getMember().name,
-        getCcy(),
-        getAmount());
+        getCcy(context),
+        getAmount(context));
   }
 
-  String getCcy();
-  double getAmount();
+  String getCcy(BuildContext context);
+  double getAmount(BuildContext context);
+  String getOrderNumber(BuildContext context);
 }
 
 // ***** FixedAmountPayModel *****
 
-class FixedAmountPayModel extends PayModel {
+class FixedAmountPayModel extends PayTaskModel {
   final String ccy;
   final double amount;
 
   FixedAmountPayModel(
       {String description, PayTypeModel paymentType, this.ccy, this.amount})
       : super(
-            taskString: FixedAmountPayEntity.label,
             description: description,
             paymentType: paymentType);
 
   @override
-  double getAmount() {
+  double getAmount(BuildContext context) {
     return amount;
   }
 
   @override
-  String getCcy() {
+  String getCcy(BuildContext context) {
     return ccy;
   }
 
@@ -181,6 +184,9 @@ class FixedAmountPayModel extends PayModel {
       paymentType: PayTypeModel.fromMap(snap['paymentType']),
       ccy: snap['ccy'],
       amount: double.tryParse(snap['amount'].toString()));
+
+  @override
+  String getOrderNumber(BuildContext context) => null;
 }
 
 class FixedAmountPayModelMapper implements TaskModelMapper {
@@ -198,24 +204,11 @@ class FixedAmountPayModelMapper implements TaskModelMapper {
 // ***** ContextAmountPayModel *****
 
 // Retrieve payment amount from the PayBloc (also part of this package)
-class ContextAmountPayModel extends PayModel {
+class ContextAmountPayModel extends PayTaskModel {
   ContextAmountPayModel({String description, PayTypeModel paymentType})
       : super(
-            taskString: ContextAmountPayEntity.label,
             description: description,
             paymentType: paymentType);
-
-  @override
-  double getAmount() {
-    // Retrieve payment amount from the PayBloc (also part of this package)
-    throw UnimplementedError();
-  }
-
-  @override
-  String getCcy() {
-    // retrieve from PayBloc
-    throw UnimplementedError();
-  }
 
   @override
   TaskEntity toEntity({String appId}) => ContextAmountPayEntity(
@@ -229,6 +222,48 @@ class ContextAmountPayModel extends PayModel {
   static ContextAmountPayEntity fromMap(Map snap) => ContextAmountPayEntity(
       description: snap['description'],
       paymentType: PayTypeModel.fromMap(snap['paymentType']));
+
+  InitializedPaymentState getState(BuildContext context) {
+    var bloc = BlocProvider.of<PaymentBloc>(context);
+    if (bloc != null) {
+      var state = bloc.state;
+      if (state is InitializedPaymentState) {
+        return state;
+      }
+    }
+    return null;
+  }
+
+  @override
+  String getOrderNumber(BuildContext context) {
+    var state = getState(context);
+    if (state is InitializedPaymentState) {
+      return state.orderNumber;
+    } else {
+      return null;
+    }
+  }
+
+  @override
+  double getAmount(BuildContext context) {
+    var state = getState(context);
+    if (state is InitializedPaymentState) {
+      return state.amount;
+    } else {
+      return null;
+    }
+  }
+
+  @override
+  String getCcy(BuildContext context) {
+    var state = getState(context);
+    if (state is InitializedPaymentState) {
+      return state.ccy;
+    } else {
+      return null;
+    }
+  }
+
 }
 
 class ContextAmountPayModelMapper implements TaskModelMapper {
@@ -243,81 +278,3 @@ class ContextAmountPayModelMapper implements TaskModelMapper {
   TaskEntity fromMap(Map map) => ContextAmountPayModel.fromMap(map);
 }
 
-// ***** PayTypeModel *****
-
-abstract class PayTypeModel {
-  PayTypeModel();
-
-  PayTypeEntity toEntity();
-
-  static PayTypeModel fromEntity(PayTypeEntity entity) {
-    if (entity is ManualPayTypeEntity) {
-      return ManualPayTypeModel.fromEntity(entity);
-    } else if (entity is CreditCardPayTypeEntity) {
-      return CreditCardPayTypeModel.fromEntity(entity);
-    }
-    return null;
-  }
-
-  static PayTypeEntity fromMap(Map snap) {
-    if (snap == null) return null;
-    if (snap['paymentMethod'] == 'manual') {
-      return ManualPayTypeModel.fromMap(snap);
-    } else if (snap['paymentMethod'] == 'creditcard') {
-      return CreditCardPayTypeModel.fromMap(snap);
-    }
-    return null;
-  }
-}
-
-class ManualPayTypeModel extends PayTypeModel {
-  final String payTo;
-  final String country;
-  final String bankIdentifierCode;
-  final String payeeIBAN;
-  final String bankName;
-
-  ManualPayTypeModel(
-      {this.payTo,
-      this.country,
-      this.bankIdentifierCode,
-      this.payeeIBAN,
-      this.bankName})
-      : super();
-
-  @override
-  PayTypeEntity toEntity() => ManualPayTypeEntity(
-      payTo, country, bankIdentifierCode, payeeIBAN, bankName);
-
-  static ManualPayTypeModel fromEntity(ManualPayTypeEntity entity) =>
-      ManualPayTypeModel(
-          payTo: entity.payTo,
-          country: entity.country,
-          bankIdentifierCode: entity.bankIdentifierCode,
-          payeeIBAN: entity.payeeIBAN,
-          bankName: entity.bankName);
-
-  static PayTypeEntity fromMap(Map snap) {
-    return ManualPayTypeEntity(
-      snap['payTo'],
-      snap['country'],
-      snap['bankIdentifierCode'],
-      snap['payeeIBAN'],
-      snap['bankName'],
-    );
-  }
-}
-
-class CreditCardPayTypeModel extends PayTypeModel {
-  CreditCardPayTypeModel() : super();
-
-  @override
-  PayTypeEntity toEntity() => CreditCardPayTypeEntity();
-
-  static CreditCardPayTypeModel fromEntity(CreditCardPayTypeEntity entity) =>
-      CreditCardPayTypeModel();
-
-  static PayTypeEntity fromMap(Map snap) {
-    return CreditCardPayTypeEntity();
-  }
-}
