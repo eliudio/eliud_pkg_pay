@@ -224,13 +224,15 @@ class ContextAmountPayModel extends PayTaskModel {
       paymentType: PayTypeModel.fromMap(snap['paymentType']));
 
   InitializedPaymentState getState(BuildContext context) {
-    var bloc = BlocProvider.of<PaymentBloc>(context);
-    if (bloc != null) {
-      var state = bloc.state;
-      if (state is InitializedPaymentState) {
-        return state;
+    try {
+      var bloc = BlocProvider.of<PaymentBloc>(context);
+      if (bloc != null) {
+        var state = bloc.state;
+        if (state is InitializedPaymentState) {
+          return state;
+        }
       }
-    }
+    } catch (_) {}
     return null;
   }
 
@@ -240,7 +242,7 @@ class ContextAmountPayModel extends PayTaskModel {
     if (state is InitializedPaymentState) {
       return state.orderNumber;
     } else {
-      return null;
+      return "?";
     }
   }
 
@@ -250,7 +252,7 @@ class ContextAmountPayModel extends PayTaskModel {
     if (state is InitializedPaymentState) {
       return state.amount;
     } else {
-      return null;
+      return 0;
     }
   }
 
@@ -260,7 +262,7 @@ class ContextAmountPayModel extends PayTaskModel {
     if (state is InitializedPaymentState) {
       return state.ccy;
     } else {
-      return null;
+      return "?";
     }
   }
 
