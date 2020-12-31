@@ -12,20 +12,20 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:eliud_core/core/access/bloc/access_event.dart';
 
-abstract class PaymentState extends Equatable {
+abstract class PayState extends Equatable {
 }
 
-class UninitializedPaymentState extends PaymentState {
+class UninitializedPayState extends PayState {
   @override
   List<Object> get props => [];
 }
 
-class InitializedPaymentState extends PaymentState {
+class InitializedPayState extends PayState {
   final String ccy;
   final double amount;
   final String orderNumber;
 
-  InitializedPaymentState(this.ccy, this.amount, this.orderNumber);
+  InitializedPayState(this.ccy, this.amount, this.orderNumber);
 
   @override
   List<Object> get props => [ccy, amount, orderNumber];

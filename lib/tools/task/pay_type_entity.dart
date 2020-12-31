@@ -29,12 +29,14 @@ class ManualPayTypeEntity extends PayTypeEntity {
 }
 
 class CreditCardPayTypeEntity extends PayTypeEntity {
-  CreditCardPayTypeEntity() : super();
+  bool requiresConfirmation;
+  CreditCardPayTypeEntity(this.requiresConfirmation) : super();
 
   @override
   Map<String, Object> toDocument() {
     return {
-      'paymentMethod': 'creditcard'
+      'paymentMethod': 'creditcard',
+      'requiresConfirmation': requiresConfirmation,
     };
   }
 }

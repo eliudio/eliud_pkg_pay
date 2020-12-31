@@ -2,8 +2,8 @@ import 'package:eliud_core/core/access/bloc/access_bloc.dart';
 import 'package:eliud_core/core/access/bloc/access_state.dart';
 import 'package:eliud_core/tools/random.dart';
 import 'package:eliud_pkg_pay/platform/payment_platform.dart';
-import 'package:eliud_pkg_pay/tools/bloc/payment_bloc.dart';
-import 'package:eliud_pkg_pay/tools/bloc/payment_state.dart';
+import 'package:eliud_pkg_pay/tools/bloc/pay_bloc.dart';
+import 'package:eliud_pkg_pay/tools/bloc/pay_state.dart';
 import 'package:eliud_pkg_pay/tools/task/pay_task_entity.dart';
 import 'package:eliud_core/tools/widgets/dialog_helper.dart';
 import 'package:eliud_pkg_pay/tools/task/pay_type_model.dart';
@@ -94,20 +94,28 @@ abstract class PayTaskModel extends TaskModel {
     var accessState = AccessBloc.getState(context);
     if (accessState is LoggedIn) {
       if (paymentType is CreditCardPayTypeModel) {
-        DialogStatefulWidgetHelper.openIt(
-            context,
-            YesNoDialog(
-              title: 'Payment',
-              message: 'Proceed with payment of ' +
-                  getAmount(context).toString() +
-                  ' ' +
-                  getCcy(context) +
-                  ' for ' +
-                  assignmentModel.workflow.name +
-                  '?',
-              yesFunction: () => _confirmedCreditCardPayment(context, assignmentModel, accessState),
-              noFunction: () => Navigator.pop(context)
-            ));
+        var casted = paymentType as CreditCardPayTypeModel;
+        if ((casted.requiresConfirmation != null) && (casted.requiresConfirmation)) {
+          DialogStatefulWidgetHelper.openIt(
+              context,
+              YesNoDialog(
+                  title: 'Payment',
+                  message: 'Proceed with payment of ' +
+                      getAmount(context).toString() +
+                      ' ' +
+                      getCcy(context) +
+                      ' for ' +
+                      assignmentModel.workflow.name +
+                      '?',
+                  yesFunction: () =>
+                      _confirmedCreditCardPayment(
+                          context, assignmentModel, accessState),
+                  noFunction: () => Navigator.pop(context)
+              ));
+        } else {
+          _creditCardPayment(
+              context, assignmentModel, accessState);
+        }
       } else if (paymentType is ManualPayTypeModel) {
         ManualPayTypeModel p = paymentType;
         DialogStatefulWidgetHelper.openIt(
@@ -129,6 +137,11 @@ abstract class PayTaskModel extends TaskModel {
 
   void _confirmedCreditCardPayment(BuildContext context, AssignmentModel assignmentModel, AppLoaded accessState) {
     Navigator.pop(context);
+    _creditCardPayment(
+        context, assignmentModel, accessState);
+  }
+
+  void _creditCardPayment(BuildContext context, AssignmentModel assignmentModel, AppLoaded accessState) {
     AbstractPaymentPlatform.platform.startPaymentProcess(
         context,
         (PaymentStatus status) => handleCreditCardPayment(context, assignmentModel, status),
@@ -223,12 +236,12 @@ class ContextAmountPayModel extends PayTaskModel {
       description: snap['description'],
       paymentType: PayTypeModel.fromMap(snap['paymentType']));
 
-  InitializedPaymentState getState(BuildContext context) {
+  InitializedPayState getState(BuildContext context) {
     try {
-      var bloc = BlocProvider.of<PaymentBloc>(context);
+      var bloc = BlocProvider.of<PayBloc>(context);
       if (bloc != null) {
         var state = bloc.state;
-        if (state is InitializedPaymentState) {
+        if (state is InitializedPayState) {
           return state;
         }
       }
@@ -239,7 +252,7 @@ class ContextAmountPayModel extends PayTaskModel {
   @override
   String getOrderNumber(BuildContext context) {
     var state = getState(context);
-    if (state is InitializedPaymentState) {
+    if (state is InitializedPayState) {
       return state.orderNumber;
     } else {
       return "?";
@@ -249,7 +262,7 @@ class ContextAmountPayModel extends PayTaskModel {
   @override
   double getAmount(BuildContext context) {
     var state = getState(context);
-    if (state is InitializedPaymentState) {
+    if (state is InitializedPayState) {
       return state.amount;
     } else {
       return 0;
@@ -259,7 +272,7 @@ class ContextAmountPayModel extends PayTaskModel {
   @override
   String getCcy(BuildContext context) {
     var state = getState(context);
-    if (state is InitializedPaymentState) {
+    if (state is InitializedPayState) {
       return state.ccy;
     } else {
       return "?";

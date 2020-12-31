@@ -79,15 +79,16 @@ class ManualPayTypeModel extends PayTypeModel {
 }
 
 class CreditCardPayTypeModel extends PayTypeModel {
-  CreditCardPayTypeModel() : super();
+  bool requiresConfirmation;
+  CreditCardPayTypeModel({this.requiresConfirmation}) : super();
 
   @override
-  PayTypeEntity toEntity() => CreditCardPayTypeEntity();
+  PayTypeEntity toEntity() => CreditCardPayTypeEntity(requiresConfirmation);
 
   static CreditCardPayTypeModel fromEntity(CreditCardPayTypeEntity entity) =>
-      CreditCardPayTypeModel();
+      CreditCardPayTypeModel(requiresConfirmation: entity.requiresConfirmation);
 
   static PayTypeEntity fromMap(Map snap) {
-    return CreditCardPayTypeEntity();
+    return CreditCardPayTypeEntity(snap['requiresConfirmation']);
   }
 }

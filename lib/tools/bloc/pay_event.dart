@@ -1,16 +1,16 @@
 import 'package:equatable/equatable.dart';
 
-class PaymentEvent extends Equatable {
+class PayEvent extends Equatable {
   @override
   List<Object> get props => [];
 }
 
-class InitPaymentEvent extends PaymentEvent {
+class InitPayEvent extends PayEvent {
   final String ccy;
   final double amount;
   final String orderNumber;
 
-  InitPaymentEvent(this.ccy, this.amount, this.orderNumber);
+  InitPayEvent(this.ccy, this.amount, this.orderNumber);
 
   @override
   List<Object> get props => [ccy, amount, orderNumber];
