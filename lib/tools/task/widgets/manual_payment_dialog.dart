@@ -15,6 +15,7 @@ class ManualPaymentDialog extends StatefulWidget {
   final String bankIdentifierCode;
   final String payeeIBAN;
   final String bankName;
+
   final PayedWithTheseDetails payedWithTheseDetails;
 
   ManualPaymentDialog(

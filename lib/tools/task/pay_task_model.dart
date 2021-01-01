@@ -19,14 +19,21 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 // ***** PayModel *****
 
 abstract class PayTaskModel extends TaskModel {
+  static String PAY_TASK_FIELD_PAYMENT_TYPE = 'payment-type';
+  static String PAY_TASK_FIELD_PAYMENT_REFERENCE = 'payment-reference';
+  static String PAY_TASK_FIELD_ERROR = 'payment-error';
+  static String PAY_TASK_FIELD_NAME = 'payment-name';
+
   final PayTypeModel paymentType;
 
   PayTaskModel({
     this.paymentType,
     String description,
-  }) : super(description: description);
+    bool executeInstantly,
+  }) : super(description: description, executeInstantly: executeInstantly);
 
-  void handleCreditCardPayment(BuildContext _context, AssignmentModel _assignmentModel, PaymentStatus status) {
+  void handleCreditCardPayment(BuildContext _context,
+      AssignmentModel _assignmentModel, PaymentStatus status) {
     if (status is PaymentSucceeded) {
       // now store in results status.reference;
       finishTask(
@@ -35,11 +42,11 @@ abstract class PayTaskModel extends TaskModel {
           ExecutionResults(ExecutionStatus.success, results: [
             AssignmentResultModel(
                 documentID: newRandomKey(),
-                key: 'payment-type',
+                key: PAY_TASK_FIELD_PAYMENT_TYPE,
                 value: 'Credit card'),
             AssignmentResultModel(
                 documentID: newRandomKey(),
-                key: 'payment-reference',
+                key: PAY_TASK_FIELD_PAYMENT_REFERENCE,
                 value: status.reference)
           ]));
     } else if (status is PaymentFailure) {
@@ -49,21 +56,26 @@ abstract class PayTaskModel extends TaskModel {
           ExecutionResults(ExecutionStatus.failure, results: [
             AssignmentResultModel(
                 documentID: newRandomKey(),
-                key: 'payment-type',
+                key: PAY_TASK_FIELD_PAYMENT_TYPE,
                 value: 'Credit card'),
             AssignmentResultModel(
                 documentID: newRandomKey(),
-                key: 'payment-reference',
+                key: PAY_TASK_FIELD_PAYMENT_REFERENCE,
                 value: status.reference),
             AssignmentResultModel(
                 documentID: newRandomKey(),
-                key: 'payment-error',
+                key: PAY_TASK_FIELD_ERROR,
                 value: status.error)
           ]));
     }
   }
 
-  void handleManualPayment(BuildContext _context, AssignmentModel _assignmentModel, String paymentReference, String paymentName, bool success) {
+  void handleManualPayment(
+      BuildContext _context,
+      AssignmentModel _assignmentModel,
+      String paymentReference,
+      String paymentName,
+      bool success) {
     if (success) {
       // now store in results status.reference;
       finishTask(
@@ -72,15 +84,15 @@ abstract class PayTaskModel extends TaskModel {
           ExecutionResults(ExecutionStatus.success, results: [
             AssignmentResultModel(
                 documentID: newRandomKey(),
-                key: 'payment-type',
+                key: PAY_TASK_FIELD_PAYMENT_TYPE,
                 value: 'Manual Payment'),
             AssignmentResultModel(
                 documentID: newRandomKey(),
-                key: 'payment-reference',
+                key: PAY_TASK_FIELD_PAYMENT_REFERENCE,
                 value: paymentReference),
             AssignmentResultModel(
                 documentID: newRandomKey(),
-                key: 'payment-name',
+                key: PAY_TASK_FIELD_NAME,
                 value: paymentName)
           ]));
     } else {
@@ -90,12 +102,14 @@ abstract class PayTaskModel extends TaskModel {
   }
 
   @override
-  Future<void> startTask(BuildContext context, AssignmentModel assignmentModel) {
+  Future<void> startTask(
+      BuildContext context, AssignmentModel assignmentModel) {
     var accessState = AccessBloc.getState(context);
     if (accessState is LoggedIn) {
       if (paymentType is CreditCardPayTypeModel) {
         var casted = paymentType as CreditCardPayTypeModel;
-        if ((casted.requiresConfirmation != null) && (casted.requiresConfirmation)) {
+        if ((casted.requiresConfirmation != null) &&
+            (casted.requiresConfirmation)) {
           DialogStatefulWidgetHelper.openIt(
               context,
               YesNoDialog(
@@ -107,14 +121,11 @@ abstract class PayTaskModel extends TaskModel {
                       ' for ' +
                       assignmentModel.workflow.name +
                       '?',
-                  yesFunction: () =>
-                      _confirmedCreditCardPayment(
-                          context, assignmentModel, accessState),
-                  noFunction: () => Navigator.pop(context)
-              ));
+                  yesFunction: () => _confirmedCreditCardPayment(
+                      context, assignmentModel, accessState),
+                  noFunction: () => Navigator.pop(context)));
         } else {
-          _creditCardPayment(
-              context, assignmentModel, accessState);
+          _creditCardPayment(context, assignmentModel, accessState);
         }
       } else if (paymentType is ManualPayTypeModel) {
         ManualPayTypeModel p = paymentType;
@@ -129,22 +140,27 @@ abstract class PayTaskModel extends TaskModel {
                 bankIdentifierCode: p.bankIdentifierCode,
                 payeeIBAN: p.payeeIBAN,
                 bankName: p.bankName,
-                payedWithTheseDetails: (paymentReference, String paymentName, bool success) => handleManualPayment(context, assignmentModel, paymentReference, paymentName, success)));
+                payedWithTheseDetails:
+                    (paymentReference, String paymentName, bool success) =>
+                        handleManualPayment(context, assignmentModel,
+                            paymentReference, paymentName, success)));
       }
     }
     return null;
   }
 
-  void _confirmedCreditCardPayment(BuildContext context, AssignmentModel assignmentModel, AppLoaded accessState) {
+  void _confirmedCreditCardPayment(BuildContext context,
+      AssignmentModel assignmentModel, AppLoaded accessState) {
     Navigator.pop(context);
-    _creditCardPayment(
-        context, assignmentModel, accessState);
+    _creditCardPayment(context, assignmentModel, accessState);
   }
 
-  void _creditCardPayment(BuildContext context, AssignmentModel assignmentModel, AppLoaded accessState) {
+  void _creditCardPayment(BuildContext context, AssignmentModel assignmentModel,
+      AppLoaded accessState) {
     AbstractPaymentPlatform.platform.startPaymentProcess(
         context,
-        (PaymentStatus status) => handleCreditCardPayment(context, assignmentModel, status),
+        (PaymentStatus status) =>
+            handleCreditCardPayment(context, assignmentModel, status),
         accessState.getMember() == null
             ? 'unknown'
             : accessState.getMember().name,
@@ -164,9 +180,14 @@ class FixedAmountPayModel extends PayTaskModel {
   final double amount;
 
   FixedAmountPayModel(
-      {String description, PayTypeModel paymentType, this.ccy, this.amount})
+      {String description,
+      bool executeInstantly,
+      PayTypeModel paymentType,
+      this.ccy,
+      this.amount})
       : super(
             description: description,
+            executeInstantly: executeInstantly,
             paymentType: paymentType);
 
   @override
@@ -182,6 +203,7 @@ class FixedAmountPayModel extends PayTaskModel {
   @override
   TaskEntity toEntity({String appId}) => FixedAmountPayEntity(
       description: description,
+      executeInstantly: executeInstantly,
       paymentType: paymentType.toEntity(),
       ccy: ccy,
       amount: amount);
@@ -190,10 +212,12 @@ class FixedAmountPayModel extends PayTaskModel {
       FixedAmountPayModel(
           paymentType: PayTypeModel.fromEntity(entity.paymentType),
           description: entity.description,
+          executeInstantly: entity.executeInstantly,
           ccy: entity.ccy,
           amount: entity.amount);
   static FixedAmountPayEntity fromMap(Map snap) => FixedAmountPayEntity(
       description: snap['description'],
+      executeInstantly: snap['executeInstantly'],
       paymentType: PayTypeModel.fromMap(snap['paymentType']),
       ccy: snap['ccy'],
       amount: double.tryParse(snap['amount'].toString()));
@@ -218,22 +242,28 @@ class FixedAmountPayModelMapper implements TaskModelMapper {
 
 // Retrieve payment amount from the PayBloc (also part of this package)
 class ContextAmountPayModel extends PayTaskModel {
-  ContextAmountPayModel({String description, PayTypeModel paymentType})
+  ContextAmountPayModel(
+      {String description, bool executeInstantly, PayTypeModel paymentType})
       : super(
             description: description,
+            executeInstantly: executeInstantly,
             paymentType: paymentType);
 
   @override
   TaskEntity toEntity({String appId}) => ContextAmountPayEntity(
-      description: description, paymentType: paymentType.toEntity());
+      description: description,
+      executeInstantly: executeInstantly,
+      paymentType: paymentType.toEntity());
 
   static ContextAmountPayModel fromEntity(ContextAmountPayEntity entity) =>
       ContextAmountPayModel(
           description: entity.description,
+          executeInstantly: entity.executeInstantly,
           paymentType: PayTypeModel.fromEntity(entity.paymentType));
 
   static ContextAmountPayEntity fromMap(Map snap) => ContextAmountPayEntity(
       description: snap['description'],
+      executeInstantly: snap['executeInstantly'],
       paymentType: PayTypeModel.fromMap(snap['paymentType']));
 
   InitializedPayState getState(BuildContext context) {
@@ -278,7 +308,6 @@ class ContextAmountPayModel extends PayTaskModel {
       return "?";
     }
   }
-
 }
 
 class ContextAmountPayModelMapper implements TaskModelMapper {
@@ -292,4 +321,3 @@ class ContextAmountPayModelMapper implements TaskModelMapper {
   @override
   TaskEntity fromMap(Map map) => ContextAmountPayModel.fromMap(map);
 }
-
