@@ -74,7 +74,7 @@ class ReviewAndShipTaskModel extends TaskModel {
     var comment = 'Your payment has been reviewed and approved and your order is being prepared for shipment. ';
     if (message != null) comment = comment + message;
     AbstractNotificationPlatform.platform
-        .sendMessage(context, assignmentModel.assigneeId, comment);
+        .sendMessage(context, assignmentModel.reporter.documentID, comment);
     Navigator.pop(context);
     finishTask(
         context,
