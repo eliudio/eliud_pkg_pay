@@ -48,7 +48,7 @@ abstract class PayTaskModel extends TaskModel {
                 documentID: newRandomKey(),
                 key: PAY_TASK_FIELD_PAYMENT_REFERENCE,
                 value: status.reference)
-          ]));
+          ]), null);
     } else if (status is PaymentFailure) {
       finishTask(
           _context,
@@ -66,7 +66,7 @@ abstract class PayTaskModel extends TaskModel {
                 documentID: newRandomKey(),
                 key: PAY_TASK_FIELD_ERROR,
                 value: status.error)
-          ]));
+          ]), null);
     }
   }
 
@@ -94,10 +94,10 @@ abstract class PayTaskModel extends TaskModel {
                 documentID: newRandomKey(),
                 key: PAY_TASK_FIELD_NAME,
                 value: paymentName)
-          ]));
+          ]), null);
     } else {
       finishTask(
-          _context, _assignmentModel, ExecutionResults(ExecutionStatus.delay));
+          _context, _assignmentModel, ExecutionResults(ExecutionStatus.delay), null);
     }
   }
 

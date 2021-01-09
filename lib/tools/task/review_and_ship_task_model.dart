@@ -50,10 +50,8 @@ class ReviewAndShipTaskModel extends TaskModel {
           message:
               'Review the payment and ship the products. If you like you can provide some feedback to the buyer below.',
           resultsPrevious: assignmentModel.resultsPrevious,
-          yesFunction: () => _reviewedOk(context, assignmentModel,
-              feedback),
-          noFunction: () => _reviewedNotOk(context, assignmentModel,
-              feedback),
+          yesFunction: () => _reviewedOk(context, assignmentModel, feedback),
+          noFunction: () => _reviewedNotOk(context, assignmentModel, feedback),
           extraFields: [
             DialogStateHelper().getListTile(
                 leading: Icon(Icons.payment),
@@ -71,10 +69,9 @@ class ReviewAndShipTaskModel extends TaskModel {
 
   void _reviewedOk(
       BuildContext context, AssignmentModel assignmentModel, String message) {
-    var comment = 'Your payment has been reviewed and approved and your order is being prepared for shipment. ';
-    if (message != null) comment = comment + message;
-    AbstractNotificationPlatform.platform
-        .sendMessage(context, assignmentModel.reporter.documentID, comment);
+    var comment =
+        'Payment reviewed and approved and order prepared for shipment.';
+    if (message != null) comment = comment + ' Feedback: ' + message;
     Navigator.pop(context);
     finishTask(
         context,
@@ -88,15 +85,14 @@ class ReviewAndShipTaskModel extends TaskModel {
               documentID: newRandomKey(),
               key: PAY_TASK_FIELD_SHIPMENT_COMMENTS,
               value: comment),
-        ]));
+        ]),
+        message);
   }
 
   void _reviewedNotOk(
       BuildContext context, AssignmentModel assignmentModel, String message) {
-    var comment = 'Your payment has been reviewed and not accepted.';
-    if (message != null) comment = comment + message;
-    AbstractNotificationPlatform.platform
-        .sendMessage(context, assignmentModel.assigneeId, comment);
+    var comment = 'Payment reviewed and rejected.';
+    if (message != null) comment = comment + ' Feedback: ' + message;
     Navigator.pop(context);
     finishTask(
         context,
@@ -110,7 +106,8 @@ class ReviewAndShipTaskModel extends TaskModel {
               documentID: newRandomKey(),
               key: PAY_TASK_FIELD_SHIPMENT_COMMENTS,
               value: comment),
-        ]));
+        ]),
+        message);
   }
 }
 
