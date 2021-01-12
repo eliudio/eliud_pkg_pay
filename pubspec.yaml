@@ -24,7 +24,7 @@ dependencies:
   eliud_pkg_notifications:
     path: ../eliud_pkg_notifications
 
-  stripe_payment: 1.0.7
+  stripe_payment: 1.0.9
   cloud_functions: 0.8.0
 
 dev_dependencies:
