@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:cloud_functions/cloud_functions.dart';
+import 'package:cloud_functions/cloud_functions.dart';
 import 'payment_platform.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -11,8 +12,7 @@ class MobilePaymentPlatform extends AbstractPaymentPlatform {
 
   MobilePaymentPlatform({this.requiresConfirmation});
 
-  final HttpsCallable INTENT = CloudFunctions.instance
-      .getHttpsCallable(functionName: 'createPaymentIntent');
+  final HttpsCallable INTENT = FirebaseFunctions.instance.httpsCallable('createPaymentIntent');
 
   @override
   void startPaymentProcess(BuildContext context, HandlePayment handlePayment, String name, String ccy, double amount) {
