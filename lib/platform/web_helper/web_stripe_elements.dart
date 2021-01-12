@@ -30,11 +30,15 @@ class _WebStripeElementsState extends State<WebStripeElements> {
 
   @override
   void initState() {
+    debugPrint("init state");
     super.initState();
 
     _iframeElement.height = '150';
     _iframeElement.width = '400';
 
+    debugPrint("Uri.base.host: " + Uri.base.host);
+    debugPrint("widget.name: " + widget.name);
+    debugPrint("stripe_ccy.name: " + widget.ccy);
     _iframeElement.src = 'https://' + Uri.base.host  + '?stripe_amount=' + widget.cents.toString() + '&stripe_ccy=' + widget.ccy + '&stripe_name=' + widget.name;
     _iframeElement.style.border = 'none';
 
@@ -55,6 +59,7 @@ class _WebStripeElementsState extends State<WebStripeElements> {
       Navigator.of(context).pop();
     };
 
+    debugPrint("register");
     // ignore: undefined_prefixed_name
     ui.platformViewRegistry.registerViewFactory(
       'iframeElement',
@@ -69,6 +74,7 @@ class _WebStripeElementsState extends State<WebStripeElements> {
 
   @override
   Widget build(BuildContext context) {
+    debugPrint("build");
     return  _iframeWidget;
  }
 
