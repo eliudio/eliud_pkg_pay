@@ -1,6 +1,7 @@
 import 'package:eliud_core/core/access/bloc/access_bloc.dart';
 import 'package:eliud_core/core/access/bloc/access_state.dart';
 import 'package:eliud_core/tools/random.dart';
+import 'package:eliud_core/tools/widgets/yes_no_dialog.dart';
 import 'package:eliud_pkg_pay/platform/payment_platform.dart';
 import 'package:eliud_pkg_pay/tools/bloc/pay_bloc.dart';
 import 'package:eliud_pkg_pay/tools/bloc/pay_state.dart';

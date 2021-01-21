@@ -1,6 +1,6 @@
 import 'package:eliud_core/tools/random.dart';
+import 'package:eliud_core/tools/widgets/dialog_field.dart';
 import 'package:eliud_core/tools/widgets/dialog_helper.dart';
-import 'package:eliud_pkg_notifications/platform/platform.dart';
 import 'package:eliud_pkg_pay/tools/task/review_and_ship_task_entity.dart';
 import 'package:eliud_pkg_workflow/model/assignment_model.dart';
 import 'package:eliud_pkg_workflow/model/assignment_result_model.dart';
