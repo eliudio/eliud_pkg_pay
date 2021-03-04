@@ -22,3 +22,5 @@ abstract class AbstractPaymentPlatform {
 
   void startPaymentProcess(BuildContext context, HandlePayment handlePayment, String name, String ccy, double amount);
 }
+
+// 03.g02.10
