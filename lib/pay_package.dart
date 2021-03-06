@@ -29,4 +29,7 @@ abstract class PayPackage extends Package {
     TaskModelRegistry.registry().addMapper(ContextAmountPayEntity.label, ContextAmountPayModelMapper());
     TaskModelRegistry.registry().addMapper(ReviewAndShipTaskEntity.label, ReviewAndShipTaskModelMapper());
   }
+
+  @override
+  List<MemberCollectionInfo> getMemberCollectionInfo() => null;
 }
