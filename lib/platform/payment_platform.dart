@@ -12,7 +12,7 @@ class PaymentSucceeded extends PaymentStatus {
 
 class PaymentFailure extends PaymentStatus {
   final String? error;
-  final String reference;
+  final String? reference;
 
   PaymentFailure(this.error, this.reference);
 }
