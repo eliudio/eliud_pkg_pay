@@ -8,15 +8,15 @@ import 'package:flutter/material.dart';
 import 'package:stripe_payment/stripe_payment.dart';
 
 class MobilePaymentPlatform extends AbstractPaymentPlatform {
-  final bool requiresConfirmation;
+  final bool? requiresConfirmation;
 
   MobilePaymentPlatform({this.requiresConfirmation});
 
   final HttpsCallable INTENT = FirebaseFunctions.instance.httpsCallable('createPaymentIntent');
 
   @override
-  void startPaymentProcess(BuildContext context, HandlePayment handlePayment, String name, String ccy, double amount) {
-    var cents = (amount * 100).toInt();
+  void startPaymentProcess(BuildContext? context, HandlePayment handlePayment, String? name, String? ccy, double? amount) {
+    var cents = (amount! * 100).toInt();
     StripePayment.setOptions(StripeOptions(
         publishableKey: 'pk_test_51GxyTUCM4yYbbMk8IvFWz65Lp5aCXN16iZcQsr0Z1VYQPlrwe7GhoJ4ZTdF571VYTzOrzHAvr0Q5LKdTCZ3naaYo00T4RFwif7',
         androidPayMode: 'test'));
@@ -35,8 +35,8 @@ class MobilePaymentPlatform extends AbstractPaymentPlatform {
     });
   }
 
-  void confirmDialog(BuildContext context, String clientSecret, PaymentMethod paymentMethod, HandlePayment handlePayment, String ccy, double amount) {
-    if ((requiresConfirmation != null) && (requiresConfirmation)) {
+  void confirmDialog(BuildContext? context, String? clientSecret, PaymentMethod paymentMethod, HandlePayment handlePayment, String? ccy, double amount) {
+    if ((requiresConfirmation != null) && requiresConfirmation!) {
       var confirm = AlertDialog(
         title: Text('Confirm Payement'),
         content: Container(
@@ -48,7 +48,7 @@ class MobilePaymentPlatform extends AbstractPaymentPlatform {
                 'Make Payment',
                 // style: TextStyle(fontSize: 25),
               ),
-              Text('Charge amount:' + amount.toString() + " " + ccy)
+              Text('Charge amount:' + amount.toString() + " " + ccy!)
             ],
           ),
         ),
@@ -56,7 +56,7 @@ class MobilePaymentPlatform extends AbstractPaymentPlatform {
           RaisedButton(
             child: Text('CANCEL'),
             onPressed: () {
-              Navigator.of(context).pop();
+              Navigator.of(context!).pop();
               final snackBar = SnackBar(content: Text('Payment Cancelled'),);
               Scaffold.of(context).showSnackBar(snackBar);
             },
@@ -64,7 +64,7 @@ class MobilePaymentPlatform extends AbstractPaymentPlatform {
           RaisedButton(
             child: Text('Confirm'),
             onPressed: () {
-              Navigator.of(context).pop();
+              Navigator.of(context!).pop();
               confirmPayment(clientSecret, paymentMethod,
                 handlePayment,); // function to confirm Payment
             },
@@ -72,7 +72,7 @@ class MobilePaymentPlatform extends AbstractPaymentPlatform {
         ],
       );
       showDialog(
-          context: context,
+          context: context!,
           barrierDismissible: false,
           builder: (BuildContext context) {
             return confirm;
@@ -83,7 +83,7 @@ class MobilePaymentPlatform extends AbstractPaymentPlatform {
     }
   }
 
-  void confirmPayment(String sec, PaymentMethod paymentMethod, HandlePayment handlePayment) {
+  void confirmPayment(String? sec, PaymentMethod paymentMethod, HandlePayment handlePayment) {
     StripePayment.confirmPaymentIntent(
       PaymentIntent(clientSecret: sec, paymentMethodId: paymentMethod.id),
     ).then((val) {

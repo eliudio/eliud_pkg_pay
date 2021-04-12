@@ -20,7 +20,7 @@ abstract class PayTypeModel {
 
   PayTypeEntity toEntity();
 
-  static PayTypeModel fromEntity(PayTypeEntity entity) {
+  static PayTypeModel? fromEntity(PayTypeEntity? entity) {
     if (entity is ManualPayTypeEntity) {
       return ManualPayTypeModel.fromEntity(entity);
     } else if (entity is CreditCardPayTypeEntity) {
@@ -29,7 +29,7 @@ abstract class PayTypeModel {
     return null;
   }
 
-  static PayTypeEntity fromMap(Map snap) {
+  static PayTypeEntity? fromMap(Map? snap) {
     if (snap == null) return null;
     if (snap['paymentMethod'] == 'manual') {
       return ManualPayTypeModel.fromMap(snap);
@@ -41,11 +41,11 @@ abstract class PayTypeModel {
 }
 
 class ManualPayTypeModel extends PayTypeModel {
-  final String payTo;
-  final String country;
-  final String bankIdentifierCode;
-  final String payeeIBAN;
-  final String bankName;
+  final String? payTo;
+  final String? country;
+  final String? bankIdentifierCode;
+  final String? payeeIBAN;
+  final String? bankName;
 
   ManualPayTypeModel(
       {this.payTo,
@@ -79,7 +79,7 @@ class ManualPayTypeModel extends PayTypeModel {
 }
 
 class CreditCardPayTypeModel extends PayTypeModel {
-  bool requiresConfirmation;
+  bool? requiresConfirmation;
   CreditCardPayTypeModel({this.requiresConfirmation}) : super();
 
   @override

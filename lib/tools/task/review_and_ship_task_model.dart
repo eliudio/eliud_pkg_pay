@@ -16,14 +16,14 @@ class ReviewAndShipTaskModel extends TaskModel {
   static String PAY_TASK_FIELD_REVIEW_RESULT_OK = 'reviewed and ok';
   static String PAY_TASK_FIELD_REVIEW_RESULT_NOK = 'reviewed and not ok';
 
-  final String extraParameter;
+  final String? extraParameter;
 
   ReviewAndShipTaskModel(
-      {this.extraParameter, String description, bool executeInstantly})
+      {this.extraParameter, String? description, bool? executeInstantly})
       : super(description: description, executeInstantly: executeInstantly);
 
   @override
-  TaskEntity toEntity({String appId}) {
+  TaskEntity toEntity({String? appId}) {
     return ReviewAndShipTaskEntity(
         description: description, executeInstantly: executeInstantly);
   }
@@ -37,21 +37,21 @@ class ReviewAndShipTaskModel extends TaskModel {
       description: snap['description'],
       executeInstantly: snap['executeInstantly']);
 
-  String feedback;
+  String? feedback;
 
   @override
   Future<void> startTask(
-      BuildContext context, AssignmentModel assignmentModel) {
+      BuildContext? context, AssignmentModel? assignmentModel) {
     feedback = null;
     DialogStatefulWidgetHelper.openIt(
-      context,
+      context!,
       YesNoIgnoreDialogWithAssignmentResults(
           title: 'Payment',
           message:
               'Review the payment and ship the products. If you like you can provide some feedback to the buyer below.',
-          resultsPrevious: assignmentModel.resultsPrevious,
-          yesFunction: () => _reviewedOk(context, assignmentModel, feedback),
-          noFunction: () => _reviewedNotOk(context, assignmentModel, feedback),
+          resultsPrevious: assignmentModel!.resultsPrevious,
+          yesFunction: () => _reviewedOk(context, assignmentModel, feedback!),
+          noFunction: () => _reviewedNotOk(context, assignmentModel, feedback!),
           extraFields: [
             DialogStateHelper().getListTile(
                 leading: Icon(Icons.payment),
@@ -64,7 +64,7 @@ class ReviewAndShipTaskModel extends TaskModel {
                 ))
           ]),
     );
-    return null;
+    return Future.value(null);
   }
 
   void _reviewedOk(
@@ -114,7 +114,7 @@ class ReviewAndShipTaskModel extends TaskModel {
 class ReviewAndShipTaskModelMapper implements TaskModelMapper {
   @override
   TaskModel fromEntity(TaskEntity entity) =>
-      ReviewAndShipTaskModel.fromEntity(entity);
+      ReviewAndShipTaskModel.fromEntity(entity as ReviewAndShipTaskEntity);
 
   @override
   TaskModel fromEntityPlus(TaskEntity entity) => fromEntity(entity);

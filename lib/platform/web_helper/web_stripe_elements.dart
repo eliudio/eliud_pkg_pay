@@ -10,19 +10,19 @@ import '../payment_platform.dart';
 import 'dart:html';
 
 class WebStripeElements extends StatefulWidget {
-  final HandlePayment handlePayment;
-  final String ccy;
-  final String name;
-  final int cents;
+  final HandlePayment? handlePayment;
+  final String? ccy;
+  final String? name;
+  final int? cents;
 
-  const WebStripeElements({Key key, this.ccy, this.name, this.cents, this.handlePayment}) : super(key: key);
+  const WebStripeElements({Key? key, this.ccy, this.name, this.cents, this.handlePayment}) : super(key: key);
 
   @override
   _WebStripeElementsState createState() => _WebStripeElementsState();
 }
 
 class _WebStripeElementsState extends State<WebStripeElements> {
-  Widget _iframeWidget;
+  late Widget _iframeWidget;
 
   final IFrameElement _iframeElement = IFrameElement();
 
@@ -37,23 +37,23 @@ class _WebStripeElementsState extends State<WebStripeElements> {
     _iframeElement.width = '400';
 
     debugPrint("Uri.base.host: " + Uri.base.host);
-    debugPrint("widget.name: " + widget.name);
-    debugPrint("stripe_ccy.name: " + widget.ccy);
-    _iframeElement.src = 'https://' + Uri.base.host  + '?stripe_amount=' + widget.cents.toString() + '&stripe_ccy=' + widget.ccy + '&stripe_name=' + widget.name;
+    debugPrint("widget.name: " + widget.name!);
+    debugPrint("stripe_ccy.name: " + widget.ccy!);
+    _iframeElement.src = 'https://' + Uri.base.host  + '?stripe_amount=' + widget.cents.toString() + '&stripe_ccy=' + widget.ccy! + '&stripe_name=' + widget.name!;
     _iframeElement.style.border = 'none';
 
     js.context['flutter_feedback'] = (msg) {
       Map<String, dynamic> feedback = jsonDecode(msg);
-      Map<String, dynamic> paymentIntent = feedback['paymentIntent'];
+      Map<String, dynamic>? paymentIntent = feedback['paymentIntent'];
       if (paymentIntent == null) {
-        widget.handlePayment(PaymentFailure('paymentIntent is null', msg));
+        widget.handlePayment!(PaymentFailure('paymentIntent is null', msg));
       } else {
-        String status = paymentIntent['status'];
+        String? status = paymentIntent['status'];
         if (status == 'succeeded') {
-          String id = paymentIntent['id'];
-          widget.handlePayment(PaymentSucceeded(id));
+          String? id = paymentIntent['id'];
+          widget.handlePayment!(PaymentSucceeded(id));
         } else {
-          widget.handlePayment(PaymentFailure(status, msg));
+          widget.handlePayment!(PaymentFailure(status, msg));
         }
       }
       Navigator.of(context).pop();

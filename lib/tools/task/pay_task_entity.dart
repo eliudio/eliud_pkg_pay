@@ -4,12 +4,12 @@ import 'package:eliud_pkg_workflow/tools/task/task_entity.dart';
 // ***** PayEntity *****
 
 abstract class PayTaskEntity extends TaskEntity {
-  final PayTypeEntity paymentType;
+  final PayTypeEntity? paymentType;
 
   const PayTaskEntity(
-      {String taskString,
-      String description,
-      bool executeInstantly,
+      {String? taskString,
+      String? description,
+      bool? executeInstantly,
       this.paymentType})
       : super(
             taskString: taskString,
@@ -20,13 +20,13 @@ abstract class PayTaskEntity extends TaskEntity {
 class FixedAmountPayEntity extends PayTaskEntity {
   static String label = 'PAY_TASK_FIXED_AMOUNT';
 
-  final String ccy;
-  final double amount;
+  final String? ccy;
+  final double? amount;
 
   FixedAmountPayEntity(
-      {String description,
-      bool executeInstantly,
-      PayTypeEntity paymentType,
+      {String? description,
+      bool? executeInstantly,
+      PayTypeEntity? paymentType,
       this.ccy,
       this.amount})
       : super(
@@ -36,12 +36,12 @@ class FixedAmountPayEntity extends PayTaskEntity {
             paymentType: paymentType);
 
   @override
-  Map<String, Object> toDocument() {
+  Map<String, Object?> toDocument() {
     return {
       'taskString': taskString,
       'description': description,
       'executeInstantly': executeInstantly,
-      'paymentType': paymentType.toDocument(),
+      'paymentType': paymentType!.toDocument(),
       'ccy': ccy,
       'amount': amount
     };
@@ -52,7 +52,7 @@ class ContextAmountPayEntity extends PayTaskEntity {
   static String label = 'PAY_TASK_CONTEXT_AMOUNT';
 
   ContextAmountPayEntity(
-      {String description, bool executeInstantly, PayTypeEntity paymentType})
+      {String? description, bool? executeInstantly, PayTypeEntity? paymentType})
       : super(
             description: description,
             executeInstantly: executeInstantly,
@@ -60,12 +60,12 @@ class ContextAmountPayEntity extends PayTaskEntity {
             paymentType: paymentType);
 
   @override
-  Map<String, Object> toDocument() {
+  Map<String, Object?> toDocument() {
     return {
       'taskString': taskString,
       'description': description,
       'executeInstantly': executeInstantly,
-      'paymentType': paymentType.toDocument(),
+      'paymentType': paymentType!.toDocument(),
     };
   }
 }

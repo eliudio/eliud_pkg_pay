@@ -14,22 +14,21 @@ import 'package:eliud_core/model/access_model.dart';
 
 abstract class PayPackage extends Package {
   @override
-  BlocProvider createMainBloc(NavigatorBloc navigatorBloc, AccessBloc accessBloc) {
-  }
+  BlocProvider? createMainBloc(NavigatorBloc navigatorBloc, AccessBloc accessBloc) => null;
 
   @override
-  Future<bool> isConditionOk(String packageCondition, AppModel app, MemberModel member, bool isOwner, bool isBlocked, PrivilegeLevel privilegeLevel) => null;
+  Future<bool?> isConditionOk(String packageCondition, AppModel app, MemberModel? member, bool isOwner, bool? isBlocked, PrivilegeLevel? privilegeLevel) => Future.value(null);
 
   @override
-  List<String> retrieveAllPackageConditions() => null;
+  List<String>? retrieveAllPackageConditions() => null;
 
   @override
   void init() {
-    TaskModelRegistry.registry().addMapper(FixedAmountPayEntity.label, FixedAmountPayModelMapper());
-    TaskModelRegistry.registry().addMapper(ContextAmountPayEntity.label, ContextAmountPayModelMapper());
-    TaskModelRegistry.registry().addMapper(ReviewAndShipTaskEntity.label, ReviewAndShipTaskModelMapper());
+    TaskModelRegistry.registry()!.addMapper(FixedAmountPayEntity.label, FixedAmountPayModelMapper());
+    TaskModelRegistry.registry()!.addMapper(ContextAmountPayEntity.label, ContextAmountPayModelMapper());
+    TaskModelRegistry.registry()!.addMapper(ReviewAndShipTaskEntity.label, ReviewAndShipTaskModelMapper());
   }
 
   @override
-  List<MemberCollectionInfo> getMemberCollectionInfo() => null;
+  List<MemberCollectionInfo>? getMemberCollectionInfo() => null;
 }

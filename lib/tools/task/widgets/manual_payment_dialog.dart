@@ -7,19 +7,19 @@ typedef PayedWithTheseDetails = Function(
     String paymentReference, String paymentName, bool success);
 
 class ManualPaymentDialog extends StatefulWidget {
-  final String purpose;
-  final double amount;
-  final String ccy;
-  final String payTo;
-  final String country;
-  final String bankIdentifierCode;
-  final String payeeIBAN;
-  final String bankName;
+  final String? purpose;
+  final double? amount;
+  final String? ccy;
+  final String? payTo;
+  final String? country;
+  final String? bankIdentifierCode;
+  final String? payeeIBAN;
+  final String? bankName;
 
-  final PayedWithTheseDetails payedWithTheseDetails;
+  final PayedWithTheseDetails? payedWithTheseDetails;
 
   ManualPaymentDialog(
-      {Key key,
+      {Key? key,
       this.purpose,
       this.amount,
       this.ccy,
@@ -68,26 +68,26 @@ class _ManualPaymentDialogState extends State<ManualPaymentDialog> {
         title: Text('Please pay ' +
             widget.amount.toString() +
             ' ' +
-            widget.ccy +
+            widget.ccy! +
             ' to the bank account with the below details'),
-        subtitle: Text('Purpose: ' + widget.purpose),
+        subtitle: Text('Purpose: ' + widget.purpose!),
       ),
       helper.getListTile(
         isThreeLine: true,
         leading: Icon(Icons.person),
-        title: Text('Pay to: ' + widget.payTo),
+        title: Text('Pay to: ' + widget.payTo!),
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Text('Payee IBAN: ' + widget.payeeIBAN),
-            Text('Country: ' + widget.country),
+            Text('Payee IBAN: ' + widget.payeeIBAN!),
+            Text('Country: ' + widget.country!),
           ],
         ),
       ),
       helper.getListTile(
         leading: Icon(Icons.attach_money),
-        title: Text('Bank name: ' + widget.bankName),
-        subtitle: Text('Bank Identifier Code: ' + widget.bankIdentifierCode),
+        title: Text('Bank name: ' + widget.bankName!),
+        subtitle: Text('Bank Identifier Code: ' + widget.bankIdentifierCode!),
       ),
       Text(
           'Ones paid, please provide payment name and reference below and submit. We will then review your payment.'),
@@ -114,7 +114,7 @@ class _ManualPaymentDialogState extends State<ManualPaymentDialog> {
 
   void pressed(bool success) {
     Navigator.pop(context);
-    widget.payedWithTheseDetails(
+    widget.payedWithTheseDetails!(
         paymentReferenceController.text, personController.text, success);
   }
 

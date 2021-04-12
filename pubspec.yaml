@@ -5,7 +5,7 @@ author:
 homepage:
 
 environment:
-  sdk: ">=2.7.0 <3.0.0"
+  sdk: '>=2.12.0 <3.0.0'
   #flutter: ">=1.17.0 <2.0.0"
 
 dependencies:
@@ -24,13 +24,16 @@ dependencies:
   eliud_pkg_notifications:
     path: ../eliud_pkg_notifications
 
-  stripe_payment: 1.0.9
-  cloud_functions: 1.0.0
+  # Until the guys provide the null safety stripe lib, I have copied and fixed myself...
+  stripe_payment:
+    path: ../flutter_stripe_payment
+
+  cloud_functions: ^1.0.3
 
 dev_dependencies:
-  build_runner: "1.11.5"
+  #build_runner: "1.11.5"
 
-  eliud_generator:
-    path: ../eliud_generator
+  #eliud_generator:
+  #  path: ../eliud_generator
 
 flutter:

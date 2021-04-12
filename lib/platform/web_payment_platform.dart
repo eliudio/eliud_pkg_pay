@@ -6,12 +6,12 @@ import 'package:flutter/material.dart';
 class WebPaymentPlatform extends AbstractPaymentPlatform {
   @override
   void startPaymentProcess(
-      BuildContext context, HandlePayment handlePayment, String name, String ccy, double amount) {
+      BuildContext? context, HandlePayment handlePayment, String? name, String? ccy, double? amount) {
     debugPrint("startPaymentProcess");
-    var cents = (amount * 100).toInt();
+    var cents = (amount! * 100).toInt();
     debugPrint("before showDialog");
     showDialog(
-        context: context,
+        context: context!,
         builder: (BuildContext context) {
           return AlertDialog(
             content: Container(
