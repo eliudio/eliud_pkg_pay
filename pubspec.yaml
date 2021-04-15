@@ -26,7 +26,7 @@ dependencies:
 
   # Until the guys provide the null safety stripe lib, I have copied and fixed myself...
   stripe_payment:
-    path: ../flutter_stripe_payment
+    path: ../../flutter_stripe_payment
 
   cloud_functions: ^1.0.3
 
