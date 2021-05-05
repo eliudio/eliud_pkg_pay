@@ -640,7 +640,7 @@ packages:
   stripe_payment:
     dependency: "direct main"
     description:
-      path: "../flutter_stripe_payment"
+      path: "../../flutter_stripe_payment"
       relative: true
     source: path
     version: "1.0.11"
@@ -664,7 +664,7 @@ packages:
       name: test_api
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.3.0"
+    version: "0.2.19"
   transparent_image:
     dependency: transitive
     description:
@@ -714,6 +714,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.0"
+  video_thumbnail:
+    dependency: transitive
+    description:
+      name: video_thumbnail
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.3.3"
   win32:
     dependency: transitive
     description:
