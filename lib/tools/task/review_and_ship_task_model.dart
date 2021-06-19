@@ -1,3 +1,4 @@
+import 'package:eliud_core/style/style_registry.dart';
 import 'package:eliud_core/tools/random.dart';
 import 'package:eliud_core/tools/widgets/dialog_field.dart';
 import 'package:eliud_core/tools/widgets/dialog_helper.dart';
@@ -53,7 +54,7 @@ class ReviewAndShipTaskModel extends TaskModel {
           yesFunction: () => _reviewedOk(context, assignmentModel, feedback!),
           noFunction: () => _reviewedNotOk(context, assignmentModel, feedback!),
           extraFields: [
-            DialogStateHelper().getListTile(
+            StyleRegistry.registry().styleWithContext(context).frontEndStyle().getListTile(context,
                 leading: Icon(Icons.payment),
                 title: DialogField(
                   valueChanged: (value) => feedback = value,

@@ -1,3 +1,5 @@
+import 'package:eliud_core/style/style_registry.dart';
+import 'package:eliud_core/tools/widgets/simple_dialog_api.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -36,7 +38,6 @@ class ManualPaymentDialog extends StatefulWidget {
 }
 
 class _ManualPaymentDialogState extends State<ManualPaymentDialog> {
-  final DialogStateHelper helper = DialogStateHelper();
   final TextEditingController paymentReferenceController =
       TextEditingController();
   final TextEditingController personController = TextEditingController();
@@ -54,61 +55,93 @@ class _ManualPaymentDialogState extends State<ManualPaymentDialog> {
 
   @override
   Widget build(BuildContext context) {
-    return helper.build(
+    return SimpleDialogApi.flexibleDialog(context,
         title: 'Manual Payment',
-        contents: getFieldsWidget(context),
-        buttons: helper.getYesNoButtons(
-            context, () => pressed(true), () => pressed(false)));
+        child: getFieldsWidget(context),
+        buttons: [
+          StyleRegistry.registry()
+              .styleWithContext(context)
+              .frontEndStyle()
+              .dialogButton(context,
+                  label: 'Cancel', onPressed: () => pressed(true)),
+          StyleRegistry.registry()
+              .styleWithContext(context)
+              .frontEndStyle()
+              .dialogButton(context,
+                  label: 'Continue', onPressed: () => pressed(false)),
+        ]);
   }
 
   Widget getFieldsWidget(BuildContext context) {
-    return helper.fieldsWidget(context, <Widget>[
-      helper.getListTile(
-        leading: Icon(Icons.payment),
-        title: Text('Please pay ' +
-            widget.amount.toString() +
-            ' ' +
-            widget.ccy! +
-            ' to the bank account with the below details'),
-        subtitle: Text('Purpose: ' + widget.purpose!),
-      ),
-      helper.getListTile(
-        isThreeLine: true,
-        leading: Icon(Icons.person),
-        title: Text('Pay to: ' + widget.payTo!),
-        subtitle: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Text('Payee IBAN: ' + widget.payeeIBAN!),
-            Text('Country: ' + widget.country!),
-          ],
-        ),
-      ),
-      helper.getListTile(
-        leading: Icon(Icons.attach_money),
-        title: Text('Bank name: ' + widget.bankName!),
-        subtitle: Text('Bank Identifier Code: ' + widget.bankIdentifierCode!),
-      ),
+    return StyleRegistry.registry()
+        .styleWithContext(context)
+        .frontEndStyle()
+        .topicContainer(context, children: <Widget>[
+      StyleRegistry.registry()
+          .styleWithContext(context)
+          .frontEndStyle()
+          .getListTile(
+            context,
+            leading: Icon(Icons.payment),
+            title: Text('Please pay ' +
+                widget.amount.toString() +
+                ' ' +
+                widget.ccy! +
+                ' to the bank account with the below details'),
+            subtitle: Text('Purpose: ' + widget.purpose!),
+          ),
+      StyleRegistry.registry()
+          .styleWithContext(context)
+          .frontEndStyle()
+          .getListTile(
+            context,
+            isThreeLine: true,
+            leading: Icon(Icons.person),
+            title: Text('Pay to: ' + widget.payTo!),
+            subtitle: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text('Payee IBAN: ' + widget.payeeIBAN!),
+                Text('Country: ' + widget.country!),
+              ],
+            ),
+          ),
+      StyleRegistry.registry()
+          .styleWithContext(context)
+          .frontEndStyle()
+          .getListTile(
+            context,
+            leading: Icon(Icons.attach_money),
+            title: Text('Bank name: ' + widget.bankName!),
+            subtitle:
+                Text('Bank Identifier Code: ' + widget.bankIdentifierCode!),
+          ),
       Text(
           'Ones paid, please provide payment name and reference below and submit. We will then review your payment.'),
-      helper.getListTile(
-          leading: Icon(Icons.payment),
-          title: TextFormField(
-            controller: paymentReferenceController,
-            decoration: const InputDecoration(
-              hintText: 'Enter your Payment Reference',
-              labelText: 'Payment Reference',
-            ),
-          )),
-      helper.getListTile(
-          leading: Icon(Icons.person),
-          title: TextFormField(
-            controller: personController,
-            decoration: const InputDecoration(
-              hintText: 'Enter the name of the payer',
-              labelText: "Payer's name",
-            ),
-          )),
+      StyleRegistry.registry()
+          .styleWithContext(context)
+          .frontEndStyle()
+          .getListTile(context,
+              leading: Icon(Icons.payment),
+              title: TextFormField(
+                controller: paymentReferenceController,
+                decoration: const InputDecoration(
+                  hintText: 'Enter your Payment Reference',
+                  labelText: 'Payment Reference',
+                ),
+              )),
+      StyleRegistry.registry()
+          .styleWithContext(context)
+          .frontEndStyle()
+          .getListTile(context,
+              leading: Icon(Icons.person),
+              title: TextFormField(
+                controller: personController,
+                decoration: const InputDecoration(
+                  hintText: 'Enter the name of the payer',
+                  labelText: "Payer's name",
+                ),
+              )),
     ]);
   }
 

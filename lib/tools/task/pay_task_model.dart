@@ -1,7 +1,7 @@
 import 'package:eliud_core/core/access/bloc/access_bloc.dart';
 import 'package:eliud_core/core/access/bloc/access_state.dart';
 import 'package:eliud_core/tools/random.dart';
-import 'package:eliud_core/tools/widgets/yes_no_dialog.dart';
+import 'package:eliud_core/tools/widgets/simple_dialog_api.dart';
 import 'package:eliud_pkg_pay/platform/payment_platform.dart';
 import 'package:eliud_pkg_pay/tools/bloc/pay_bloc.dart';
 import 'package:eliud_pkg_pay/tools/bloc/pay_state.dart';
@@ -49,7 +49,8 @@ abstract class PayTaskModel extends TaskModel {
                 documentID: newRandomKey(),
                 key: PAY_TASK_FIELD_PAYMENT_REFERENCE,
                 value: status.reference)
-          ]), null);
+          ]),
+          null);
     } else if (status is PaymentFailure) {
       finishTask(
           _context!,
@@ -67,7 +68,8 @@ abstract class PayTaskModel extends TaskModel {
                 documentID: newRandomKey(),
                 key: PAY_TASK_FIELD_ERROR,
                 value: status.error)
-          ]), null);
+          ]),
+          null);
     }
   }
 
@@ -95,10 +97,11 @@ abstract class PayTaskModel extends TaskModel {
                 documentID: newRandomKey(),
                 key: PAY_TASK_FIELD_NAME,
                 value: paymentName)
-          ]), null);
+          ]),
+          null);
     } else {
-      finishTask(
-          _context!, _assignmentModel!, ExecutionResults(ExecutionStatus.delay), null);
+      finishTask(_context!, _assignmentModel!,
+          ExecutionResults(ExecutionStatus.delay), null);
     }
   }
 
@@ -111,20 +114,21 @@ abstract class PayTaskModel extends TaskModel {
         var casted = paymentType as CreditCardPayTypeModel;
         if ((casted.requiresConfirmation != null) &&
             casted.requiresConfirmation!) {
-          DialogStatefulWidgetHelper.openIt(
-              context,
-              YesNoDialog(
-                  title: 'Payment',
-                  message: 'Proceed with payment of ' +
-                      getAmount(context).toString() +
-                      ' ' +
-                      getCcy(context)! +
-                      ' for ' +
-                      assignmentModel!.workflow!.name! +
-                      '?',
-                  yesFunction: () => _confirmedCreditCardPayment(
-                      context, assignmentModel, accessState),
-                  noFunction: () => Navigator.pop(context)));
+          SimpleDialogApi.openAckNackDialog(context,
+              title: 'Payment',
+              message: 'Proceed with payment of ' +
+                  getAmount(context).toString() +
+                  ' ' +
+                  getCcy(context)! +
+                  ' for ' +
+                  assignmentModel!.workflow!.name! +
+                  '?', onSelection: (value) {
+            Navigator.pop(context);
+            if (value == 0) {
+              _confirmedCreditCardPayment(
+                  context, assignmentModel, accessState);
+            }
+          });
         } else {
           _creditCardPayment(context, assignmentModel, accessState);
         }
@@ -152,12 +156,11 @@ abstract class PayTaskModel extends TaskModel {
 
   void _confirmedCreditCardPayment(BuildContext context,
       AssignmentModel? assignmentModel, AppLoaded accessState) {
-    Navigator.pop(context);
     _creditCardPayment(context, assignmentModel, accessState);
   }
 
-  void _creditCardPayment(BuildContext? context, AssignmentModel? assignmentModel,
-      AppLoaded accessState) {
+  void _creditCardPayment(BuildContext? context,
+      AssignmentModel? assignmentModel, AppLoaded accessState) {
     AbstractPaymentPlatform.platform.startPaymentProcess(
         context,
         (PaymentStatus status) =>
