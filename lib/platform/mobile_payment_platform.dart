@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:cloud_functions/cloud_functions.dart';
 import 'package:cloud_functions/cloud_functions.dart';
+import 'package:eliud_core/style/style_registry.dart';
 import 'payment_platform.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -15,7 +16,7 @@ class MobilePaymentPlatform extends AbstractPaymentPlatform {
   final HttpsCallable INTENT = FirebaseFunctions.instance.httpsCallable('createPaymentIntent');
 
   @override
-  void startPaymentProcess(BuildContext? context, HandlePayment handlePayment, String? name, String? ccy, double? amount) {
+  void startPaymentProcess(BuildContext context, HandlePayment handlePayment, String? name, String? ccy, double? amount) {
     var cents = (amount! * 100).toInt();
     StripePayment.setOptions(StripeOptions(
         publishableKey: 'pk_test_51GxyTUCM4yYbbMk8IvFWz65Lp5aCXN16iZcQsr0Z1VYQPlrwe7GhoJ4ZTdF571VYTzOrzHAvr0Q5LKdTCZ3naaYo00T4RFwif7',
@@ -35,10 +36,10 @@ class MobilePaymentPlatform extends AbstractPaymentPlatform {
     });
   }
 
-  void confirmDialog(BuildContext? context, String? clientSecret, PaymentMethod paymentMethod, HandlePayment handlePayment, String? ccy, double amount) {
+  void confirmDialog(BuildContext context, String? clientSecret, PaymentMethod paymentMethod, HandlePayment handlePayment, String? ccy, double amount) {
     if ((requiresConfirmation != null) && requiresConfirmation!) {
       var confirm = AlertDialog(
-        title: Text('Confirm Payement'),
+        title: Text('Confirm Payment'),
         content: Container(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -53,18 +54,16 @@ class MobilePaymentPlatform extends AbstractPaymentPlatform {
           ),
         ),
         actions: <Widget>[
-          RaisedButton(
-            child: Text('CANCEL'),
+          StyleRegistry.registry().styleWithContext(context).frontEndStyle().buttonStyle().button(context, label: 'Cancel',
             onPressed: () {
-              Navigator.of(context!).pop();
+              Navigator.of(context).pop();
               final snackBar = SnackBar(content: Text('Payment Cancelled'),);
               Scaffold.of(context).showSnackBar(snackBar);
             },
           ),
-          RaisedButton(
-            child: Text('Confirm'),
+          StyleRegistry.registry().styleWithContext(context).frontEndStyle().buttonStyle().button(context, label: 'Confirm',
             onPressed: () {
-              Navigator.of(context!).pop();
+              Navigator.of(context).pop();
               confirmPayment(clientSecret, paymentMethod,
                 handlePayment,); // function to confirm Payment
             },
@@ -72,7 +71,7 @@ class MobilePaymentPlatform extends AbstractPaymentPlatform {
         ],
       );
       showDialog(
-          context: context!,
+          context: context,
           barrierDismissible: false,
           builder: (BuildContext context) {
             return confirm;

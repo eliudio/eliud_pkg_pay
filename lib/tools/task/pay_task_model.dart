@@ -132,7 +132,7 @@ abstract class PayTaskModel extends TaskModel {
           _creditCardPayment(context, assignmentModel, accessState);
         }
       } else if (paymentType is ManualPayTypeModel) {
-        ManualPayTypeModel p = paymentType as ManualPayTypeModel;
+        var p = paymentType as ManualPayTypeModel;
         StyleRegistry.registry().styleWithContext(context).frontEndStyle().dialogStyle().openWidgetDialog(
             context,
             child: ManualPaymentDialog(
@@ -158,7 +158,7 @@ abstract class PayTaskModel extends TaskModel {
     _creditCardPayment(context, assignmentModel, accessState);
   }
 
-  void _creditCardPayment(BuildContext? context,
+  void _creditCardPayment(BuildContext context,
       AssignmentModel? assignmentModel, AppLoaded accessState) {
     AbstractPaymentPlatform.platform.startPaymentProcess(
         context,
@@ -171,8 +171,8 @@ abstract class PayTaskModel extends TaskModel {
         getAmount(context));
   }
 
-  String? getCcy(BuildContext? context);
-  double? getAmount(BuildContext? context);
+  String? getCcy(BuildContext context);
+  double? getAmount(BuildContext context);
   String? getOrderNumber(BuildContext context);
 }
 
@@ -272,11 +272,9 @@ class ContextAmountPayModel extends PayTaskModel {
   InitializedPayState? getState(BuildContext context) {
     try {
       var bloc = BlocProvider.of<PayBloc>(context);
-      if (bloc != null) {
-        PayState state = bloc.state;
-        if (state is InitializedPayState) {
-          return state;
-        }
+      var state = bloc.state;
+      if (state is InitializedPayState) {
+        return state;
       }
     } catch (_) {}
     return null;
@@ -288,7 +286,7 @@ class ContextAmountPayModel extends PayTaskModel {
     if (state is InitializedPayState) {
       return state.orderNumber;
     } else {
-      return "?";
+      return '?';
     }
   }
 
@@ -308,7 +306,7 @@ class ContextAmountPayModel extends PayTaskModel {
     if (state is InitializedPayState) {
       return state.ccy;
     } else {
-      return "?";
+      return '?';
     }
   }
 }
