@@ -113,7 +113,7 @@ abstract class PayTaskModel extends TaskModel {
         var casted = paymentType as CreditCardPayTypeModel;
         if ((casted.requiresConfirmation != null) &&
             casted.requiresConfirmation!) {
-          StyleRegistry.registry().styleWithContext(context).frontEndStyle().openAckNackDialog(context,
+          StyleRegistry.registry().styleWithContext(context).frontEndStyle().dialogStyle().openAckNackDialog(context,
               title: 'Payment',
               message: 'Proceed with payment of ' +
                   getAmount(context).toString() +
@@ -133,7 +133,7 @@ abstract class PayTaskModel extends TaskModel {
         }
       } else if (paymentType is ManualPayTypeModel) {
         ManualPayTypeModel p = paymentType as ManualPayTypeModel;
-        StyleRegistry.registry().styleWithContext(context).frontEndStyle().openWidgetDialog(
+        StyleRegistry.registry().styleWithContext(context).frontEndStyle().dialogStyle().openWidgetDialog(
             context,
             child: ManualPaymentDialog(
                 purpose: assignmentModel!.task!.description,

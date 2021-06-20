@@ -52,18 +52,18 @@ class _ManualPaymentDialogState extends State<ManualPaymentDialog> {
 
   @override
   Widget build(BuildContext context) {
-    return StyleRegistry.registry().styleWithContext(context).frontEndStyle().flexibleDialog(context,
+    return StyleRegistry.registry().styleWithContext(context).frontEndStyle().dialogWidgetStyle().flexibleDialog(context,
         title: 'Manual Payment',
         child: getFieldsWidget(context),
         buttons: [
           StyleRegistry.registry()
               .styleWithContext(context)
-              .frontEndStyle()
+              .frontEndStyle().buttonStyle()
               .dialogButton(context,
                   label: 'Cancel', onPressed: () => pressed(true)),
           StyleRegistry.registry()
               .styleWithContext(context)
-              .frontEndStyle()
+              .frontEndStyle().buttonStyle()
               .dialogButton(context,
                   label: 'Continue', onPressed: () => pressed(false)),
         ]);
@@ -72,11 +72,11 @@ class _ManualPaymentDialogState extends State<ManualPaymentDialog> {
   Widget getFieldsWidget(BuildContext context) {
     return StyleRegistry.registry()
         .styleWithContext(context)
-        .frontEndStyle()
+        .frontEndStyle().containerStyle()
         .topicContainer(context, children: <Widget>[
       StyleRegistry.registry()
           .styleWithContext(context)
-          .frontEndStyle()
+          .frontEndStyle().listTileStyle()
           .getListTile(
             context,
             leading: Icon(Icons.payment),
@@ -89,7 +89,7 @@ class _ManualPaymentDialogState extends State<ManualPaymentDialog> {
           ),
       StyleRegistry.registry()
           .styleWithContext(context)
-          .frontEndStyle()
+          .frontEndStyle().listTileStyle()
           .getListTile(
             context,
             isThreeLine: true,
@@ -105,7 +105,7 @@ class _ManualPaymentDialogState extends State<ManualPaymentDialog> {
           ),
       StyleRegistry.registry()
           .styleWithContext(context)
-          .frontEndStyle()
+          .frontEndStyle().listTileStyle()
           .getListTile(
             context,
             leading: Icon(Icons.attach_money),
@@ -117,7 +117,7 @@ class _ManualPaymentDialogState extends State<ManualPaymentDialog> {
           'Ones paid, please provide payment name and reference below and submit. We will then review your payment.'),
       StyleRegistry.registry()
           .styleWithContext(context)
-          .frontEndStyle()
+          .frontEndStyle().listTileStyle()
           .getListTile(context,
               leading: Icon(Icons.payment),
               title: TextFormField(
@@ -129,7 +129,7 @@ class _ManualPaymentDialogState extends State<ManualPaymentDialog> {
               )),
       StyleRegistry.registry()
           .styleWithContext(context)
-          .frontEndStyle()
+          .frontEndStyle().listTileStyle()
           .getListTile(context,
               leading: Icon(Icons.person),
               title: TextFormField(

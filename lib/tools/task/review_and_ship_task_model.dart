@@ -42,7 +42,7 @@ class ReviewAndShipTaskModel extends TaskModel {
   Future<void> startTask(
       BuildContext context, AssignmentModel? assignmentModel) {
     feedback = null;
-    StyleRegistry.registry().styleWithContext(context).frontEndStyle().openWidgetDialog(
+    StyleRegistry.registry().styleWithContext(context).frontEndStyle().dialogStyle().openWidgetDialog(
       context,
       child: YesNoIgnoreDialogWithAssignmentResults(
           title: 'Payment',
@@ -52,9 +52,9 @@ class ReviewAndShipTaskModel extends TaskModel {
           yesFunction: () => _reviewedOk(context, assignmentModel, feedback!),
           noFunction: () => _reviewedNotOk(context, assignmentModel, feedback!),
           extraFields: [
-            StyleRegistry.registry().styleWithContext(context).frontEndStyle().getListTile(context,
+            StyleRegistry.registry().styleWithContext(context).frontEndStyle().listTileStyle().getListTile(context,
                 leading: Icon(Icons.payment),
-                title: StyleRegistry.registry().styleWithContext(context).frontEndStyle().dialogField(context,
+                title: StyleRegistry.registry().styleWithContext(context).frontEndStyle().dialogFieldStyle().dialogField(context,
                   valueChanged: (value) => feedback = value,
                   decoration: const InputDecoration(
                     hintText: 'Feedback to the buyer',
