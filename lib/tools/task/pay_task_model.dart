@@ -1,12 +1,11 @@
 import 'package:eliud_core/core/access/bloc/access_bloc.dart';
 import 'package:eliud_core/core/access/bloc/access_state.dart';
+import 'package:eliud_core/style/style_registry.dart';
 import 'package:eliud_core/tools/random.dart';
-import 'package:eliud_core/tools/widgets/simple_dialog_api.dart';
 import 'package:eliud_pkg_pay/platform/payment_platform.dart';
 import 'package:eliud_pkg_pay/tools/bloc/pay_bloc.dart';
 import 'package:eliud_pkg_pay/tools/bloc/pay_state.dart';
 import 'package:eliud_pkg_pay/tools/task/pay_task_entity.dart';
-import 'package:eliud_core/tools/widgets/dialog_helper.dart';
 import 'package:eliud_pkg_pay/tools/task/pay_type_model.dart';
 import 'package:eliud_pkg_pay/tools/task/widgets/manual_payment_dialog.dart';
 import 'package:eliud_pkg_workflow/model/assignment_model.dart';
@@ -107,14 +106,14 @@ abstract class PayTaskModel extends TaskModel {
 
   @override
   Future<void> startTask(
-      BuildContext? context, AssignmentModel? assignmentModel) {
-    var accessState = AccessBloc.getState(context!);
+      BuildContext context, AssignmentModel? assignmentModel) {
+    var accessState = AccessBloc.getState(context);
     if (accessState is LoggedIn) {
       if (paymentType is CreditCardPayTypeModel) {
         var casted = paymentType as CreditCardPayTypeModel;
         if ((casted.requiresConfirmation != null) &&
             casted.requiresConfirmation!) {
-          SimpleDialogApi.openAckNackDialog(context,
+          StyleRegistry.registry().styleWithContext(context).frontEndStyle().openAckNackDialog(context,
               title: 'Payment',
               message: 'Proceed with payment of ' +
                   getAmount(context).toString() +
@@ -134,9 +133,9 @@ abstract class PayTaskModel extends TaskModel {
         }
       } else if (paymentType is ManualPayTypeModel) {
         ManualPayTypeModel p = paymentType as ManualPayTypeModel;
-        DialogStatefulWidgetHelper.openIt(
+        StyleRegistry.registry().styleWithContext(context).frontEndStyle().openWidgetDialog(
             context,
-            ManualPaymentDialog(
+            child: ManualPaymentDialog(
                 purpose: assignmentModel!.task!.description,
                 amount: getAmount(context),
                 ccy: getCcy(context),

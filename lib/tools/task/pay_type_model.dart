@@ -1,17 +1,4 @@
-import 'package:eliud_core/core/access/bloc/access_bloc.dart';
-import 'package:eliud_core/core/access/bloc/access_state.dart';
-import 'package:eliud_core/tools/random.dart';
-import 'package:eliud_pkg_pay/platform/payment_platform.dart';
-import 'package:eliud_pkg_pay/tools/task/pay_task_entity.dart';
-import 'package:eliud_core/tools/widgets/dialog_helper.dart';
 import 'package:eliud_pkg_pay/tools/task/pay_type_entity.dart';
-import 'package:eliud_pkg_pay/tools/task/widgets/manual_payment_dialog.dart';
-import 'package:eliud_pkg_workflow/model/assignment_model.dart';
-import 'package:eliud_pkg_workflow/model/assignment_result_model.dart';
-import 'package:eliud_pkg_workflow/tools/task/task_entity.dart';
-import 'package:eliud_pkg_workflow/tools/task/task_model.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 
 // ***** PayTypeModel *****
 

@@ -1,7 +1,5 @@
 import 'package:eliud_core/style/style_registry.dart';
 import 'package:eliud_core/tools/random.dart';
-import 'package:eliud_core/tools/widgets/dialog_field.dart';
-import 'package:eliud_core/tools/widgets/dialog_helper.dart';
 import 'package:eliud_pkg_pay/tools/task/review_and_ship_task_entity.dart';
 import 'package:eliud_pkg_workflow/model/assignment_model.dart';
 import 'package:eliud_pkg_workflow/model/assignment_result_model.dart';
@@ -42,11 +40,11 @@ class ReviewAndShipTaskModel extends TaskModel {
 
   @override
   Future<void> startTask(
-      BuildContext? context, AssignmentModel? assignmentModel) {
+      BuildContext context, AssignmentModel? assignmentModel) {
     feedback = null;
-    DialogStatefulWidgetHelper.openIt(
-      context!,
-      YesNoIgnoreDialogWithAssignmentResults(
+    StyleRegistry.registry().styleWithContext(context).frontEndStyle().openWidgetDialog(
+      context,
+      child: YesNoIgnoreDialogWithAssignmentResults(
           title: 'Payment',
           message:
               'Review the payment and ship the products. If you like you can provide some feedback to the buyer below.',
@@ -56,7 +54,7 @@ class ReviewAndShipTaskModel extends TaskModel {
           extraFields: [
             StyleRegistry.registry().styleWithContext(context).frontEndStyle().getListTile(context,
                 leading: Icon(Icons.payment),
-                title: DialogField(
+                title: StyleRegistry.registry().styleWithContext(context).frontEndStyle().dialogField(context,
                   valueChanged: (value) => feedback = value,
                   decoration: const InputDecoration(
                     hintText: 'Feedback to the buyer',

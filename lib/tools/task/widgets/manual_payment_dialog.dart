@@ -1,9 +1,6 @@
 import 'package:eliud_core/style/style_registry.dart';
-import 'package:eliud_core/tools/widgets/simple_dialog_api.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
-import 'package:eliud_core/tools/widgets/dialog_helper.dart';
 
 typedef PayedWithTheseDetails = Function(
     String paymentReference, String paymentName, bool success);
@@ -55,7 +52,7 @@ class _ManualPaymentDialogState extends State<ManualPaymentDialog> {
 
   @override
   Widget build(BuildContext context) {
-    return SimpleDialogApi.flexibleDialog(context,
+    return StyleRegistry.registry().styleWithContext(context).frontEndStyle().flexibleDialog(context,
         title: 'Manual Payment',
         child: getFieldsWidget(context),
         buttons: [
