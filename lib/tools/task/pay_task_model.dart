@@ -122,7 +122,6 @@ abstract class PayTaskModel extends TaskModel {
                   ' for ' +
                   assignmentModel!.workflow!.name! +
                   '?', onSelection: (value) {
-            Navigator.pop(context);
             if (value == 0) {
               _confirmedCreditCardPayment(
                   context, assignmentModel, accessState);

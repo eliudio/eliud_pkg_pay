@@ -16,7 +16,7 @@ class MobilePaymentPlatform extends AbstractPaymentPlatform {
   final HttpsCallable INTENT = FirebaseFunctions.instance.httpsCallable('createPaymentIntent');
 
   @override
-  void startPaymentProcess(BuildContext context, HandlePayment handlePayment, String? name, String? ccy, double? amount) {
+  void startPaymentProcess(BuildContext theContext, HandlePayment handlePayment, String? name, String? ccy, double? amount) {
     var cents = (amount! * 100).toInt();
     StripePayment.setOptions(StripeOptions(
         publishableKey: 'pk_test_51GxyTUCM4yYbbMk8IvFWz65Lp5aCXN16iZcQsr0Z1VYQPlrwe7GhoJ4ZTdF571VYTzOrzHAvr0Q5LKdTCZ3naaYo00T4RFwif7',
@@ -31,7 +31,7 @@ class MobilePaymentPlatform extends AbstractPaymentPlatform {
         .then((paymentMethod) {
       var amount = cents.toDouble();
       INTENT.call(<String, dynamic>{'amount': amount,'currency':ccy}).then((response) {
-        confirmDialog(context, response.data['client_secret'], paymentMethod, handlePayment, ccy, amount); //function for confirmation for payment
+        confirmDialog(theContext, response.data['client_secret'], paymentMethod, handlePayment, ccy, amount); //function for confirmation for payment
       });
     });
   }
