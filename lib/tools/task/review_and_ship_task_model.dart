@@ -44,7 +44,7 @@ class ReviewAndShipTaskModel extends TaskModel {
     feedback = null;
     StyleRegistry.registry().styleWithContext(context).frontEndStyle().dialogStyle().openWidgetDialog(
       context,
-      child: YesNoIgnoreDialogWithAssignmentResults(
+      child: YesNoIgnoreDialogWithAssignmentResults.get(context,
           title: 'Payment',
           message:
               'Review the payment and ship the products. If you like you can provide some feedback to the buyer below.',
