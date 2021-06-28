@@ -9,4 +9,15 @@ class PayMobilePackage extends PayPackage {
     AbstractPaymentPlatform.platform = MobilePaymentPlatform();
     super.init();
   }
+
+
+  @override
+  List<Object?> get props => [
+  ];
+
+  @override
+  bool operator == (Object other) =>
+      identical(this, other) ||
+          other is PayMobilePackage &&
+              runtimeType == other.runtimeType;
 }

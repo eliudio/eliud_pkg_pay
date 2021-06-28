@@ -8,4 +8,14 @@ class PayWebPackage extends PayPackage {
     AbstractPaymentPlatform.platform = WebPaymentPlatform();
     super.init();
   }
+
+  @override
+  List<Object?> get props => [
+  ];
+
+  @override
+  bool operator == (Object other) =>
+      identical(this, other) ||
+          other is PayWebPackage &&
+              runtimeType == other.runtimeType;
 }
