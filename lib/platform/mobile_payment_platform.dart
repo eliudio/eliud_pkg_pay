@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:cloud_functions/cloud_functions.dart';
-import 'package:cloud_functions/cloud_functions.dart';
 import 'package:eliud_core/style/style_registry.dart';
 import 'payment_platform.dart';
 import 'package:flutter/cupertino.dart';
