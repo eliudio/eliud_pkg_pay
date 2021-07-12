@@ -24,9 +24,7 @@ dependencies:
   eliud_pkg_notifications:
     path: ../eliud_pkg_notifications
 
-  # Until the guys provide the null safety stripe lib, I have copied and fixed myself...
-  stripe_payment:
-    path: ../../flutter_stripe_payment
+  stripe_payment: 1.1.4
 
   cloud_functions: ^1.0.3
 
