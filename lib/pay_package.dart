@@ -4,6 +4,7 @@ import 'package:eliud_core/eliud.dart';
 import 'package:eliud_core/model/app_model.dart';
 import 'package:eliud_core/model/member_model.dart';
 import 'package:eliud_core/package/package.dart';
+import 'package:eliud_pkg_notifications/model/abstract_repository_singleton.dart';
 import 'package:eliud_pkg_pay/tools/task/pay_task_entity.dart';
 import 'package:eliud_pkg_pay/tools/task/pay_task_model.dart';
 import 'package:eliud_pkg_pay/tools/task/review_and_ship_task_entity.dart';
@@ -30,5 +31,5 @@ abstract class PayPackage extends Package {
   }
 
   @override
-  List<MemberCollectionInfo>? getMemberCollectionInfo() => null;
+  List<MemberCollectionInfo> getMemberCollectionInfo() => AbstractRepositorySingleton.collections;
 }
