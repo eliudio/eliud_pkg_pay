@@ -26,7 +26,7 @@ dependencies:
 
   stripe_payment: 1.1.4
 
-  cloud_functions: ^1.0.3
+  cloud_functions: 3.0.3
 
 dev_dependencies:
   #build_runner: "1.11.5"
