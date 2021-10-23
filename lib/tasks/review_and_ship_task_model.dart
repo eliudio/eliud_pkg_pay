@@ -1,8 +1,9 @@
 import 'package:eliud_core/style/style_registry.dart';
 import 'package:eliud_core/tools/random.dart';
-import 'package:eliud_pkg_pay/tools/task/review_and_ship_task_entity.dart';
+import 'package:eliud_pkg_pay/tasks/review_and_ship_task_entity.dart';
 import 'package:eliud_pkg_workflow/model/assignment_model.dart';
 import 'package:eliud_pkg_workflow/model/assignment_result_model.dart';
+import 'package:eliud_pkg_workflow/tools/task/execution_results.dart';
 import 'package:eliud_pkg_workflow/tools/task/task_entity.dart';
 import 'package:eliud_pkg_workflow/tools/task/task_model.dart';
 import 'package:eliud_pkg_workflow/tools/widgets/workflow_dialog_helper.dart';
@@ -10,16 +11,17 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class ReviewAndShipTaskModel extends TaskModel {
+  static String label = 'REVIEW_AND_SHIP_TASK';
+  static String definition = 'Review and ship';
+
   static String PAY_TASK_FIELD_SHIPMENT_COMMENTS = 'shipment-comments';
   static String PAY_TASK_FIELD_REVIEW_RESULTS = 'review-result';
   static String PAY_TASK_FIELD_REVIEW_RESULT_OK = 'reviewed and ok';
   static String PAY_TASK_FIELD_REVIEW_RESULT_NOK = 'reviewed and not ok';
 
-  final String? extraParameter;
-
   ReviewAndShipTaskModel(
-      {this.extraParameter, String? description, bool? executeInstantly})
-      : super(description: description, executeInstantly: executeInstantly);
+      {required String identifier, required String description, required bool executeInstantly})
+      : super(identifier: identifier, description: description, executeInstantly: executeInstantly);
 
   @override
   TaskEntity toEntity({String? appId}) {
@@ -29,6 +31,7 @@ class ReviewAndShipTaskModel extends TaskModel {
 
   static ReviewAndShipTaskModel fromEntity(ReviewAndShipTaskEntity entity) =>
       ReviewAndShipTaskModel(
+          identifier: entity.identifier,
           description: entity.description,
           executeInstantly: entity.executeInstantly);
 
@@ -108,16 +111,4 @@ class ReviewAndShipTaskModel extends TaskModel {
         ]),
         message);
   }
-}
-
-class ReviewAndShipTaskModelMapper implements TaskModelMapper {
-  @override
-  TaskModel fromEntity(TaskEntity entity) =>
-      ReviewAndShipTaskModel.fromEntity(entity as ReviewAndShipTaskEntity);
-
-  @override
-  TaskModel fromEntityPlus(TaskEntity entity) => fromEntity(entity);
-
-  @override
-  TaskEntity fromMap(Map map) => ReviewAndShipTaskModel.fromMap(map);
 }

@@ -3,18 +3,17 @@ import 'package:eliud_core/core/access/bloc/access_state.dart';
 import 'package:eliud_core/style/style_registry.dart';
 import 'package:eliud_core/tools/random.dart';
 import 'package:eliud_pkg_pay/platform/payment_platform.dart';
-import 'package:eliud_pkg_pay/tools/bloc/pay_bloc.dart';
-import 'package:eliud_pkg_pay/tools/bloc/pay_state.dart';
-import 'package:eliud_pkg_pay/tools/task/pay_task_entity.dart';
-import 'package:eliud_pkg_pay/tools/task/pay_type_model.dart';
-import 'package:eliud_pkg_pay/tools/task/widgets/manual_payment_dialog.dart';
+import 'package:eliud_pkg_pay/tasks/pay_type_model.dart';
+import 'package:eliud_pkg_pay/tasks/widgets/manual_payment_dialog.dart';
 import 'package:eliud_pkg_workflow/model/assignment_model.dart';
 import 'package:eliud_pkg_workflow/model/assignment_result_model.dart';
-import 'package:eliud_pkg_workflow/tools/task/task_entity.dart';
+import 'package:eliud_pkg_workflow/tools/task/execution_results.dart';
 import 'package:eliud_pkg_workflow/tools/task/task_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+
+import 'creditcard_pay_type_model.dart';
+import 'manual_pay_type_model.dart';
 
 // ***** PayModel *****
 
@@ -24,13 +23,14 @@ abstract class PayTaskModel extends TaskModel {
   static String PAY_TASK_FIELD_ERROR = 'payment-error';
   static String PAY_TASK_FIELD_NAME = 'payment-name';
 
-  final PayTypeModel? paymentType;
+  final PayTypeModel paymentType;
 
   PayTaskModel({
-    this.paymentType,
-    String? description,
-    bool? executeInstantly,
-  }) : super(description: description, executeInstantly: executeInstantly);
+    required String identifier,
+    required this.paymentType,
+    required String description,
+    required bool executeInstantly,
+  }) : super(identifier: identifier, description: description, executeInstantly: executeInstantly);
 
   void handleCreditCardPayment(BuildContext? _context,
       AssignmentModel? _assignmentModel, PaymentStatus status) {
@@ -175,149 +175,3 @@ abstract class PayTaskModel extends TaskModel {
   String? getOrderNumber(BuildContext context);
 }
 
-// ***** FixedAmountPayModel *****
-
-class FixedAmountPayModel extends PayTaskModel {
-  final String? ccy;
-  final double? amount;
-
-  FixedAmountPayModel(
-      {String? description,
-      bool? executeInstantly,
-      PayTypeModel? paymentType,
-      this.ccy,
-      this.amount})
-      : super(
-            description: description,
-            executeInstantly: executeInstantly,
-            paymentType: paymentType);
-
-  @override
-  double? getAmount(BuildContext? context) {
-    return amount;
-  }
-
-  @override
-  String? getCcy(BuildContext? context) {
-    return ccy;
-  }
-
-  @override
-  TaskEntity toEntity({String? appId}) => FixedAmountPayEntity(
-      description: description,
-      executeInstantly: executeInstantly,
-      paymentType: paymentType!.toEntity(),
-      ccy: ccy,
-      amount: amount);
-
-  static FixedAmountPayModel fromEntity(FixedAmountPayEntity entity) =>
-      FixedAmountPayModel(
-          paymentType: PayTypeModel.fromEntity(entity.paymentType),
-          description: entity.description,
-          executeInstantly: entity.executeInstantly,
-          ccy: entity.ccy,
-          amount: entity.amount);
-  static FixedAmountPayEntity fromMap(Map snap) => FixedAmountPayEntity(
-      description: snap['description'],
-      executeInstantly: snap['executeInstantly'],
-      paymentType: PayTypeModel.fromMap(snap['paymentType']),
-      ccy: snap['ccy'],
-      amount: double.tryParse(snap['amount'].toString()));
-
-  @override
-  String? getOrderNumber(BuildContext context) => null;
-}
-
-class FixedAmountPayModelMapper implements TaskModelMapper {
-  @override
-  TaskModel fromEntity(TaskEntity entity) =>
-      FixedAmountPayModel.fromEntity(entity as FixedAmountPayEntity);
-
-  @override
-  TaskModel fromEntityPlus(TaskEntity entity) => fromEntity(entity);
-
-  @override
-  TaskEntity fromMap(Map map) => FixedAmountPayModel.fromMap(map);
-}
-
-// ***** ContextAmountPayModel *****
-
-// Retrieve payment amount from the PayBloc (also part of this package)
-class ContextAmountPayModel extends PayTaskModel {
-  ContextAmountPayModel(
-      {String? description, bool? executeInstantly, PayTypeModel? paymentType})
-      : super(
-            description: description,
-            executeInstantly: executeInstantly,
-            paymentType: paymentType);
-
-  @override
-  TaskEntity toEntity({String? appId}) => ContextAmountPayEntity(
-      description: description,
-      executeInstantly: executeInstantly,
-      paymentType: paymentType!.toEntity());
-
-  static ContextAmountPayModel fromEntity(ContextAmountPayEntity entity) =>
-      ContextAmountPayModel(
-          description: entity.description,
-          executeInstantly: entity.executeInstantly,
-          paymentType: PayTypeModel.fromEntity(entity.paymentType));
-
-  static ContextAmountPayEntity fromMap(Map snap) => ContextAmountPayEntity(
-      description: snap['description'],
-      executeInstantly: snap['executeInstantly'],
-      paymentType: PayTypeModel.fromMap(snap['paymentType']));
-
-  InitializedPayState? getState(BuildContext context) {
-    try {
-      var bloc = BlocProvider.of<PayBloc>(context);
-      var state = bloc.state;
-      if (state is InitializedPayState) {
-        return state;
-      }
-    } catch (_) {}
-    return null;
-  }
-
-  @override
-  String getOrderNumber(BuildContext context) {
-    var state = getState(context);
-    if (state is InitializedPayState) {
-      return state.orderNumber;
-    } else {
-      return '?';
-    }
-  }
-
-  @override
-  double getAmount(BuildContext? context) {
-    var state = getState(context!);
-    if (state is InitializedPayState) {
-      return state.amount;
-    } else {
-      return 0;
-    }
-  }
-
-  @override
-  String getCcy(BuildContext? context) {
-    var state = getState(context!);
-    if (state is InitializedPayState) {
-      return state.ccy;
-    } else {
-      return '?';
-    }
-  }
-}
-
-class ContextAmountPayModelMapper implements TaskModelMapper {
-  @override
-  TaskModel fromEntity(TaskEntity entity) =>
-      ContextAmountPayModel.fromEntity(entity as ContextAmountPayEntity);
-
-  @override
-  TaskModel fromEntityPlus(TaskEntity entity) => fromEntity(entity);
-
-  @override
-  TaskEntity fromMap(Map map) => ContextAmountPayModel.fromMap(map);
-}

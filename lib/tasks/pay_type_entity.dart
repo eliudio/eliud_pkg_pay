@@ -1,4 +1,4 @@
-import 'package:eliud_pkg_workflow/tools/task/task_entity.dart';
+
 
 // ***** PayTypeEntity *****
 
@@ -7,13 +7,13 @@ abstract class PayTypeEntity {
 }
 
 class ManualPayTypeEntity extends PayTypeEntity {
-  final String? payTo;
-  final String? country;
-  final String? bankIdentifierCode;
-  final String? payeeIBAN;
-  final String? bankName;
+  final String payTo;
+  final String country;
+  final String bankIdentifierCode;
+  final String payeeIBAN;
+  final String bankName;
 
-  ManualPayTypeEntity(this.payTo, this.country, this.bankIdentifierCode, this.payeeIBAN, this.bankName) : super();
+  ManualPayTypeEntity({required this.payTo, required this.country, required this.bankIdentifierCode, required this.payeeIBAN, required this.bankName}) : super();
 
   @override
   Map<String, Object?> toDocument() {
