@@ -25,11 +25,6 @@ abstract class PayPackage extends Package {
   PayPackage() : super('eliud_pkg_pay');
 
   @override
-  BlocProvider? createMainBloc(
-          NavigatorBloc navigatorBloc, AccessBloc accessBloc) =>
-      null;
-
-  @override
   Future<bool?> isConditionOk(
           String packageCondition,
           AppModel app,
