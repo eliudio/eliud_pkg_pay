@@ -1,5 +1,6 @@
-import 'package:eliud_core/core/access/bloc/access_bloc.dart';
-import 'package:eliud_core/core/access/bloc/access_state.dart';
+import 'package:eliud_core/core/blocs/access/access_bloc.dart';
+import 'package:eliud_core/core/blocs/access/state/access_determined.dart';
+import 'package:eliud_core/core/blocs/access/state/logged_in.dart';
 import 'package:eliud_core/style/style_registry.dart';
 import 'package:eliud_core/tools/random.dart';
 import 'package:eliud_pkg_pay/platform/payment_platform.dart';
@@ -153,12 +154,12 @@ abstract class PayTaskModel extends TaskModel {
   }
 
   void _confirmedCreditCardPayment(BuildContext context,
-      AssignmentModel? assignmentModel, AppLoaded accessState) {
+      AssignmentModel? assignmentModel, AccessDetermined accessState) {
     _creditCardPayment(context, assignmentModel, accessState);
   }
 
   void _creditCardPayment(BuildContext context,
-      AssignmentModel? assignmentModel, AppLoaded accessState) {
+      AssignmentModel? assignmentModel, AccessDetermined accessState) {
     AbstractPaymentPlatform.platform.startPaymentProcess(
         context,
         (PaymentStatus status) =>
