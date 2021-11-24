@@ -115,6 +115,7 @@ abstract class PayTaskModel extends TaskModel {
         if ((casted.requiresConfirmation != null) &&
             casted.requiresConfirmation!) {
           StyleRegistry.registry().styleWithContext(context).frontEndStyle().dialogStyle().openAckNackDialog(context,
+              AccessBloc.currentAppId(context) + '/payment',
               title: 'Payment',
               message: 'Proceed with payment of ' +
                   getAmount(context).toString() +
@@ -135,6 +136,7 @@ abstract class PayTaskModel extends TaskModel {
         var p = paymentType as ManualPayTypeModel;
         StyleRegistry.registry().styleWithContext(context).frontEndStyle().dialogStyle().openWidgetDialog(
             context,
+            AccessBloc.currentAppId(context) + '/payment',
             child: ManualPaymentDialog(
                 purpose: assignmentModel!.task!.description,
                 amount: getAmount(context),
