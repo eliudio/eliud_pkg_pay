@@ -1,6 +1,7 @@
 import 'package:eliud_core/core/blocs/access/access_bloc.dart';
 import 'package:eliud_core/core/blocs/access/state/access_determined.dart';
 import 'package:eliud_core/core/blocs/access/state/logged_in.dart';
+import 'package:eliud_core/style/frontend/has_dialog.dart';
 import 'package:eliud_core/style/style_registry.dart';
 import 'package:eliud_core/tools/random.dart';
 import 'package:eliud_pkg_pay/platform/payment_platform.dart';
@@ -114,7 +115,7 @@ abstract class PayTaskModel extends TaskModel {
         var casted = paymentType as CreditCardPayTypeModel;
         if ((casted.requiresConfirmation != null) &&
             casted.requiresConfirmation!) {
-          StyleRegistry.registry().styleWithContext(context).frontEndStyle().dialogStyle().openAckNackDialog(context,
+          openAckNackDialog(context,
               AccessBloc.currentAppId(context) + '/payment',
               title: 'Payment',
               message: 'Proceed with payment of ' +
@@ -134,7 +135,7 @@ abstract class PayTaskModel extends TaskModel {
         }
       } else if (paymentType is ManualPayTypeModel) {
         var p = paymentType as ManualPayTypeModel;
-        StyleRegistry.registry().styleWithContext(context).frontEndStyle().dialogStyle().openWidgetDialog(
+        openWidgetDialog(
             context,
             AccessBloc.currentAppId(context) + '/payment',
             child: ManualPaymentDialog(

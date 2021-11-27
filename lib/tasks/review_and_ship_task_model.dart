@@ -1,4 +1,5 @@
 import 'package:eliud_core/core/blocs/access/access_bloc.dart';
+import 'package:eliud_core/style/frontend/has_dialog.dart';
 import 'package:eliud_core/style/style_registry.dart';
 import 'package:eliud_core/tools/random.dart';
 import 'package:eliud_pkg_pay/tasks/review_and_ship_task_entity.dart';
@@ -46,7 +47,7 @@ class ReviewAndShipTaskModel extends TaskModel {
   Future<void> startTask(
       BuildContext context, AssignmentModel? assignmentModel) {
     feedback = null;
-    StyleRegistry.registry().styleWithContext(context).frontEndStyle().dialogStyle().openWidgetDialog(
+    openWidgetDialog(
       context,
       AccessBloc.currentAppId(context) + '/payment',
       child: YesNoIgnoreDialogWithAssignmentResults.get(context,
