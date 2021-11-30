@@ -1,3 +1,4 @@
+import 'package:eliud_core/core/blocs/access/access_bloc.dart';
 import 'package:eliud_core/eliud.dart';
 import 'package:eliud_core/model/app_model.dart';
 import 'package:eliud_core/model/member_model.dart';
@@ -23,13 +24,7 @@ abstract class PayPackage extends Package {
   PayPackage() : super('eliud_pkg_pay');
 
   @override
-  Future<bool?> isConditionOk(
-          String packageCondition,
-          AppModel app,
-          MemberModel? member,
-          bool isOwner,
-          bool? isBlocked,
-          PrivilegeLevel? privilegeLevel) =>
+  Future<bool?> isConditionOk(AccessBloc accessBloc, String pluginCondition, AppModel app, MemberModel? member, bool isOwner, bool? isBlocked, PrivilegeLevel? privilegeLevel) async  =>
       Future.value(null);
 
   @override
