@@ -108,7 +108,7 @@ abstract class PayTaskModel extends TaskModel {
 
   @override
   Future<void> startTask(
-      BuildContext context, AssignmentModel? assignmentModel) {
+      BuildContext context, String appId, AssignmentModel? assignmentModel) {
     var accessState = AccessBloc.getState(context);
     if (accessState is LoggedIn) {
       if (paymentType is CreditCardPayTypeModel) {
@@ -116,7 +116,7 @@ abstract class PayTaskModel extends TaskModel {
         if ((casted.requiresConfirmation != null) &&
             casted.requiresConfirmation!) {
           openAckNackDialog(context,
-              AccessBloc.currentAppId(context) + '/payment',
+              appId + '/payment',
               title: 'Payment',
               message: 'Proceed with payment of ' +
                   getAmount(context).toString() +

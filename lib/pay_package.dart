@@ -24,6 +24,9 @@ abstract class PayPackage extends Package {
   PayPackage() : super('eliud_pkg_pay');
 
   @override
+  Future<List<PackageConditionDetails>>? getAndSubscribe(AccessBloc accessBloc, AppModel app, MemberModel? member, bool isOwner, bool? isBlocked, PrivilegeLevel? privilegeLevel) => null;
+
+  @override
   Future<bool?> isConditionOk(AccessBloc accessBloc, String pluginCondition, AppModel app, MemberModel? member, bool isOwner, bool? isBlocked, PrivilegeLevel? privilegeLevel) async  =>
       Future.value(null);
 

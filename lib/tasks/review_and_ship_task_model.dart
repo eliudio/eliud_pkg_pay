@@ -45,11 +45,11 @@ class ReviewAndShipTaskModel extends TaskModel {
 
   @override
   Future<void> startTask(
-      BuildContext context, AssignmentModel? assignmentModel) {
+      BuildContext context, String appId, AssignmentModel? assignmentModel) {
     feedback = null;
     openWidgetDialog(
       context,
-      AccessBloc.currentAppId(context) + '/payment',
+      appId + '/payment',
       child: YesNoIgnoreDialogWithAssignmentResults.get(context,
           title: 'Payment',
           message:
