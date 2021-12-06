@@ -45,7 +45,7 @@ class ReviewAndShipTaskModel extends TaskModel {
 
   @override
   Future<void> startTask(
-      BuildContext context, String appId, AssignmentModel? assignmentModel) {
+      BuildContext context, String appId, String? memberId, AssignmentModel? assignmentModel) {
     feedback = null;
     openWidgetDialog(
       context,

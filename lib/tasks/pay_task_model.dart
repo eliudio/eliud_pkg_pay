@@ -108,7 +108,7 @@ abstract class PayTaskModel extends TaskModel {
 
   @override
   Future<void> startTask(
-      BuildContext context, String appId, AssignmentModel? assignmentModel) {
+      BuildContext context, String appId, String? memberId, AssignmentModel? assignmentModel) {
     var accessState = AccessBloc.getState(context);
     if (accessState is LoggedIn) {
       if (paymentType is CreditCardPayTypeModel) {
