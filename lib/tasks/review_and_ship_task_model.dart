@@ -77,7 +77,6 @@ class ReviewAndShipTaskModel extends TaskModel {
     var comment =
         'Payment reviewed and approved and order prepared for shipment.';
     if (message != null) comment = comment + ' Feedback: ' + message;
-    Navigator.pop(context);
     finishTask(
         context,
         assignmentModel,
@@ -92,13 +91,13 @@ class ReviewAndShipTaskModel extends TaskModel {
               value: comment),
         ]),
         message);
+    Navigator.pop(context);
   }
 
   void _reviewedNotOk(
       BuildContext context, AssignmentModel assignmentModel, String message) {
     var comment = 'Payment reviewed and rejected.';
     if (message != null) comment = comment + ' Feedback: ' + message;
-    Navigator.pop(context);
     finishTask(
         context,
         assignmentModel,
@@ -113,5 +112,6 @@ class ReviewAndShipTaskModel extends TaskModel {
               value: comment),
         ]),
         message);
+    Navigator.pop(context);
   }
 }
