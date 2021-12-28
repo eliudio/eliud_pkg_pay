@@ -1,3 +1,4 @@
+import 'package:eliud_core/model/app_model.dart';
 import 'package:eliud_core/style/style_registry.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -6,6 +7,7 @@ typedef PayedWithTheseDetails = Function(
     String paymentReference, String paymentName, bool success);
 
 class ManualPaymentDialog extends StatefulWidget {
+  final AppModel app;
   final String? purpose;
   final double? amount;
   final String? ccy;
@@ -19,6 +21,7 @@ class ManualPaymentDialog extends StatefulWidget {
 
   ManualPaymentDialog(
       {Key? key,
+      required this.app,
       this.purpose,
       this.amount,
       this.ccy,
@@ -52,32 +55,32 @@ class _ManualPaymentDialogState extends State<ManualPaymentDialog> {
 
   @override
   Widget build(BuildContext context) {
-    return StyleRegistry.registry().styleWithContext(context).frontEndStyle().dialogWidgetStyle().flexibleDialog(context,
+    return StyleRegistry.registry().styleWithApp(widget.app).frontEndStyle().dialogWidgetStyle().flexibleDialog(widget.app, context,
         title: 'Manual Payment',
         child: getFieldsWidget(context),
         buttons: [
           StyleRegistry.registry()
-              .styleWithContext(context)
+              .styleWithApp(widget.app)
               .frontEndStyle().buttonStyle()
-              .dialogButton(context,
+              .dialogButton(widget.app, context,
                   label: 'Cancel', onPressed: () => pressed(true)),
           StyleRegistry.registry()
-              .styleWithContext(context)
+              .styleWithApp(widget.app)
               .frontEndStyle().buttonStyle()
-              .dialogButton(context,
+              .dialogButton(widget.app, context,
                   label: 'Continue', onPressed: () => pressed(false)),
         ]);
   }
 
   Widget getFieldsWidget(BuildContext context) {
     return StyleRegistry.registry()
-        .styleWithContext(context)
+        .styleWithApp(widget.app)
         .frontEndStyle().containerStyle()
-        .topicContainer(context, children: <Widget>[
+        .topicContainer(widget.app, context, children: <Widget>[
       StyleRegistry.registry()
-          .styleWithContext(context)
+          .styleWithApp(widget.app)
           .frontEndStyle().listTileStyle()
-          .getListTile(
+          .getListTile(widget.app,
             context,
             leading: Icon(Icons.payment),
             title: Text('Please pay ' +
@@ -88,9 +91,9 @@ class _ManualPaymentDialogState extends State<ManualPaymentDialog> {
             subtitle: Text('Purpose: ' + widget.purpose!),
           ),
       StyleRegistry.registry()
-          .styleWithContext(context)
+          .styleWithApp(widget.app)
           .frontEndStyle().listTileStyle()
-          .getListTile(
+          .getListTile(widget.app,
             context,
             isThreeLine: true,
             leading: Icon(Icons.person),
@@ -104,9 +107,9 @@ class _ManualPaymentDialogState extends State<ManualPaymentDialog> {
             ),
           ),
       StyleRegistry.registry()
-          .styleWithContext(context)
+          .styleWithApp(widget.app)
           .frontEndStyle().listTileStyle()
-          .getListTile(
+          .getListTile(widget.app,
             context,
             leading: Icon(Icons.attach_money),
             title: Text('Bank name: ' + widget.bankName!),
@@ -116,9 +119,9 @@ class _ManualPaymentDialogState extends State<ManualPaymentDialog> {
       Text(
           'Ones paid, please provide payment name and reference below and submit. We will then review your payment.'),
       StyleRegistry.registry()
-          .styleWithContext(context)
+          .styleWithApp(widget.app)
           .frontEndStyle().listTileStyle()
-          .getListTile(context,
+          .getListTile(widget.app, context,
               leading: Icon(Icons.payment),
               title: TextFormField(
                 controller: paymentReferenceController,
@@ -128,9 +131,9 @@ class _ManualPaymentDialogState extends State<ManualPaymentDialog> {
                 ),
               )),
       StyleRegistry.registry()
-          .styleWithContext(context)
+          .styleWithApp(widget.app)
           .frontEndStyle().listTileStyle()
-          .getListTile(context,
+          .getListTile(widget.app, context,
               leading: Icon(Icons.person),
               title: TextFormField(
                 controller: personController,

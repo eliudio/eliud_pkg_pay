@@ -1,4 +1,5 @@
 import 'package:eliud_core/core/blocs/access/access_bloc.dart';
+import 'package:eliud_core/model/app_model.dart';
 import 'package:eliud_core/style/frontend/has_dialog.dart';
 import 'package:eliud_core/style/style_registry.dart';
 import 'package:eliud_core/tools/random.dart';
@@ -44,23 +45,23 @@ class ReviewAndShipTaskModel extends TaskModel {
   String? feedback;
 
   @override
-  Future<void> startTask(
-      BuildContext context, String appId, String? memberId, AssignmentModel? assignmentModel) {
+  Future<void> startTask(AppModel app,
+      BuildContext context, String? memberId, AssignmentModel? assignmentModel) {
     feedback = null;
-    openWidgetDialog(
+    openWidgetDialog(app,
       context,
-      appId + '/payment',
-      child: YesNoIgnoreDialogWithAssignmentResults.get(context,
+      app.documentID! + '/payment',
+      child: YesNoIgnoreDialogWithAssignmentResults.get(app, context,
           title: 'Payment',
           message:
               'Review the payment and ship the products. If you like you can provide some feedback to the buyer below.',
           resultsPrevious: assignmentModel!.resultsPrevious,
-          yesFunction: () => _reviewedOk(context, assignmentModel, feedback!),
-          noFunction: () => _reviewedNotOk(context, assignmentModel, feedback!),
+          yesFunction: () => _reviewedOk(app, context, assignmentModel, feedback!),
+          noFunction: () => _reviewedNotOk(app, context, assignmentModel, feedback!),
           extraFields: [
-            StyleRegistry.registry().styleWithContext(context).frontEndStyle().listTileStyle().getListTile(context,
+            StyleRegistry.registry().styleWithApp(app).frontEndStyle().listTileStyle().getListTile(app, context,
                 leading: Icon(Icons.payment),
-                title: StyleRegistry.registry().styleWithContext(context).frontEndStyle().dialogFieldStyle().dialogField(context,
+                title: StyleRegistry.registry().styleWithApp(app).frontEndStyle().dialogFieldStyle().dialogField(app, context,
                   valueChanged: (value) => feedback = value,
                   decoration: const InputDecoration(
                     hintText: 'Feedback to the buyer',
@@ -72,12 +73,12 @@ class ReviewAndShipTaskModel extends TaskModel {
     return Future.value(null);
   }
 
-  void _reviewedOk(
+  void _reviewedOk(AppModel app,
       BuildContext context, AssignmentModel assignmentModel, String message) {
     var comment =
         'Payment reviewed and approved and order prepared for shipment.';
     if (message != null) comment = comment + ' Feedback: ' + message;
-    finishTask(
+    finishTask(app,
         context,
         assignmentModel,
         ExecutionResults(ExecutionStatus.success, results: [
@@ -94,11 +95,11 @@ class ReviewAndShipTaskModel extends TaskModel {
     Navigator.pop(context);
   }
 
-  void _reviewedNotOk(
+  void _reviewedNotOk(AppModel app,
       BuildContext context, AssignmentModel assignmentModel, String message) {
     var comment = 'Payment reviewed and rejected.';
     if (message != null) comment = comment + ' Feedback: ' + message;
-    finishTask(
+    finishTask(app,
         context,
         assignmentModel,
         ExecutionResults(ExecutionStatus.success, results: [

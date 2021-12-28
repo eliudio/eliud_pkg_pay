@@ -1,3 +1,4 @@
+import 'package:eliud_core/model/app_model.dart';
 import 'package:flutter/cupertino.dart';
 
 typedef void HandlePayment(PaymentStatus status);
@@ -20,7 +21,7 @@ class PaymentFailure extends PaymentStatus {
 abstract class AbstractPaymentPlatform {
   static late AbstractPaymentPlatform platform;
 
-  void startPaymentProcess(BuildContext context, HandlePayment handlePayment, String? name, String? ccy, double? amount);
+  void startPaymentProcess(AppModel app, BuildContext context, HandlePayment handlePayment, String? name, String? ccy, double? amount);
 }
 
 // 03.g02.10

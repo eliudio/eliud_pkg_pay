@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:cloud_functions/cloud_functions.dart';
+import 'package:eliud_core/model/app_model.dart';
 import 'package:eliud_core/style/style_registry.dart';
 import 'payment_platform.dart';
 import 'package:flutter/cupertino.dart';
@@ -15,7 +16,7 @@ class MobilePaymentPlatform extends AbstractPaymentPlatform {
   final HttpsCallable INTENT = FirebaseFunctions.instance.httpsCallable('createPaymentIntent');
 
   @override
-  void startPaymentProcess(BuildContext theContext, HandlePayment handlePayment, String? name, String? ccy, double? amount) {
+  void startPaymentProcess(AppModel app, BuildContext theContext, HandlePayment handlePayment, String? name, String? ccy, double? amount) {
     var cents = (amount! * 100).toInt();
     StripePayment.setOptions(StripeOptions(
         publishableKey: 'pk_test_51GxyTUCM4yYbbMk8IvFWz65Lp5aCXN16iZcQsr0Z1VYQPlrwe7GhoJ4ZTdF571VYTzOrzHAvr0Q5LKdTCZ3naaYo00T4RFwif7',
@@ -30,12 +31,12 @@ class MobilePaymentPlatform extends AbstractPaymentPlatform {
         .then((paymentMethod) {
       var amount = cents.toDouble();
       INTENT.call(<String, dynamic>{'amount': amount,'currency':ccy}).then((response) {
-        confirmDialog(theContext, response.data['client_secret'], paymentMethod, handlePayment, ccy, amount); //function for confirmation for payment
+        confirmDialog(app, theContext, response.data['client_secret'], paymentMethod, handlePayment, ccy, amount); //function for confirmation for payment
       });
     });
   }
 
-  void confirmDialog(BuildContext context, String? clientSecret, PaymentMethod paymentMethod, HandlePayment handlePayment, String? ccy, double amount) {
+  void confirmDialog(AppModel app, BuildContext context, String? clientSecret, PaymentMethod paymentMethod, HandlePayment handlePayment, String? ccy, double amount) {
     if ((requiresConfirmation != null) && requiresConfirmation!) {
       var confirm = AlertDialog(
         title: Text('Confirm Payment'),
@@ -53,14 +54,14 @@ class MobilePaymentPlatform extends AbstractPaymentPlatform {
           ),
         ),
         actions: <Widget>[
-          StyleRegistry.registry().styleWithContext(context).frontEndStyle().buttonStyle().button(context, label: 'Cancel',
+          StyleRegistry.registry().styleWithApp(app).frontEndStyle().buttonStyle().button(app, context, label: 'Cancel',
             onPressed: () {
               Navigator.of(context).pop();
               final snackBar = SnackBar(content: Text('Payment Cancelled'),);
               Scaffold.of(context).showSnackBar(snackBar);
             },
           ),
-          StyleRegistry.registry().styleWithContext(context).frontEndStyle().buttonStyle().button(context, label: 'Confirm',
+          StyleRegistry.registry().styleWithApp(app).frontEndStyle().buttonStyle().button(app, context, label: 'Confirm',
             onPressed: () {
               Navigator.of(context).pop();
               confirmPayment(clientSecret, paymentMethod,

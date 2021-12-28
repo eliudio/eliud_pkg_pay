@@ -1,3 +1,4 @@
+import 'package:eliud_core/model/app_model.dart';
 import 'package:eliud_pkg_pay/platform/payment_platform.dart';
 import 'package:eliud_pkg_pay/platform/web_helper/web_stripe_elements.dart';
 import 'package:flutter/cupertino.dart';
@@ -5,7 +6,7 @@ import 'package:flutter/material.dart';
 
 class WebPaymentPlatform extends AbstractPaymentPlatform {
   @override
-  void startPaymentProcess(
+  void startPaymentProcess(AppModel app,
       BuildContext? context, HandlePayment handlePayment, String? name, String? ccy, double? amount) {
     debugPrint("startPaymentProcess");
     var cents = (amount! * 100).toInt();
