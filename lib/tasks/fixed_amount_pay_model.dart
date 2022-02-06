@@ -11,8 +11,8 @@ class FixedAmountPayModel extends PayTaskModel {
   static String label = 'PAY_TASK_FIXED_AMOUNT';
   static String definition = 'Pay a fixed amount';
 
-  final String? ccy;
-  final double? amount;
+  String? ccy;
+  double? amount;
 
   FixedAmountPayModel(
       {required String identifier,

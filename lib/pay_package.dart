@@ -5,6 +5,7 @@ import 'package:eliud_core/model/member_model.dart';
 import 'package:eliud_core/package/package.dart';
 import 'package:eliud_pkg_notifications/model/abstract_repository_singleton.dart';
 import 'package:eliud_pkg_pay/tasks/creditcard_pay_type_model.dart';
+import 'package:eliud_pkg_pay/tasks/fixed_amount_pay_editor_widget.dart';
 import 'package:eliud_pkg_pay/tasks/pay_task_entity.dart';
 import 'package:eliud_pkg_pay/tasks/pay_type_model.dart';
 import 'package:eliud_pkg_pay/tasks/pay_task_model.dart';
@@ -39,6 +40,7 @@ abstract class PayPackage extends Package {
         identifier: FixedAmountPayModel.label,
         definition: FixedAmountPayModel.definition,
         mapper: FixedAmountPayModelMapper(),
+        editor: (app, model) => FixedAmountPayEditorWidget(app: app, model: model),
         createNewInstance: () => FixedAmountPayModel(
             identifier: FixedAmountPayModel.label,
             description: 'Fixed amount to be paid with card',
