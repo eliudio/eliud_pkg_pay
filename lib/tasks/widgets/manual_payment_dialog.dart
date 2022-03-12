@@ -56,6 +56,7 @@ class _ManualPaymentDialogState extends State<ManualPaymentDialog> {
   @override
   Widget build(BuildContext context) {
     return StyleRegistry.registry().styleWithApp(widget.app).frontEndStyle().dialogWidgetStyle().flexibleDialog(widget.app, context,
+        includeHeading: true,
         title: 'Manual Payment',
         child: getFieldsWidget(context),
         buttons: [
