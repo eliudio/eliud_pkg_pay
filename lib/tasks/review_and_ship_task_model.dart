@@ -50,7 +50,7 @@ class ReviewAndShipTaskModel extends TaskModel {
     feedback = null;
     openWidgetDialog(app,
       context,
-      app.documentID! + '/payment',
+      app.documentID + '/payment',
       child: YesNoIgnoreDialogWithAssignmentResults.get(app, context,
           title: 'Payment',
           message:

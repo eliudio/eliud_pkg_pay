@@ -118,7 +118,7 @@ abstract class PayTaskModel extends TaskModel {
         if ((casted.requiresConfirmation != null) &&
             casted.requiresConfirmation!) {
           openAckNackDialog(app, context,
-              app.documentID! + '/payment',
+              app.documentID + '/payment',
               title: 'Payment',
               message: 'Proceed with payment of ' +
                   getAmount(context).toString() +
@@ -139,7 +139,7 @@ abstract class PayTaskModel extends TaskModel {
         var p = paymentType as ManualPayTypeModel;
         openWidgetDialog(app,
             context,
-            app.documentID! + '/payment',
+            app.documentID + '/payment',
             child: ManualPaymentDialog(app:app,
                 purpose: assignmentModel!.task!.description,
                 amount: getAmount(context),
