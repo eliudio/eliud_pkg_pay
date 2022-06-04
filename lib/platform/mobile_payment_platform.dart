@@ -58,7 +58,7 @@ class MobilePaymentPlatform extends AbstractPaymentPlatform {
             onPressed: () {
               Navigator.of(context).pop();
               final snackBar = SnackBar(content: Text('Payment Cancelled'),);
-              Scaffold.of(context).showSnackBar(snackBar);
+              ScaffoldMessenger.of(context).showSnackBar(snackBar);
             },
           ),
           StyleRegistry.registry().styleWithApp(app).frontEndStyle().buttonStyle().button(app, context, label: 'Confirm',
