@@ -1,3 +1,4 @@
+import 'package:eliud_core/core/base/model_base.dart';
 import 'package:eliud_pkg_pay/tasks/pay_task_entity.dart';
 import 'package:eliud_pkg_pay/tasks/pay_task_model.dart';
 import 'package:eliud_pkg_pay/tasks/pay_type_model.dart';
@@ -38,7 +39,7 @@ class FixedAmountPayModel extends PayTaskModel {
   }
 
   @override
-  TaskEntity toEntity({String? appId}) => FixedAmountPayEntity(
+  TaskEntity toEntity({String? appId, List<ModelBase>? referencesCollector}) => FixedAmountPayEntity(
       description: description,
       executeInstantly: executeInstantly,
       paymentType: paymentType.toEntity(),

@@ -1,3 +1,4 @@
+import 'package:eliud_core/core/base/model_base.dart';
 import 'package:eliud_pkg_pay/tasks/pay_type_model.dart';
 import 'package:eliud_pkg_workflow/tools/task/task_entity.dart';
 import 'package:flutter/cupertino.dart';
@@ -22,7 +23,7 @@ class ContextAmountPayModel extends PayTaskModel {
             paymentType: paymentType);
 
   @override
-  TaskEntity toEntity({String? appId}) => ContextAmountPayEntity(
+  TaskEntity toEntity({String? appId, List<ModelBase>? referencesCollector}) => ContextAmountPayEntity(
       description: description,
       executeInstantly: executeInstantly,
       paymentType: paymentType.toEntity());
