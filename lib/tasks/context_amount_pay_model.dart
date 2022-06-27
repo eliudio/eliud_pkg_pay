@@ -23,7 +23,7 @@ class ContextAmountPayModel extends PayTaskModel {
             paymentType: paymentType);
 
   @override
-  TaskEntity toEntity({String? appId, List<ModelBase>? referencesCollector}) => ContextAmountPayEntity(
+  TaskEntity toEntity({String? appId, Set<ModelReference>? referencesCollector}) => ContextAmountPayEntity(
       description: description,
       executeInstantly: executeInstantly,
       paymentType: paymentType.toEntity());

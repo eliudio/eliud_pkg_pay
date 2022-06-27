@@ -39,7 +39,7 @@ class FixedAmountPayModel extends PayTaskModel {
   }
 
   @override
-  TaskEntity toEntity({String? appId, List<ModelBase>? referencesCollector}) => FixedAmountPayEntity(
+  TaskEntity toEntity({String? appId, Set<ModelReference>? referencesCollector}) => FixedAmountPayEntity(
       description: description,
       executeInstantly: executeInstantly,
       paymentType: paymentType.toEntity(),

@@ -28,7 +28,7 @@ class ReviewAndShipTaskModel extends TaskModel {
       : super(identifier: identifier, description: description, executeInstantly: executeInstantly);
 
   @override
-  TaskEntity toEntity({String? appId, List<ModelBase>? referencesCollector}) {
+  TaskEntity toEntity({String? appId, Set<ModelReference>? referencesCollector}) {
     return ReviewAndShipTaskEntity(
         description: description, executeInstantly: executeInstantly);
   }
