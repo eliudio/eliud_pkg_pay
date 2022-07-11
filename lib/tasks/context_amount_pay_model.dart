@@ -23,7 +23,7 @@ class ContextAmountPayModel extends PayTaskModel {
             paymentType: paymentType);
 
   @override
-  TaskEntity toEntity({String? appId, List<ModelReference>? referencesCollector}) => ContextAmountPayEntity(
+  TaskEntity toEntity({String? appId}) => ContextAmountPayEntity(
       description: description,
       executeInstantly: executeInstantly,
       paymentType: paymentType.toEntity());
@@ -79,5 +79,10 @@ class ContextAmountPayModel extends PayTaskModel {
     } else {
       return '?';
     }
+  }
+
+  @override
+  Future<List<ModelReference>> collectReferences({String? appId, }) async {
+    return [];
   }
 }
