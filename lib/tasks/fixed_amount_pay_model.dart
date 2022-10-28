@@ -1,7 +1,7 @@
 import 'package:eliud_core/core/base/model_base.dart';
 import 'package:eliud_pkg_pay/tasks/pay_task_entity.dart';
 import 'package:eliud_pkg_pay/tasks/pay_task_model.dart';
-import 'package:eliud_pkg_pay/tasks/pay_type_model.dart';
+import 'package:eliud_pkg_pay/tasks/pay_type_types/pay_type_model.dart';
 import 'package:eliud_pkg_workflow/tools/task/task_entity.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

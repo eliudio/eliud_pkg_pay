@@ -4,11 +4,11 @@ import 'package:eliud_core/model/app_model.dart';
 import 'package:eliud_core/model/member_model.dart';
 import 'package:eliud_core/package/package.dart';
 import 'package:eliud_pkg_notifications/model/abstract_repository_singleton.dart';
-import 'package:eliud_pkg_pay/tasks/creditcard_pay_type_model.dart';
-import 'package:eliud_pkg_pay/tasks/fixed_amount_pay_editor_widget.dart';
+import 'package:eliud_pkg_pay/tasks/editors/context_amount_pay_editor_widget.dart';
+import 'package:eliud_pkg_pay/tasks/editors/fixed_amount_pay_editor_widget.dart';
 import 'package:eliud_pkg_pay/tasks/pay_task_entity.dart';
-import 'package:eliud_pkg_pay/tasks/pay_type_model.dart';
 import 'package:eliud_pkg_pay/tasks/pay_task_model.dart';
+import 'package:eliud_pkg_pay/tasks/pay_type_types/creditcard_pay_type_model.dart';
 import 'package:eliud_pkg_pay/tasks/review_and_ship_task_model.dart';
 import 'package:eliud_pkg_pay/tasks/review_and_ship_task_model_mapper.dart';
 import 'package:eliud_pkg_workflow/tools/task/task_model.dart';
@@ -50,6 +50,7 @@ abstract class PayPackage extends Package {
         identifier: ContextAmountPayModel.label,
         definition: ContextAmountPayModel.definition,
         mapper: ContextAmountPayModelMapper(),
+        editor:(app, model) => ContextAmountPayEditorWidget(app: app, model: model),
         createNewInstance: () => ContextAmountPayModel(
             identifier: ContextAmountPayModel.label,
             description: 'Amount determined by context and to be paid by card',

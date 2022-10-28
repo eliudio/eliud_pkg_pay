@@ -6,7 +6,9 @@ import 'package:eliud_core/style/frontend/has_dialog.dart';
 import 'package:eliud_core/style/style_registry.dart';
 import 'package:eliud_core/tools/random.dart';
 import 'package:eliud_pkg_pay/platform/payment_platform.dart';
-import 'package:eliud_pkg_pay/tasks/pay_type_model.dart';
+import 'package:eliud_pkg_pay/tasks/pay_type_types/creditcard_pay_type_model.dart';
+import 'package:eliud_pkg_pay/tasks/pay_type_types/manual_pay_type_model.dart';
+import 'package:eliud_pkg_pay/tasks/pay_type_types/pay_type_model.dart';
 import 'package:eliud_pkg_pay/tasks/widgets/manual_payment_dialog.dart';
 import 'package:eliud_pkg_workflow/model/assignment_model.dart';
 import 'package:eliud_pkg_workflow/model/assignment_result_model.dart';
@@ -14,9 +16,6 @@ import 'package:eliud_pkg_workflow/tools/task/execution_results.dart';
 import 'package:eliud_pkg_workflow/tools/task/task_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
-import 'creditcard_pay_type_model.dart';
-import 'manual_pay_type_model.dart';
 
 // ***** PayModel *****
 
@@ -26,7 +25,7 @@ abstract class PayTaskModel extends TaskModel {
   static String PAY_TASK_FIELD_ERROR = 'payment-error';
   static String PAY_TASK_FIELD_NAME = 'payment-name';
 
-  final PayTypeModel paymentType;
+  PayTypeModel paymentType;
 
   PayTaskModel({
     required String identifier,

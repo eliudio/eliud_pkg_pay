@@ -64,12 +64,12 @@ class _ManualPaymentDialogState extends State<ManualPaymentDialog> {
               .styleWithApp(widget.app)
               .frontEndStyle().buttonStyle()
               .dialogButton(widget.app, context,
-                  label: 'Cancel', onPressed: () => pressed(true)),
+                  label: 'Cancel', onPressed: () => pressed(false)),
           StyleRegistry.registry()
               .styleWithApp(widget.app)
               .frontEndStyle().buttonStyle()
               .dialogButton(widget.app, context,
-                  label: 'Continue', onPressed: () => pressed(false)),
+                  label: 'Continue', onPressed: () => pressed(true)),
         ]);
   }
 

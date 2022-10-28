@@ -3,11 +3,11 @@ import 'package:eliud_pkg_pay/tasks/pay_type_entity.dart';
 import 'pay_type_model.dart';
 
 class ManualPayTypeModel extends PayTypeModel {
-  final String payTo;
-  final String country;
-  final String bankIdentifierCode;
-  final String payeeIBAN;
-  final String bankName;
+  String payTo;
+   String country;
+   String bankIdentifierCode;
+   String payeeIBAN;
+   String bankName;
 
   ManualPayTypeModel(
       {required this.payTo,

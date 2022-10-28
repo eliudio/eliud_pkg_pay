@@ -1,5 +1,5 @@
 import 'package:eliud_pkg_pay/tasks/pay_type_entity.dart';
-import 'package:eliud_pkg_pay/tasks/pay_type_model.dart';
+import 'package:eliud_pkg_pay/tasks/pay_type_types/pay_type_model.dart';
 
 class CreditCardPayTypeModel extends PayTypeModel {
   bool? requiresConfirmation;
