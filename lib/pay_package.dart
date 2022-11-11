@@ -21,6 +21,11 @@ import 'tasks/context_amount_pay_model_mapper.dart';
 import 'tasks/fixed_amount_pay_model.dart';
 import 'tasks/fixed_amount_pay_model_mapper.dart';
 
+import 'package:eliud_pkg_pay/pay_package_stub.dart'
+if (dart.library.io) 'pay_mobile_package.dart'
+if (dart.library.html) 'pay_web_package.dart';
+
+
 abstract class PayPackage extends Package {
   PayPackage() : super('eliud_pkg_pay');
 
@@ -68,4 +73,6 @@ abstract class PayPackage extends Package {
   @override
   List<MemberCollectionInfo> getMemberCollectionInfo() =>
       AbstractRepositorySingleton.collections;
+
+  static PayPackage instance() => getPayPackage();
 }

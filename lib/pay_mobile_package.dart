@@ -3,6 +3,8 @@ import 'package:eliud_pkg_pay/platform/mobile_payment_platform.dart';
 
 import 'platform/payment_platform.dart';
 
+PayPackage getPayPackage() => PayMobilePackage();
+
 class PayMobilePackage extends PayPackage {
   @override
   void init() {
@@ -20,4 +22,5 @@ class PayMobilePackage extends PayPackage {
       identical(this, other) ||
           other is PayMobilePackage &&
               runtimeType == other.runtimeType;
+
 }
