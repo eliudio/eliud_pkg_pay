@@ -40,7 +40,7 @@ class _ContextAmountPayEditorWidgetState
         app: widget.app,
       ),
       checkboxListTile(widget.app, context, 'Execute Instantly',
-          widget.model.executeInstantly ?? false, (value) {
+          widget.model.executeInstantly, (value) {
             setState(() {
               widget.model.executeInstantly = value ?? false;
             });
