@@ -1,26 +1,31 @@
 name: eliud_pkg_pay
 description: Eliud pay package
-version: 0.0.1
-author:
-homepage:
+homepage: https://eliud.io
+repository: https://github.com/eliudio/eliud
+
+version: 1.0.0+1
 
 environment:
-  sdk: '>=2.18.0-271.7.beta <3.0.0'
+  sdk: ">=2.17.0 <4.0.0"
+  flutter: ">=3.0.0"
 
 dependencies:
   flutter:
     sdk: flutter
 
-  eliud_core:
-    path: ../eliud_core
+  flutter_bloc: ^8.1.2
+  cloud_functions: ^4.2.0
+  bloc: ^8.1.0
+  equatable: ^2.0.5
 
-  eliud_pkg_fundamentals:
-    path: ../eliud_pkg_fundamentals
-
-  eliud_pkg_workflow:
-    path: ../eliud_pkg_workflow
-
-  eliud_pkg_notifications:
-    path: ../eliud_pkg_notifications
+  eliud_core: ^1.0.1
+  eliud_pkg_fundamentals: ^1.0.0
+  eliud_pkg_workflow: ^1.0.0
+  eliud_pkg_notifications: ^1.0.0
 
 flutter:
+
+platforms:
+  android:
+  ios:
+  web:
