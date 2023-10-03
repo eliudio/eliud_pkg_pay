@@ -181,34 +181,34 @@ packages:
     dependency: "direct main"
     description:
       name: eliud_core
-      sha256: "2ba24e4cef0ac51609b357c8d706844897b7dfa34ec6994ce668ceecc7067fd7"
+      sha256: "863fd4e28ef62aa9220f0149d1870c3a95861e8c8ee32f34cde1fda65e670def"
       url: "https://pub.dev"
     source: hosted
-    version: "1.0.7+1"
+    version: "1.0.10+1"
   eliud_pkg_fundamentals:
     dependency: "direct main"
     description:
       name: eliud_pkg_fundamentals
-      sha256: b2982b1f1ad78046fa9ea689667b4ea59427767221d7cb98f798fbd1e494d895
+      sha256: b92b45fb638a219072043638f8e9934d16e072543a4107124bf3e4ad76d3d38c
       url: "https://pub.dev"
     source: hosted
-    version: "1.0.1+7"
+    version: "1.0.1+11"
   eliud_pkg_notifications:
     dependency: "direct main"
     description:
       name: eliud_pkg_notifications
-      sha256: "608ed9566a65b51fda68b7cd68fc0902603c6c19aaae3fcb638e71167635aab6"
+      sha256: "80cbe90f4fa0a8187bc52046e7f664a6b7740c0ff3e9634cbbd83426a5cc703f"
       url: "https://pub.dev"
     source: hosted
-    version: "1.0.1+7"
+    version: "1.0.1+11"
   eliud_pkg_workflow:
     dependency: "direct main"
     description:
       name: eliud_pkg_workflow
-      sha256: "5dc8ae329f67c985261dab184195aef801419594f70ad9b6db9938a13427de8d"
+      sha256: "982ae7c810f2b61bb3e0366811d2c4673fabcacda69b1b638a6529ab1d1b655a"
       url: "https://pub.dev"
     source: hosted
-    version: "1.0.1+7"
+    version: "1.0.1+11"
   equatable:
     dependency: "direct main"
     description:
