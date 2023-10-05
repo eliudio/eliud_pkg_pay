@@ -1,9 +1,12 @@
 import 'package:eliud_core/core/blocs/access/access_bloc.dart';
+import 'package:eliud_core/core_package.dart';
 import 'package:eliud_core/eliud.dart';
 import 'package:eliud_core/model/app_model.dart';
 import 'package:eliud_core/model/member_model.dart';
 import 'package:eliud_core/package/package.dart';
+import 'package:eliud_pkg_fundamentals/fundamentals_package.dart';
 import 'package:eliud_pkg_notifications/model/abstract_repository_singleton.dart';
+import 'package:eliud_pkg_notifications/notifications_package.dart';
 import 'package:eliud_pkg_pay/tasks/editors/context_amount_pay_editor_widget.dart';
 import 'package:eliud_pkg_pay/tasks/editors/fixed_amount_pay_editor_widget.dart';
 import 'package:eliud_pkg_pay/tasks/pay_task_entity.dart';
@@ -13,6 +16,7 @@ import 'package:eliud_pkg_pay/tasks/review_and_ship_task_model.dart';
 import 'package:eliud_pkg_pay/tasks/review_and_ship_task_model_mapper.dart';
 import 'package:eliud_pkg_workflow/tools/task/task_model.dart';
 import 'package:eliud_pkg_workflow/tools/task/task_model_registry.dart';
+import 'package:eliud_pkg_workflow/workflow_package.dart';
 import 'package:flutter_bloc/src/bloc_provider.dart';
 import 'package:eliud_core/model/access_model.dart';
 
@@ -75,4 +79,14 @@ abstract class PayPackage extends Package {
       AbstractRepositorySingleton.collections;
 
   static PayPackage instance() => getPayPackage();
+
+  /*
+   * Register depending packages
+   */
+  void registerDependencies(Eliud eliud) {
+    eliud.registerPackage(CorePackage.instance());
+    eliud.registerPackage(FundamentalsPackage.instance());
+    eliud.registerPackage(WorkflowPackage.instance());
+    eliud.registerPackage(NotificationsPackage.instance());
+  }
 }
