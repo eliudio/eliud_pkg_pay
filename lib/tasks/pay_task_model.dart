@@ -3,7 +3,6 @@ import 'package:eliud_core/core/blocs/access/state/access_determined.dart';
 import 'package:eliud_core/core/blocs/access/state/logged_in.dart';
 import 'package:eliud_core/model/app_model.dart';
 import 'package:eliud_core/style/frontend/has_dialog.dart';
-import 'package:eliud_core/style/style_registry.dart';
 import 'package:eliud_core/tools/random.dart';
 import 'package:eliud_pkg_pay/platform/payment_platform.dart';
 import 'package:eliud_pkg_pay/tasks/pay_type_types/creditcard_pay_type_model.dart';

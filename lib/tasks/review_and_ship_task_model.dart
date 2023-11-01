@@ -1,5 +1,4 @@
 import 'package:eliud_core/core/base/model_base.dart';
-import 'package:eliud_core/core/blocs/access/access_bloc.dart';
 import 'package:eliud_core/model/app_model.dart';
 import 'package:eliud_core/style/frontend/has_dialog.dart';
 import 'package:eliud_core/style/style_registry.dart';
@@ -11,7 +10,6 @@ import 'package:eliud_pkg_workflow/tools/task/execution_results.dart';
 import 'package:eliud_pkg_workflow/tools/task/task_entity.dart';
 import 'package:eliud_pkg_workflow/tools/task/task_model.dart';
 import 'package:eliud_pkg_workflow/tools/widgets/workflow_dialog_helper.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class ReviewAndShipTaskModel extends TaskModel {
@@ -78,7 +76,7 @@ class ReviewAndShipTaskModel extends TaskModel {
       BuildContext context, AssignmentModel assignmentModel, String message) {
     var comment =
         'Payment reviewed and approved and order prepared for shipment.';
-    if (message != null) comment = comment + ' Feedback: ' + message;
+    comment = comment + ' Feedback: ' + message;
     finishTask(app,
         context,
         assignmentModel,
@@ -99,7 +97,7 @@ class ReviewAndShipTaskModel extends TaskModel {
   void _reviewedNotOk(AppModel app,
       BuildContext context, AssignmentModel assignmentModel, String message) {
     var comment = 'Payment reviewed and rejected.';
-    if (message != null) comment = comment + ' Feedback: ' + message;
+    comment = comment + ' Feedback: ' + message;
     finishTask(app,
         context,
         assignmentModel,

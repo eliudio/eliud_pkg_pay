@@ -9,15 +9,11 @@ import 'package:eliud_pkg_notifications/model/abstract_repository_singleton.dart
 import 'package:eliud_pkg_notifications/notifications_package.dart';
 import 'package:eliud_pkg_pay/tasks/editors/context_amount_pay_editor_widget.dart';
 import 'package:eliud_pkg_pay/tasks/editors/fixed_amount_pay_editor_widget.dart';
-import 'package:eliud_pkg_pay/tasks/pay_task_entity.dart';
-import 'package:eliud_pkg_pay/tasks/pay_task_model.dart';
 import 'package:eliud_pkg_pay/tasks/pay_type_types/creditcard_pay_type_model.dart';
 import 'package:eliud_pkg_pay/tasks/review_and_ship_task_model.dart';
 import 'package:eliud_pkg_pay/tasks/review_and_ship_task_model_mapper.dart';
-import 'package:eliud_pkg_workflow/tools/task/task_model.dart';
 import 'package:eliud_pkg_workflow/tools/task/task_model_registry.dart';
 import 'package:eliud_pkg_workflow/workflow_package.dart';
-import 'package:flutter_bloc/src/bloc_provider.dart';
 import 'package:eliud_core/model/access_model.dart';
 
 import 'tasks/context_amount_pay_model.dart';
