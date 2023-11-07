@@ -3,23 +3,20 @@ import 'package:eliud_core/style/frontend/has_list_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
-enum PayTypeType {
-  CreditCard, Manual
-}
+enum PayTypeType { creditCard, manual }
 
-typedef PayTypeTypeCallback = Function(
-    PayTypeType payTypeType);
+typedef PayTypeTypeCallback = Function(PayTypeType payTypeType);
 
 class PayTypeTypeWidget extends StatefulWidget {
-  PayTypeTypeCallback payTypeTypeCallback;
+  final PayTypeTypeCallback payTypeTypeCallback;
   final PayTypeType payTypeType;
   final AppModel app;
+
   PayTypeTypeWidget(
-      {Key? key,
-        required this.app,
-        required this.payTypeTypeCallback,
-        required this.payTypeType})
-      : super(key: key);
+      {super.key,
+      required this.app,
+      required this.payTypeTypeCallback,
+      required this.payTypeType});
 
   @override
   State<StatefulWidget> createState() {
@@ -30,6 +27,7 @@ class PayTypeTypeWidget extends StatefulWidget {
 class _PayTypeTypeWidgetState extends State<PayTypeTypeWidget> {
   int? _heightTypeSelectedRadioTile;
 
+  @override
   void initState() {
     super.initState();
     _heightTypeSelectedRadioTile = widget.payTypeType.index;
@@ -37,10 +35,12 @@ class _PayTypeTypeWidgetState extends State<PayTypeTypeWidget> {
 
   String heighttTypeLandscapeStringValue(PayTypeType? payTypeType) {
     switch (payTypeType) {
-      case PayTypeType.CreditCard:
+      case PayTypeType.creditCard:
         return 'Credit card';
-      case PayTypeType.Manual:
+      case PayTypeType.manual:
         return 'Manual payment';
+      case null:
+        break;
     }
     return '?';
   }
@@ -49,11 +49,10 @@ class _PayTypeTypeWidgetState extends State<PayTypeTypeWidget> {
     setState(() {
       _heightTypeSelectedRadioTile = val;
       if (val == 0) {
-        widget.payTypeTypeCallback(PayTypeType.CreditCard);
+        widget.payTypeTypeCallback(PayTypeType.creditCard);
       } else {
-        widget.payTypeTypeCallback(PayTypeType.Manual);
+        widget.payTypeTypeCallback(PayTypeType.manual);
       }
-
     });
   }
 
@@ -68,14 +67,14 @@ class _PayTypeTypeWidgetState extends State<PayTypeTypeWidget> {
             _heightTypeSelectedRadioTile,
             stringValue,
             null,
-                (dynamic val) => setSelection(val)));
+            (dynamic val) => setSelection(val)));
   }
 
   @override
   Widget build(BuildContext context) {
     return ListView(children: [
-      getOption(PayTypeType.CreditCard),
-      getOption(PayTypeType.Manual)
+      getOption(PayTypeType.creditCard),
+      getOption(PayTypeType.manual)
     ], shrinkWrap: true, physics: ScrollPhysics());
   }
 }

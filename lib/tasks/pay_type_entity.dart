@@ -1,5 +1,3 @@
-
-
 // ***** PayTypeEntity *****
 
 abstract class PayTypeEntity {
@@ -13,7 +11,13 @@ class ManualPayTypeEntity extends PayTypeEntity {
   final String payeeIBAN;
   final String bankName;
 
-  ManualPayTypeEntity({required this.payTo, required this.country, required this.bankIdentifierCode, required this.payeeIBAN, required this.bankName}) : super();
+  ManualPayTypeEntity(
+      {required this.payTo,
+      required this.country,
+      required this.bankIdentifierCode,
+      required this.payeeIBAN,
+      required this.bankName})
+      : super();
 
   @override
   Map<String, Object?> toDocument() {
@@ -40,4 +44,3 @@ class CreditCardPayTypeEntity extends PayTypeEntity {
     };
   }
 }
-

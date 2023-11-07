@@ -12,15 +12,14 @@ class PayMobilePackage extends PayPackage {
     super.init();
   }
 
+  @override
+  List<Object?> get props => [];
 
   @override
-  List<Object?> get props => [
-  ];
-
-  @override
-  bool operator == (Object other) =>
+  bool operator ==(Object other) =>
       identical(this, other) ||
-          other is PayMobilePackage &&
-              runtimeType == other.runtimeType;
+      other is PayMobilePackage && runtimeType == other.runtimeType;
 
+  @override
+  int get hashCode => packageName.hashCode;
 }

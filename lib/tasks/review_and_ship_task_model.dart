@@ -16,17 +16,20 @@ class ReviewAndShipTaskModel extends TaskModel {
   static String label = 'REVIEW_AND_SHIP_TASK';
   static String definition = 'Review and ship';
 
-  static String PAY_TASK_FIELD_SHIPMENT_COMMENTS = 'shipment-comments';
-  static String PAY_TASK_FIELD_REVIEW_RESULTS = 'review-result';
-  static String PAY_TASK_FIELD_REVIEW_RESULT_OK = 'reviewed and ok';
-  static String PAY_TASK_FIELD_REVIEW_RESULT_NOK = 'reviewed and not ok';
+  static String payTaskFiedlShipmentComments = 'shipment-comments';
+  static String payTaskFieldReviewResults = 'review-result';
+  static String payTaskFieldReviewResultOk = 'reviewed and ok';
+  static String payTaskFieldReviewResultNOK = 'reviewed and not ok';
 
   ReviewAndShipTaskModel(
-      {required String identifier, required String description, required bool executeInstantly})
-      : super(identifier: identifier, description: description, executeInstantly: executeInstantly);
+      {required super.identifier,
+      required super.description,
+      required super.executeInstantly});
 
   @override
-  TaskEntity toEntity({String? appId,}) {
+  TaskEntity toEntity({
+    String? appId,
+  }) {
     return ReviewAndShipTaskEntity(
         description: description, executeInstantly: executeInstantly);
   }
@@ -44,71 +47,86 @@ class ReviewAndShipTaskModel extends TaskModel {
   String? feedback;
 
   @override
-  Future<void> startTask(AppModel app,
-      BuildContext context, String? memberId, AssignmentModel? assignmentModel) {
+  Future<void> startTask(AppModel app, BuildContext context, String? memberId,
+      AssignmentModel? assignmentModel) {
     feedback = null;
-    openWidgetDialog(app,
+    openWidgetDialog(
+      app,
       context,
-      app.documentID + '/payment',
+      '${app.documentID}/payment',
       child: YesNoIgnoreDialogWithAssignmentResults.get(app, context,
           title: 'Payment',
           message:
               'Review the payment and ship the products. If you like you can provide some feedback to the buyer below.',
           resultsPrevious: assignmentModel!.resultsPrevious,
-          yesFunction: () => _reviewedOk(app, context, assignmentModel, feedback!),
-          noFunction: () => _reviewedNotOk(app, context, assignmentModel, feedback!),
+          yesFunction: () =>
+              _reviewedOk(app, context, assignmentModel, feedback!),
+          noFunction: () =>
+              _reviewedNotOk(app, context, assignmentModel, feedback!),
           extraFields: [
-            StyleRegistry.registry().styleWithApp(app).frontEndStyle().listTileStyle().getListTile(app, context,
-                leading: Icon(Icons.payment),
-                title: StyleRegistry.registry().styleWithApp(app).frontEndStyle().dialogFieldStyle().dialogField(app, context,
-                  valueChanged: (value) => feedback = value,
-                  decoration: const InputDecoration(
-                    hintText: 'Feedback to the buyer',
-                    labelText: 'Feedback to the buyer',
-                  ),
-                ))
+            StyleRegistry.registry()
+                .styleWithApp(app)
+                .frontEndStyle()
+                .listTileStyle()
+                .getListTile(app, context,
+                    leading: Icon(Icons.payment),
+                    title: StyleRegistry.registry()
+                        .styleWithApp(app)
+                        .frontEndStyle()
+                        .dialogFieldStyle()
+                        .dialogField(
+                          app,
+                          context,
+                          valueChanged: (value) => feedback = value,
+                          decoration: const InputDecoration(
+                            hintText: 'Feedback to the buyer',
+                            labelText: 'Feedback to the buyer',
+                          ),
+                        ))
           ]),
     );
     return Future.value(null);
   }
 
-  void _reviewedOk(AppModel app,
-      BuildContext context, AssignmentModel assignmentModel, String message) {
+  void _reviewedOk(AppModel app, BuildContext context,
+      AssignmentModel assignmentModel, String message) {
     var comment =
         'Payment reviewed and approved and order prepared for shipment.';
-    comment = comment + ' Feedback: ' + message;
-    finishTask(app,
+    comment = '$comment Feedback: $message';
+    finishTask(
+        app,
         context,
         assignmentModel,
         ExecutionResults(ExecutionStatus.success, results: [
           AssignmentResultModel(
               documentID: newRandomKey(),
-              key: PAY_TASK_FIELD_REVIEW_RESULTS,
-              value: PAY_TASK_FIELD_REVIEW_RESULT_OK),
+              key: payTaskFieldReviewResults,
+              value: payTaskFieldReviewResultOk),
           AssignmentResultModel(
               documentID: newRandomKey(),
-              key: PAY_TASK_FIELD_SHIPMENT_COMMENTS,
+              key: payTaskFiedlShipmentComments,
               value: comment),
         ]),
         message);
     Navigator.pop(context);
   }
 
-  void _reviewedNotOk(AppModel app,
-      BuildContext context, AssignmentModel assignmentModel, String message) {
+  void _reviewedNotOk(AppModel app, BuildContext context,
+      AssignmentModel assignmentModel, String message) {
     var comment = 'Payment reviewed and rejected.';
-    comment = comment + ' Feedback: ' + message;
-    finishTask(app,
+    comment = '$comment Feedback: $message';
+    finishTask(
+        app,
         context,
         assignmentModel,
         ExecutionResults(ExecutionStatus.success, results: [
           AssignmentResultModel(
               documentID: newRandomKey(),
-              key: PAY_TASK_FIELD_REVIEW_RESULTS,
-              value: PAY_TASK_FIELD_REVIEW_RESULT_NOK),
+              key: payTaskFieldReviewResults,
+              value: payTaskFieldReviewResultNOK),
           AssignmentResultModel(
               documentID: newRandomKey(),
-              key: PAY_TASK_FIELD_SHIPMENT_COMMENTS,
+              key: payTaskFiedlShipmentComments,
               value: comment),
         ]),
         message);
@@ -116,7 +134,9 @@ class ReviewAndShipTaskModel extends TaskModel {
   }
 
   @override
-  Future<List<ModelReference>> collectReferences({String? appId, }) async {
+  Future<List<ModelReference>> collectReferences({
+    String? appId,
+  }) async {
     return [];
   }
 }

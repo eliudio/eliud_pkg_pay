@@ -22,18 +22,30 @@ import 'tasks/fixed_amount_pay_model.dart';
 import 'tasks/fixed_amount_pay_model_mapper.dart';
 
 import 'package:eliud_pkg_pay/pay_package_stub.dart'
-if (dart.library.io) 'pay_mobile_package.dart'
-if (dart.library.html) 'pay_web_package.dart';
-
+    if (dart.library.io) 'pay_mobile_package.dart'
+    if (dart.library.html) 'pay_web_package.dart';
 
 abstract class PayPackage extends Package {
   PayPackage() : super('eliud_pkg_pay');
 
   @override
-  Future<List<PackageConditionDetails>>? getAndSubscribe(AccessBloc accessBloc, AppModel app, MemberModel? member, bool isOwner, bool? isBlocked, PrivilegeLevel? privilegeLevel) => null;
+  Future<List<PackageConditionDetails>>? getAndSubscribe(
+          AccessBloc accessBloc,
+          AppModel app,
+          MemberModel? member,
+          bool isOwner,
+          bool? isBlocked,
+          PrivilegeLevel? privilegeLevel) =>
+      null;
 
-  @override
-  Future<bool?> isConditionOk(AccessBloc accessBloc, String pluginCondition, AppModel app, MemberModel? member, bool isOwner, bool? isBlocked, PrivilegeLevel? privilegeLevel) async  =>
+  Future<bool?> isConditionOk(
+          AccessBloc accessBloc,
+          String pluginCondition,
+          AppModel app,
+          MemberModel? member,
+          bool isOwner,
+          bool? isBlocked,
+          PrivilegeLevel? privilegeLevel) async =>
       Future.value(null);
 
   @override
@@ -45,7 +57,8 @@ abstract class PayPackage extends Package {
         identifier: FixedAmountPayModel.label,
         definition: FixedAmountPayModel.definition,
         mapper: FixedAmountPayModelMapper(),
-        editor: (app, model) => FixedAmountPayEditorWidget(app: app, model: model),
+        editor: (app, model) =>
+            FixedAmountPayEditorWidget(app: app, model: model),
         createNewInstance: () => FixedAmountPayModel(
             identifier: FixedAmountPayModel.label,
             description: 'Fixed amount to be paid with card',
@@ -55,7 +68,8 @@ abstract class PayPackage extends Package {
         identifier: ContextAmountPayModel.label,
         definition: ContextAmountPayModel.definition,
         mapper: ContextAmountPayModelMapper(),
-        editor:(app, model) => ContextAmountPayEditorWidget(app: app, model: model),
+        editor: (app, model) =>
+            ContextAmountPayEditorWidget(app: app, model: model),
         createNewInstance: () => ContextAmountPayModel(
             identifier: ContextAmountPayModel.label,
             description: 'Amount determined by context and to be paid by card',
@@ -67,7 +81,8 @@ abstract class PayPackage extends Package {
         mapper: ReviewAndShipTaskModelMapper(),
         createNewInstance: () => ReviewAndShipTaskModel(
             identifier: ReviewAndShipTaskModel.label,
-            description: 'Review and ship', executeInstantly: true));
+            description: 'Review and ship',
+            executeInstantly: true));
   }
 
   @override
@@ -79,6 +94,7 @@ abstract class PayPackage extends Package {
   /*
    * Register depending packages
    */
+  @override
   void registerDependencies(Eliud eliud) {
     eliud.registerPackage(CorePackage.instance());
     eliud.registerPackage(FundamentalsPackage.instance());

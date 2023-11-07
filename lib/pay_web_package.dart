@@ -12,13 +12,13 @@ class PayWebPackage extends PayPackage {
   }
 
   @override
-  List<Object?> get props => [
-  ];
+  List<Object?> get props => [];
 
   @override
-  bool operator == (Object other) =>
+  bool operator ==(Object other) =>
       identical(this, other) ||
-          other is PayWebPackage &&
-              runtimeType == other.runtimeType;
+      other is PayWebPackage && runtimeType == other.runtimeType;
 
+  @override
+  int get hashCode => packageName.hashCode;
 }

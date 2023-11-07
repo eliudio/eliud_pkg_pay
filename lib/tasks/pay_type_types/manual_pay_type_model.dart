@@ -4,22 +4,26 @@ import 'pay_type_model.dart';
 
 class ManualPayTypeModel extends PayTypeModel {
   String payTo;
-   String country;
-   String bankIdentifierCode;
-   String payeeIBAN;
-   String bankName;
+  String country;
+  String bankIdentifierCode;
+  String payeeIBAN;
+  String bankName;
 
   ManualPayTypeModel(
       {required this.payTo,
-        required this.country,
-        required this.bankIdentifierCode,
-        required this.payeeIBAN,
-        required this.bankName})
+      required this.country,
+      required this.bankIdentifierCode,
+      required this.payeeIBAN,
+      required this.bankName})
       : super();
 
   @override
   PayTypeEntity toEntity() => ManualPayTypeEntity(
-      payTo: payTo, country: country, bankIdentifierCode: bankIdentifierCode, payeeIBAN: payeeIBAN, bankName: bankName);
+      payTo: payTo,
+      country: country,
+      bankIdentifierCode: bankIdentifierCode,
+      payeeIBAN: payeeIBAN,
+      bankName: bankName);
 
   static ManualPayTypeModel fromEntity(ManualPayTypeEntity entity) =>
       ManualPayTypeModel(

@@ -15,17 +15,12 @@ class FixedAmountPayModel extends PayTaskModel {
   double? amount;
 
   FixedAmountPayModel(
-      {required String identifier,
-        required String description,
-        required bool executeInstantly,
-        required PayTypeModel paymentType,
+      {required super.identifier,
+      required super.description,
+      required super.executeInstantly,
+      required super.paymentType,
       this.ccy,
-      this.amount})
-      : super(
-      identifier: identifier,
-            description: description,
-            executeInstantly: executeInstantly,
-            paymentType: paymentType);
+      this.amount});
 
   @override
   double? getAmount(BuildContext? context) {
@@ -38,12 +33,15 @@ class FixedAmountPayModel extends PayTaskModel {
   }
 
   @override
-  TaskEntity toEntity({String? appId, }) => FixedAmountPayEntity(
-      description: description,
-      executeInstantly: executeInstantly,
-      paymentType: paymentType.toEntity(),
-      ccy: ccy,
-      amount: amount);
+  TaskEntity toEntity({
+    String? appId,
+  }) =>
+      FixedAmountPayEntity(
+          description: description,
+          executeInstantly: executeInstantly,
+          paymentType: paymentType.toEntity(),
+          ccy: ccy,
+          amount: amount);
 
   static FixedAmountPayModel fromEntity(FixedAmountPayEntity entity) =>
       FixedAmountPayModel(
@@ -64,8 +62,9 @@ class FixedAmountPayModel extends PayTaskModel {
   String? getOrderNumber(BuildContext context) => null;
 
   @override
-  Future<List<ModelReference>> collectReferences({String? appId, }) async {
+  Future<List<ModelReference>> collectReferences({
+    String? appId,
+  }) async {
     return [];
   }
 }
-

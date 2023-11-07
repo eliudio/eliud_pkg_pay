@@ -19,7 +19,7 @@ class ManualPaymentDialog extends StatefulWidget {
   final PayedWithTheseDetails? payedWithTheseDetails;
 
   ManualPaymentDialog(
-      {Key? key,
+      {super.key,
       required this.app,
       this.purpose,
       this.amount,
@@ -29,11 +29,10 @@ class ManualPaymentDialog extends StatefulWidget {
       this.bankIdentifierCode,
       this.payeeIBAN,
       this.bankName,
-      this.payedWithTheseDetails})
-      : super(key: key);
+      this.payedWithTheseDetails});
 
   @override
-  _ManualPaymentDialogState createState() => _ManualPaymentDialogState();
+  State<ManualPaymentDialog> createState() => _ManualPaymentDialogState();
 }
 
 class _ManualPaymentDialogState extends State<ManualPaymentDialog> {
@@ -54,19 +53,25 @@ class _ManualPaymentDialogState extends State<ManualPaymentDialog> {
 
   @override
   Widget build(BuildContext context) {
-    return StyleRegistry.registry().styleWithApp(widget.app).frontEndStyle().dialogWidgetStyle().flexibleDialog(widget.app, context,
-        includeHeading: true,
-        title: 'Manual Payment',
-        child: getFieldsWidget(context),
-        buttons: [
+    return StyleRegistry.registry()
+        .styleWithApp(widget.app)
+        .frontEndStyle()
+        .dialogWidgetStyle()
+        .flexibleDialog(widget.app, context,
+            includeHeading: true,
+            title: 'Manual Payment',
+            child: getFieldsWidget(context),
+            buttons: [
           StyleRegistry.registry()
               .styleWithApp(widget.app)
-              .frontEndStyle().buttonStyle()
+              .frontEndStyle()
+              .buttonStyle()
               .dialogButton(widget.app, context,
                   label: 'Cancel', onPressed: () => pressed(false)),
           StyleRegistry.registry()
               .styleWithApp(widget.app)
-              .frontEndStyle().buttonStyle()
+              .frontEndStyle()
+              .buttonStyle()
               .dialogButton(widget.app, context,
                   label: 'Continue', onPressed: () => pressed(true)),
         ]);
@@ -75,52 +80,57 @@ class _ManualPaymentDialogState extends State<ManualPaymentDialog> {
   Widget getFieldsWidget(BuildContext context) {
     return StyleRegistry.registry()
         .styleWithApp(widget.app)
-        .frontEndStyle().containerStyle()
+        .frontEndStyle()
+        .containerStyle()
         .topicContainer(widget.app, context, children: <Widget>[
       StyleRegistry.registry()
           .styleWithApp(widget.app)
-          .frontEndStyle().listTileStyle()
-          .getListTile(widget.app,
+          .frontEndStyle()
+          .listTileStyle()
+          .getListTile(
+            widget.app,
             context,
             leading: Icon(Icons.payment),
-            title: Text('Please pay ' +
-                widget.amount.toString() +
-                ' ' +
-                widget.ccy! +
-                ' to the bank account with the below details'),
-            subtitle: Text('Purpose: ' + widget.purpose!),
+            title: Text(
+                'Please pay ${widget.amount} ${widget.ccy!} to the bank account with the below details'),
+            subtitle: Text('Purpose: ${widget.purpose!}'),
           ),
       StyleRegistry.registry()
           .styleWithApp(widget.app)
-          .frontEndStyle().listTileStyle()
-          .getListTile(widget.app,
+          .frontEndStyle()
+          .listTileStyle()
+          .getListTile(
+            widget.app,
             context,
             isThreeLine: true,
             leading: Icon(Icons.person),
-            title: Text('Pay to: ' + widget.payTo!),
+            title: Text('Pay to: ${widget.payTo!}'),
             subtitle: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Text('Payee IBAN: ' + widget.payeeIBAN!),
-                Text('Country: ' + widget.country!),
+                Text('Payee IBAN: ${widget.payeeIBAN!}'),
+                Text('Country: ${widget.country!}'),
               ],
             ),
           ),
       StyleRegistry.registry()
           .styleWithApp(widget.app)
-          .frontEndStyle().listTileStyle()
-          .getListTile(widget.app,
+          .frontEndStyle()
+          .listTileStyle()
+          .getListTile(
+            widget.app,
             context,
             leading: Icon(Icons.attach_money),
-            title: Text('Bank name: ' + widget.bankName!),
+            title: Text('Bank name: ${widget.bankName!}'),
             subtitle:
-                Text('Bank Identifier Code: ' + widget.bankIdentifierCode!),
+                Text('Bank Identifier Code: ${widget.bankIdentifierCode!}'),
           ),
       Text(
           'Ones paid, please provide payment name and reference below and submit. We will then review your payment.'),
       StyleRegistry.registry()
           .styleWithApp(widget.app)
-          .frontEndStyle().listTileStyle()
+          .frontEndStyle()
+          .listTileStyle()
           .getListTile(widget.app, context,
               leading: Icon(Icons.payment),
               title: TextFormField(
@@ -132,7 +142,8 @@ class _ManualPaymentDialogState extends State<ManualPaymentDialog> {
               )),
       StyleRegistry.registry()
           .styleWithApp(widget.app)
-          .frontEndStyle().listTileStyle()
+          .frontEndStyle()
+          .listTileStyle()
           .getListTile(widget.app, context,
               leading: Icon(Icons.person),
               title: TextFormField(

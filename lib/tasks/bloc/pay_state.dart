@@ -1,17 +1,18 @@
 import 'package:equatable/equatable.dart';
 
-abstract class PayState extends Equatable {
-}
+abstract class PayState extends Equatable {}
 
 class UninitializedPayState extends PayState {
   @override
   List<Object> get props => [];
 
   @override
-  bool operator == (Object other) =>
+  bool operator ==(Object other) =>
       identical(this, other) ||
-          other is InitializedPayState &&
-              runtimeType == other.runtimeType;
+      other is InitializedPayState && runtimeType == other.runtimeType;
+
+  @override
+  int get hashCode => 0;
 }
 
 class InitializedPayState extends PayState {
@@ -25,12 +26,14 @@ class InitializedPayState extends PayState {
   List<Object> get props => [ccy, amount, orderNumber];
 
   @override
-  bool operator == (Object other) =>
+  bool operator ==(Object other) =>
       identical(this, other) ||
-          other is InitializedPayState &&
-              runtimeType == other.runtimeType &&
-              ccy == other.ccy &&
-              amount == other.amount &&
-              orderNumber == other.orderNumber;
-}
+      other is InitializedPayState &&
+          runtimeType == other.runtimeType &&
+          ccy == other.ccy &&
+          amount == other.amount &&
+          orderNumber == other.orderNumber;
 
+  @override
+  int get hashCode => ccy.hashCode ^ amount.hashCode ^ orderNumber.hashCode;
+}

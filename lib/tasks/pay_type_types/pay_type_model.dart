@@ -15,7 +15,7 @@ abstract class PayTypeModel {
     } else if (entity is CreditCardPayTypeEntity) {
       return CreditCardPayTypeModel.fromEntity(entity);
     }
-    throw Exception('Paytype for the following entity not supported: ' + entity.toString());
+    throw Exception('Paytype for the following entity not supported: $entity');
   }
 
   static PayTypeEntity fromMap(Map? snap) {
@@ -25,6 +25,6 @@ abstract class PayTypeModel {
     } else if (snap['paymentMethod'] == 'creditcard') {
       return CreditCardPayTypeModel.fromMap(snap);
     }
-    throw Exception('Paytype for the following map not supported: ' + snap.toString());
+    throw Exception('Paytype for the following map not supported: $snap');
   }
 }

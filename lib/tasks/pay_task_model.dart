@@ -19,54 +19,56 @@ import 'package:flutter/material.dart';
 // ***** PayModel *****
 
 abstract class PayTaskModel extends TaskModel {
-  static String PAY_TASK_FIELD_PAYMENT_TYPE = 'payment-type';
-  static String PAY_TASK_FIELD_PAYMENT_REFERENCE = 'payment-reference';
-  static String PAY_TASK_FIELD_ERROR = 'payment-error';
-  static String PAY_TASK_FIELD_NAME = 'payment-name';
+  static String payTaskFieldPaymentType = 'payment-type';
+  static String payTaskFieldPaymentReference = 'payment-reference';
+  static String payTaskFieldError = 'payment-error';
+  static String payTaskFieldName = 'payment-name';
 
   PayTypeModel paymentType;
 
   PayTaskModel({
-    required String identifier,
+    required super.identifier,
     required this.paymentType,
-    required String description,
-    required bool executeInstantly,
-  }) : super(identifier: identifier, description: description, executeInstantly: executeInstantly);
+    required super.description,
+    required super.executeInstantly,
+  });
 
-  void handleCreditCardPayment(AppModel app, BuildContext _context,
-      AssignmentModel? _assignmentModel, PaymentStatus status) {
+  void handleCreditCardPayment(AppModel app, BuildContext theContext,
+      AssignmentModel? theAssignmentModel, PaymentStatus status) {
     if (status is PaymentSucceeded) {
       // now store in results status.reference;
-      finishTask(app,
-          _context,
-          _assignmentModel!,
+      finishTask(
+          app,
+          theContext,
+          theAssignmentModel!,
           ExecutionResults(ExecutionStatus.success, results: [
             AssignmentResultModel(
                 documentID: newRandomKey(),
-                key: PAY_TASK_FIELD_PAYMENT_TYPE,
+                key: payTaskFieldPaymentType,
                 value: 'Credit card'),
             AssignmentResultModel(
                 documentID: newRandomKey(),
-                key: PAY_TASK_FIELD_PAYMENT_REFERENCE,
+                key: payTaskFieldPaymentReference,
                 value: status.reference)
           ]),
           null);
     } else if (status is PaymentFailure) {
-      finishTask(app,
-          _context,
-          _assignmentModel!,
+      finishTask(
+          app,
+          theContext,
+          theAssignmentModel!,
           ExecutionResults(ExecutionStatus.failure, results: [
             AssignmentResultModel(
                 documentID: newRandomKey(),
-                key: PAY_TASK_FIELD_PAYMENT_TYPE,
+                key: payTaskFieldPaymentType,
                 value: 'Credit card'),
             AssignmentResultModel(
                 documentID: newRandomKey(),
-                key: PAY_TASK_FIELD_PAYMENT_REFERENCE,
+                key: payTaskFieldPaymentReference,
                 value: status.reference),
             AssignmentResultModel(
                 documentID: newRandomKey(),
-                key: PAY_TASK_FIELD_ERROR,
+                key: payTaskFieldError,
                 value: status.error)
           ]),
           null);
@@ -75,59 +77,55 @@ abstract class PayTaskModel extends TaskModel {
 
   void handleManualPayment(
       AppModel app,
-      BuildContext _context,
-      AssignmentModel? _assignmentModel,
+      BuildContext theContext,
+      AssignmentModel? theAssignmentModel,
       String paymentReference,
       String paymentName,
       bool success) {
     if (success) {
       // now store in results status.reference;
-      finishTask(app,
-          _context,
-          _assignmentModel!,
+      finishTask(
+          app,
+          theContext,
+          theAssignmentModel!,
           ExecutionResults(ExecutionStatus.success, results: [
             AssignmentResultModel(
                 documentID: newRandomKey(),
-                key: PAY_TASK_FIELD_PAYMENT_TYPE,
+                key: payTaskFieldPaymentType,
                 value: 'Manual Payment'),
             AssignmentResultModel(
                 documentID: newRandomKey(),
-                key: PAY_TASK_FIELD_PAYMENT_REFERENCE,
+                key: payTaskFieldPaymentReference,
                 value: paymentReference),
             AssignmentResultModel(
                 documentID: newRandomKey(),
-                key: PAY_TASK_FIELD_NAME,
+                key: payTaskFieldName,
                 value: paymentName)
           ]),
           null);
     } else {
-      finishTask(app, _context, _assignmentModel!,
+      finishTask(app, theContext, theAssignmentModel!,
           ExecutionResults(ExecutionStatus.delay), null);
     }
   }
 
   @override
-  Future<void> startTask(AppModel app,
-      BuildContext context, String? memberId, AssignmentModel? assignmentModel) {
+  Future<void> startTask(AppModel app, BuildContext context, String? memberId,
+      AssignmentModel? assignmentModel) {
     var accessState = AccessBloc.getState(context);
     if (accessState is LoggedIn) {
       if (paymentType is CreditCardPayTypeModel) {
         var casted = paymentType as CreditCardPayTypeModel;
         if ((casted.requiresConfirmation != null) &&
             casted.requiresConfirmation!) {
-          openAckNackDialog(app, context,
-              app.documentID + '/payment',
+          openAckNackDialog(app, context, '${app.documentID}/payment',
               title: 'Payment',
-              message: 'Proceed with payment of ' +
-                  getAmount(context).toString() +
-                  ' ' +
-                  getCcy(context)! +
-                  ' for ' +
-                  assignmentModel!.workflow!.name! +
-                  '?', onSelection: (value) {
+              message:
+                  'Proceed with payment of ${getAmount(context)} ${getCcy(context)!} for ${assignmentModel!.workflow!.name!}?',
+              onSelection: (value) {
             if (value == 0) {
-              _confirmedCreditCardPayment(app,
-                  context, assignmentModel, accessState);
+              _confirmedCreditCardPayment(
+                  app, context, assignmentModel, accessState);
             }
           });
         } else {
@@ -135,10 +133,9 @@ abstract class PayTaskModel extends TaskModel {
         }
       } else if (paymentType is ManualPayTypeModel) {
         var p = paymentType as ManualPayTypeModel;
-        openWidgetDialog(app,
-            context,
-            app.documentID + '/payment',
-            child: ManualPaymentDialog(app:app,
+        openWidgetDialog(app, context, '${app.documentID}/payment',
+            child: ManualPaymentDialog(
+                app: app,
                 purpose: assignmentModel!.task!.description,
                 amount: getAmount(context),
                 ccy: getCcy(context),
@@ -163,7 +160,8 @@ abstract class PayTaskModel extends TaskModel {
 
   void _creditCardPayment(AppModel app, BuildContext context,
       AssignmentModel? assignmentModel, AccessDetermined accessState) {
-    AbstractPaymentPlatform.platform.startPaymentProcess(app,
+    AbstractPaymentPlatform.platform.startPaymentProcess(
+        app,
         context,
         (PaymentStatus status) =>
             handleCreditCardPayment(app, context, assignmentModel, status),
@@ -178,4 +176,3 @@ abstract class PayTaskModel extends TaskModel {
   double? getAmount(BuildContext context);
   String? getOrderNumber(BuildContext context);
 }
-

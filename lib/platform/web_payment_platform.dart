@@ -6,10 +6,11 @@ import 'package:flutter/material.dart';
 
 class WebPaymentPlatform extends AbstractPaymentPlatform {
   @override
-  void startPaymentProcess(AppModel app,
-      BuildContext context, HandlePayment handlePayment, String? name, String? ccy, double? amount) {
-    openErrorDialog(app, context, app.documentID + '/_paymenterror',
+  void startPaymentProcess(AppModel app, BuildContext context,
+      HandlePayment handlePayment, String? name, String? ccy, double? amount) {
+    openErrorDialog(app, context, '${app.documentID}/_paymenterror',
         title: 'Error',
-        errorMessage: 'Stripe payment not implemented yet (existing stripe package not supported anymore)');
+        errorMessage:
+            'Stripe payment not implemented yet (existing stripe package not supported anymore)');
   }
 }

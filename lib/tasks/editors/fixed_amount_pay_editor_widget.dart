@@ -1,11 +1,11 @@
 import 'package:eliud_core/model/app_model.dart';
 import 'package:eliud_core/style/frontend/has_dialog_field.dart';
 import 'package:eliud_core/style/frontend/has_list_tile.dart';
-import 'package:eliud_core/tools/helpers/parse_helper.dart';
 import 'package:eliud_pkg_pay/tasks/fixed_amount_pay_model.dart';
 import 'package:eliud_pkg_pay/tasks/pay_type_types/pay_type_model.dart';
 import 'package:eliud_pkg_pay/tasks/widgets/pay_type_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:eliud_core/tools/helpers/parse_helper.dart';
 
 class FixedAmountPayEditorWidget extends StatefulWidget {
   final AppModel app;
@@ -17,8 +17,7 @@ class FixedAmountPayEditorWidget extends StatefulWidget {
   final FixedAmountPayModel model;
 
   const FixedAmountPayEditorWidget(
-      {Key? key, required this.model, required this.app})
-      : super(key: key);
+      {super.key, required this.model, required this.app});
 
   @override
   State<StatefulWidget> createState() => _FixedAmountPayEditorWidgetState();
@@ -48,7 +47,7 @@ class _FixedAmountPayEditorWidgetState
               signed: false,
             ),
             valueChanged: (value) {
-              widget.model.amount = double_parse(value);
+              widget.model.amount = doubleParse(value);
             },
             decoration: const InputDecoration(
               hintText: 'Amount',

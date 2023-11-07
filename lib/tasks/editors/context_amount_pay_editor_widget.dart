@@ -16,8 +16,7 @@ class ContextAmountPayEditorWidget extends StatefulWidget {
   final ContextAmountPayModel model;
 
   const ContextAmountPayEditorWidget(
-      {Key? key, required this.model, required this.app})
-      : super(key: key);
+      {super.key, required this.model, required this.app});
 
   @override
   State<StatefulWidget> createState() => _ContextAmountPayEditorWidgetState();
@@ -37,10 +36,10 @@ class _ContextAmountPayEditorWidgetState
       ),
       checkboxListTile(widget.app, context, 'Execute Instantly',
           widget.model.executeInstantly, (value) {
-            setState(() {
-              widget.model.executeInstantly = value ?? false;
-            });
-          }),
+        setState(() {
+          widget.model.executeInstantly = value ?? false;
+        });
+      }),
     ]);
   }
 }

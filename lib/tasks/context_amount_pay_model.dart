@@ -15,12 +15,10 @@ class ContextAmountPayModel extends PayTaskModel {
   static String definition = 'Pay an amount set by context (e.g. cart)';
 
   ContextAmountPayModel(
-      {required String identifier, required String description, required bool executeInstantly, required PayTypeModel paymentType})
-      : super(
-            identifier: identifier,
-            description: description,
-            executeInstantly: executeInstantly,
-            paymentType: paymentType);
+      {required super.identifier,
+      required super.description,
+      required super.executeInstantly,
+      required super.paymentType});
 
   @override
   TaskEntity toEntity({String? appId}) => ContextAmountPayEntity(
@@ -82,7 +80,9 @@ class ContextAmountPayModel extends PayTaskModel {
   }
 
   @override
-  Future<List<ModelReference>> collectReferences({String? appId, }) async {
+  Future<List<ModelReference>> collectReferences({
+    String? appId,
+  }) async {
     return [];
   }
 }

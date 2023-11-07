@@ -5,8 +5,7 @@ import 'package:flutter/material.dart';
 
 import '../pay_type_types/manual_pay_type_model.dart';
 
-typedef ManualPayTypeCallback = Function(
-    ManualPayTypeModel payType);
+typedef ManualPayTypeCallback = Function(ManualPayTypeModel payType);
 
 class ManualPayTypeWidget extends StatefulWidget {
   final ManualPayTypeCallback payTypeCallback;
@@ -14,15 +13,16 @@ class ManualPayTypeWidget extends StatefulWidget {
   final ManualPayTypeModel model;
 
   const ManualPayTypeWidget(
-      {Key? key, required this.payTypeCallback, required this.model, required this.app})
-      : super(key: key);
+      {super.key,
+      required this.payTypeCallback,
+      required this.model,
+      required this.app});
 
   @override
   State<StatefulWidget> createState() => _ManualPayTypeWidgetState();
 }
 
-class _ManualPayTypeWidgetState
-    extends State<ManualPayTypeWidget> {
+class _ManualPayTypeWidgetState extends State<ManualPayTypeWidget> {
   @override
   Widget build(BuildContext context) {
     return ListView(shrinkWrap: true, physics: ScrollPhysics(), children: [
@@ -31,7 +31,7 @@ class _ManualPayTypeWidgetState
           title: dialogField(
             widget.app,
             context,
-            initialValue: widget.model.payTo ?? '',
+            initialValue: widget.model.payTo,
             valueChanged: (value) {
               widget.model.payTo = value;
               widget.payTypeCallback(widget.model);
@@ -46,7 +46,7 @@ class _ManualPayTypeWidgetState
           title: dialogField(
             widget.app,
             context,
-            initialValue: widget.model.country ?? '',
+            initialValue: widget.model.country,
             valueChanged: (value) {
               widget.model.country = value;
               widget.payTypeCallback(widget.model);
@@ -61,7 +61,7 @@ class _ManualPayTypeWidgetState
           title: dialogField(
             widget.app,
             context,
-            initialValue: widget.model.bankIdentifierCode ?? '',
+            initialValue: widget.model.bankIdentifierCode,
             valueChanged: (value) {
               widget.model.bankIdentifierCode = value;
               widget.payTypeCallback(widget.model);
@@ -76,7 +76,7 @@ class _ManualPayTypeWidgetState
           title: dialogField(
             widget.app,
             context,
-            initialValue: widget.model.payeeIBAN ?? '',
+            initialValue: widget.model.payeeIBAN,
             valueChanged: (value) {
               widget.model.payeeIBAN = value;
               widget.payTypeCallback(widget.model);
@@ -91,7 +91,7 @@ class _ManualPayTypeWidgetState
           title: dialogField(
             widget.app,
             context,
-            initialValue: widget.model.bankName ?? '',
+            initialValue: widget.model.bankName,
             valueChanged: (value) {
               widget.model.bankName = value;
               widget.payTypeCallback(widget.model);

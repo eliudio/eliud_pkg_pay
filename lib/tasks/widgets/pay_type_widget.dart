@@ -13,20 +13,23 @@ typedef PayTypeCallback = Function(PayTypeModel payType);
 class PayTypeWidget extends StatefulWidget {
   final PayTypeCallback payTypeCallback;
   final AppModel app;
-  PayTypeModel? model;
+  final PayTypeModel? model;
 
   PayTypeWidget(
-      {Key? key,
+      {super.key,
       required this.payTypeCallback,
       required this.model,
-      required this.app})
-      : super(key: key);
+      required this.app});
 
   @override
-  State<StatefulWidget> createState() => _PayTypeWidgetState();
+  State<StatefulWidget> createState() => _PayTypeWidgetState(model);
 }
 
 class _PayTypeWidgetState extends State<PayTypeWidget> {
+  PayTypeModel? model;
+
+  _PayTypeWidgetState(this.model);
+
   @override
   Widget build(BuildContext context) {
     return ListView(shrinkWrap: true, physics: ScrollPhysics(), children: [
@@ -34,35 +37,35 @@ class _PayTypeWidgetState extends State<PayTypeWidget> {
           app: widget.app,
           payTypeTypeCallback: (value) {
             setState(() {
-              if (value == PayTypeType.Manual) {
-                widget.model = ManualPayTypeModel(
+              if (value == PayTypeType.manual) {
+                model = ManualPayTypeModel(
                     payTo: '',
                     country: '',
                     bankIdentifierCode: '',
                     payeeIBAN: '',
                     bankName: '');
               } else {
-                widget.model = CreditCardPayTypeModel();
+                model = CreditCardPayTypeModel();
               }
-              widget.payTypeCallback(widget.model!);
+              widget.payTypeCallback(model!);
             });
           },
-          payTypeType: widget.model is ManualPayTypeModel
-              ? PayTypeType.Manual
-              : PayTypeType.CreditCard),
-      widget.model is ManualPayTypeModel
+          payTypeType: model is ManualPayTypeModel
+              ? PayTypeType.manual
+              : PayTypeType.creditCard),
+      model is ManualPayTypeModel
           ? ManualPayTypeWidget(
               payTypeCallback: (ManualPayTypeModel payType) {
                 widget.payTypeCallback(payType);
               },
-              model: widget.model as ManualPayTypeModel,
+              model: model as ManualPayTypeModel,
               app: widget.app,
             )
           : CreditCardPayTypeWidget(
               payTypeCallback: (CreditCardPayTypeModel payType) {
                 widget.payTypeCallback(payType);
               },
-              model: widget.model as CreditCardPayTypeModel,
+              model: model as CreditCardPayTypeModel,
               app: widget.app)
     ]);
   }
