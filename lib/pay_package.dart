@@ -1,7 +1,7 @@
 import 'package:eliud_core/core/blocs/access/access_bloc.dart';
 import 'package:eliud_core/core_package.dart';
 import 'package:eliud_core/eliud.dart';
-import 'package:eliud_core/model/app_model.dart';
+import 'package:eliud_core_model/model/app_model.dart';
 import 'package:eliud_core/model/member_model.dart';
 import 'package:eliud_core/package/package.dart';
 import 'package:eliud_pkg_fundamentals/fundamentals_package.dart';
@@ -53,7 +53,7 @@ abstract class PayPackage extends Package {
 
   @override
   void init() {
-    TaskModelRegistry.registry()!.addTask(
+    TaskModelApis.apis().addTask(
         identifier: FixedAmountPayModel.label,
         definition: FixedAmountPayModel.definition,
         mapper: FixedAmountPayModelMapper(),
@@ -64,7 +64,7 @@ abstract class PayPackage extends Package {
             description: 'Fixed amount to be paid with card',
             executeInstantly: true,
             paymentType: CreditCardPayTypeModel()));
-    TaskModelRegistry.registry()!.addTask(
+    TaskModelApis.apis().addTask(
         identifier: ContextAmountPayModel.label,
         definition: ContextAmountPayModel.definition,
         mapper: ContextAmountPayModelMapper(),
@@ -75,7 +75,7 @@ abstract class PayPackage extends Package {
             description: 'Amount determined by context and to be paid by card',
             executeInstantly: true,
             paymentType: CreditCardPayTypeModel()));
-    TaskModelRegistry.registry()!.addTask(
+    TaskModelApis.apis().addTask(
         identifier: ReviewAndShipTaskModel.label,
         definition: ReviewAndShipTaskModel.definition,
         mapper: ReviewAndShipTaskModelMapper(),

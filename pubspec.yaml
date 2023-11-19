@@ -11,7 +11,7 @@ environment:
 dependencies:
   bloc: ^8.1.2
   eliud_core: ^1.1.5+7
-  eliud_pkg_fundamentals: ^1.1.5+6
+  eliud_pkg_fundamentals: ^1.0.0
   eliud_pkg_workflow: ^1.1.5+5
   eliud_pkg_notifications: ^1.1.5+5
   equatable: ^2.0.5
