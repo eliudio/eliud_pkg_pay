@@ -1,15 +1,15 @@
-import 'package:eliud_core/core/base/model_base.dart';
-import 'package:eliud_core_model/model/app_model.dart';
-import 'package:eliud_core_model/style/frontend/has_dialog.dart';
-import 'package:eliud_core_model/style/style_registry.dart';
-import 'package:eliud_core_model/tools/etc/random.dart';
+import 'package:eliud_core_helpers/base/model_base.dart';
+import 'package:eliud_core_helpers/etc/random.dart';
+import 'package:eliud_core_main/apis/style/frontend/has_dialog.dart';
+import 'package:eliud_core_main/apis/style/style_registry.dart';
+import 'package:eliud_core_main/model/app_model.dart';
 import 'package:eliud_pkg_pay/tasks/review_and_ship_task_entity.dart';
-import 'package:eliud_pkg_workflow/model/assignment_model.dart';
-import 'package:eliud_pkg_workflow/model/assignment_result_model.dart';
-import 'package:eliud_pkg_workflow/tools/task/execution_results.dart';
-import 'package:eliud_pkg_workflow/tools/task/task_entity.dart';
-import 'package:eliud_pkg_workflow/tools/task/task_model.dart';
 import 'package:eliud_pkg_workflow/tools/widgets/workflow_dialog_helper.dart';
+import 'package:eliud_pkg_workflow_model/model/assignment_model.dart';
+import 'package:eliud_pkg_workflow_model/model/assignment_result_model.dart';
+import 'package:eliud_pkg_workflow_model/tools/task/execution_results.dart';
+import 'package:eliud_pkg_workflow_model/tools/task/task_entity.dart';
+import 'package:eliud_pkg_workflow_model/tools/task/task_model.dart';
 import 'package:flutter/material.dart';
 
 class ReviewAndShipTaskModel extends TaskModel {

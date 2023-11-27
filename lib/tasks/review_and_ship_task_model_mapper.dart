@@ -1,8 +1,8 @@
 import 'package:eliud_pkg_pay/tasks/review_and_ship_task_entity.dart';
 import 'package:eliud_pkg_pay/tasks/review_and_ship_task_model.dart';
-import 'package:eliud_pkg_workflow/tools/task/task_entity.dart';
-import 'package:eliud_pkg_workflow/tools/task/task_model.dart';
-import 'package:eliud_pkg_workflow/tools/task/task_model_mapper.dart';
+import 'package:eliud_pkg_workflow_model/tools/task/task_entity.dart';
+import 'package:eliud_pkg_workflow_model/tools/task/task_model.dart';
+import 'package:eliud_pkg_workflow_model/tools/task/task_model_mapper.dart';
 
 class ReviewAndShipTaskModelMapper implements TaskModelMapper {
   @override

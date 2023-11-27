@@ -1,4 +1,4 @@
-import 'package:eliud_core_model/model/app_model.dart';
+import 'package:eliud_core_main/model/app_model.dart';
 import 'package:flutter/material.dart';
 
 import '../pay_type_types/creditcard_pay_type_model.dart';

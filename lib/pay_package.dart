@@ -1,20 +1,21 @@
-import 'package:eliud_core/core/blocs/access/access_bloc.dart';
+import 'package:eliud_core/access/access_bloc.dart';
 import 'package:eliud_core/core_package.dart';
 import 'package:eliud_core/eliud.dart';
-import 'package:eliud_core_model/model/app_model.dart';
-import 'package:eliud_core/model/member_model.dart';
 import 'package:eliud_core/package/package.dart';
+import 'package:eliud_core_main/model/abstract_repository_singleton.dart';
+import 'package:eliud_core_main/model/app_model.dart';
+import 'package:eliud_core_main/model/member_model.dart';
+import 'package:eliud_core_main/tools/etc/member_collection_info.dart';
+import 'package:eliud_core_model/model/access_model.dart';
 import 'package:eliud_pkg_fundamentals/fundamentals_package.dart';
-import 'package:eliud_pkg_notifications/model/abstract_repository_singleton.dart';
 import 'package:eliud_pkg_notifications/notifications_package.dart';
 import 'package:eliud_pkg_pay/tasks/editors/context_amount_pay_editor_widget.dart';
 import 'package:eliud_pkg_pay/tasks/editors/fixed_amount_pay_editor_widget.dart';
 import 'package:eliud_pkg_pay/tasks/pay_type_types/creditcard_pay_type_model.dart';
 import 'package:eliud_pkg_pay/tasks/review_and_ship_task_model.dart';
 import 'package:eliud_pkg_pay/tasks/review_and_ship_task_model_mapper.dart';
-import 'package:eliud_pkg_workflow/tools/task/task_model_registry.dart';
 import 'package:eliud_pkg_workflow/workflow_package.dart';
-import 'package:eliud_core/model/access_model.dart';
+import 'package:eliud_pkg_workflow_model/tools/task/task_model_registry.dart';
 
 import 'tasks/context_amount_pay_model.dart';
 import 'tasks/context_amount_pay_model_mapper.dart';
@@ -53,7 +54,7 @@ abstract class PayPackage extends Package {
 
   @override
   void init() {
-    TaskModelApis.apis().addTask(
+    TaskModelRegistry.registry()!.addTask(
         identifier: FixedAmountPayModel.label,
         definition: FixedAmountPayModel.definition,
         mapper: FixedAmountPayModelMapper(),
@@ -64,7 +65,7 @@ abstract class PayPackage extends Package {
             description: 'Fixed amount to be paid with card',
             executeInstantly: true,
             paymentType: CreditCardPayTypeModel()));
-    TaskModelApis.apis().addTask(
+    TaskModelRegistry.registry()!.addTask(
         identifier: ContextAmountPayModel.label,
         definition: ContextAmountPayModel.definition,
         mapper: ContextAmountPayModelMapper(),
@@ -75,7 +76,7 @@ abstract class PayPackage extends Package {
             description: 'Amount determined by context and to be paid by card',
             executeInstantly: true,
             paymentType: CreditCardPayTypeModel()));
-    TaskModelApis.apis().addTask(
+    TaskModelRegistry.registry()!.addTask(
         identifier: ReviewAndShipTaskModel.label,
         definition: ReviewAndShipTaskModel.definition,
         mapper: ReviewAndShipTaskModelMapper(),
