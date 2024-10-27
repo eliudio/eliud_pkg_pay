@@ -4,26 +4,26 @@ description: eliud_pkg_pay is a package to provide payment functionality to your
   app. More info at https://eliud.io
 homepage: https://eliud.io
 repository: https://github.com/eliudio/eliud_pkg_pay
-version: 1.2.0
+version: 1.3.0
 environment:
   sdk: '>=3.2.0 <4.0.0'
   flutter: '>=3.0.0'
 dependencies:
-  eliud_core: ^1.1.6
-  eliud_core_helpers: ^1.0.0
-  eliud_core_model: ^1.0.0
-  eliud_pkg_fundamentals: ^1.1.7
-  eliud_pkg_notifications: ^1.1.6
-  eliud_pkg_workflow: ^1.1.6
-  eliud_pkg_workflow_model: ^1.0.0
-  eliud_core_main: ^1.0.2
-  bloc: ^8.1.2
+  eliud_core: ^1.3.0
+  eliud_core_helpers: ^1.3.0
+  eliud_core_model: ^1.3.0
+  eliud_pkg_fundamentals: ^1.3.0
+  eliud_pkg_notifications: ^1.3.0
+  eliud_pkg_workflow: ^1.3.0
+  eliud_pkg_workflow_model: ^1.3.0
+  eliud_core_main: ^1.3.0
+  bloc: ^8.1.4
   equatable: ^2.0.5
-  flutter_bloc: ^8.1.3
+  flutter_bloc: ^8.1.6
   flutter:
     sdk: flutter
 dev_dependencies:
-  lints: ^3.0.0
+  lints: ^5.0.0
 flutter: null
 platforms:
   android: null
